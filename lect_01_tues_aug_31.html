@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture 1</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="JMG" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/vembedr/css/vembedr.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lecture 1
+## Logistics and Introduction to Data
+### JMG
+### MATH 204
+### Tuesday, August 31
+
+---
+
+
+
+
+
+
+class: top, left
+
+# Welcome!
+
+Welcome to MATH 204 *Introduction to Statistics*! 
+
+--
+
+- The course description, learning outcomes, grade scheme, etc. may be found in the course syllabus posted on the course learning management system.
+
+- Please make sure you have read the syllabus carefully before the next class meeting. 
+ 
+- If you have any questions regarding the syllabus feel free to ask the instructor in-person (LSC 319A) or via email (jason.graham@scranton.edu).  
+
+- **Our first quiz will contain questions about the syllabus.** 
+
+- The number one rule for this course is, ask a lot of questions.
+
+- The number two rule for this course is, bring your computer to class each day. 
+
+---
+class: inverse, middle
+
+background-image: url(https://open.umn.edu/opentextbooks/storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcG9GIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--feb989447669e72524272a2fde0d56bd7a1f09f4/hero2x.jpg)
+background-size: contain
+
+--
+
+- The required textbook for this course is the 4th edition of [OpenIntro Statistics](https://www.openintro.org/book/os/) which is available for free and can be downloaded as a pdf file if you wish. You may also, for a modest price, purchase a print copy of the book.
+
+--
+
+- There are a number of very useful resources associated with this book such as [lecture videos](https://www.openintro.org/book/os/), [lecture slides](https://www.openintro.org/book/os/), data sets, etc. We will make extensive use of many of these additional resources.
+
+---
+
+# R and R Studio
+
+
+- In this course, we will exploit the power of the [R statistical computing environment](https://www.r-project.org/) and the interface to R provided by [RStudio](https://rstudio.com/). These can both be accessed via a web browser by using [RStudio Cloud](https://rstudio.cloud/).  
+
+- R, R Studio, and RStudio Cloud are all free. 
+
+--
+
+- You must sign up for a free RStudio Cloud account (you can use an existing google account if you have one). My plan in the course this semester is to add everyone to an RStudio Cloud workspace where you will be able to access homework and lab assignments.  
+
+--
+
+- What can you do with R?
+
+--
+
+- Great question!
+
+---
+
+# What can you do with R?
+
+- R can be used as a calculator:
+
+
+```r
+2 + 2
+```
+
+```
+## [1] 4
+```
+
+--
+
+- R can compute summary statistics of data:
+
+
+```r
+mean(c(5,7,2,3,2,5,4,7))
+```
+
+```
+## [1] 4.375
+```
+
+--
+
+- R can simulate random sampling
+
+
+```r
+rnorm(10)
+```
+
+```
+##  [1] -0.5575591 -1.2735717 -0.1188232 -0.7287382 -0.1981615 -0.3901041
+##  [7] -0.5576702  1.2560249  0.6299969 -0.5210700
+```
+
+--
+
+- R can do much, much more ...
+
+---
+
+# Learning R
+
+- R is a programming language and it takes a little time to learn it, we will soon work through an introduction to R and RStudio.
+
+- Once we get over the starting hurdle for learning R, I think you will really enjoy it. Plus, R will make learning statistics a much more enjoyable and useful experience. 
+
+--
+
+- If you want to start learning some R, or if you find that you want to learn more R than what we cover in this course, a great resource is the [swirl](package) which allows you to learn R interactively within R. Now that's meta 😄. 
+
+--
+
+- I'm also happy to provide you with other resources upon request.  
+
+---
+
+# Ziggy
+
+.center[
+&lt;img src="./figures/Ziggy.jpeg" width="50%" /&gt;
+]
+
+Our dog Ziggy says, "hello!"
+
+---
+
+# What is MATH 204 About?
+
+- Obviously MATH 204 is about statistics, but what does this mean? 
+
+--
+
+- Statistics is fundamentally about data, how to collect data, how to analyze data, and how to use data to make inferences and draw conclusions about the real world.
+
+--
+
+- Section 1.1 of the textbook presents a case study to motivate the study of statistics. There is also a corresponding lecture video which you are asked to watch on your own time. For your convenience, the video is included in the next slide. 
+
+--
+
+- Some things to think about when watching the video are: 
+
+  - What is the research question? 
+  - What does the video say about random fluctuation? 
+
+---
+
+# Case Study: using stents to prevent strokes
+
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/nEHFF1ADpWE" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+
+- After watching the case study video, explain the difference between a treatment group and a control group. 
+
+---
+
+# On Data and it's Structure 
+
+The term **"data"** can be interpreted very broadly. However, the data that one typically analyzes using statistics or statistical methods have some common features that we will take a moment to point out:
+
+--
+
+  1. The data is **"structured"** in the sense that it has an underlying order to it. This will be explained in greater detail soon. 
+  
+--
+  
+  2. The data is typically a **"sample"** in that it is but a minor representation of all of the data one could possibly collect. 
+  
+---
+
+# An Example
+  
+Consider the following question: 
+
+&gt; "How much sleep do University of Scranton students get during the first week of classes?"
+
+--
+
+- Can you think of a way to answer this question? 
+
+--
+
+- One way, at least in principle, would be to ask every single student at the University of Scranton to tell us how much they sleep during the first week of classes. 
+
+--
+
+- Do you think this is a good way to answer our question or not? 
+
+
+---
+
+# On Populations
+
+Observe that our question&lt;sup&gt;1&lt;/sup&gt; is about a **population**&lt;sup&gt;2&lt;/sup&gt;, in this case, **all** University of Scranton students. If we (hypothetically) record how much every single UofS student sleeps during the first week of classes, it might look something like this:
+
+```
+##    r_number Sun Mon Tues Wed Thurs Fri Sat living  year college
+## 1 R01743127 8.6 7.8  6.2 5.3   5.1 9.5 9.4  Hafey First    PCPS
+## 2 R01779431 6.9 4.7  6.1 4.7   5.5 7.8 9.8  Hafey First     CAS
+## 3 R01793550 6.6 8.1  4.4 5.7   5.1 9.3 9.4    GLM First     CAS
+## 4 R01622392 9.2 5.4  5.8 5.4   4.7 9.2 9.9  Fitch First     CAS
+## 5 R01853098 8.3 4.1  5.9 4.7   5.3 9.4 9.3  Hafey First     CAS
+```
+
+(**Note:** There would be around 4,000 rows, so only some are shown here.)
+
+--
+
+- A population is often large and it is unfeasible to observe every individual in a population.
+
+--
+
+- In practice, we take a **sample** and try to use the sample to **infer** something about the population. 
+
+.footnote[
+[1] Recall that our question is "How much sleep do University of Scranton students get during the first week of classes?"
+
+[2] &lt;span style="color:red"&gt;Read section 1.3.1 for a discussion of populations and samples.&lt;/span&gt;
+]
+---
+
+# On Samples 
+
+Here is a sample of the population of size `\(n = 25\)`:
+
+```
+##     r_number  Sun Mon Tues Wed Thurs  Fri  Sat        living   year college
+## 1  R01667567  8.7 7.3  8.1 5.6   5.4 10.4  8.9       Condron Second     CAS
+## 2  R01841529  8.2 7.4  6.5 5.1   5.1  9.3  8.3 Junior/Senior  Third    PCPS
+## 3  R01945135  8.5 5.9  6.4 7.3   5.5  8.3  8.2 Junior/Senior Fourth     CAS
+## 4  R01941344  6.0 7.0  7.4 6.1   5.0  8.9  8.6 Junior/Senior Fourth     CAS
+## 5  R01668908  8.9 5.0  6.8 6.3   5.6  8.7  9.0 Junior/Senior  Third     CAS
+## 6  R01750502  7.6 6.1  6.1 6.4   4.6  8.3  9.7        Nevils  First     CAS
+## 7  R01674970  8.8 3.7  5.0 6.1   4.9  8.7  9.5 Junior/Senior  Third     CAS
+## 8  R01834057  9.7 3.2  6.8 7.3   5.2  8.4  8.3    Off Campus Second     CAS
+## 9  R01879939  8.0 7.0  4.8 4.3   4.5  9.7  9.8    Off Campus Second    KSOM
+## 10 R01896539  7.8 4.8  6.1 6.3   4.3  9.4 10.2 Junior/Senior  Third     CAS
+## 11 R01836227  9.9 5.7  7.1 6.4   5.2  8.5  8.8       Gavigan Second    PCPS
+## 12 R01664092  9.7 6.6  6.9 5.5   4.8 10.1 10.1       Condron Second     CAS
+## 13 R01714243  7.6 6.3  4.0 4.8   4.3  7.6  8.3 Junior/Senior Fourth     CAS
+## 14 R01563345  6.2 7.0  4.8 6.5   5.4 10.4  8.5 Junior/Senior  Third     CAS
+## 15 R01685471  6.9 6.1  6.8 4.0   5.4  9.3  8.0 Junior/Senior Fourth     CAS
+## 16 R01620482  8.8 6.9  6.0 6.0   5.0  9.6  8.4    Off Campus Fourth     CAS
+## 17 R01816606  8.4 6.8  5.7 4.2   4.5  9.3  8.7         Hafey  First    KSOM
+## 18 R01754891  7.7 6.9  6.6 6.2   5.2  8.9  9.1       Gavigan Second     CAS
+## 19 R01887771  8.0 6.8  4.2 6.7   5.2  8.5  8.8 Junior/Senior Fourth     CAS
+## 20 R01827497  8.0 5.0  6.6 5.6   5.0  8.2  9.1        Nevils  First    PCPS
+## 21 R01639338 11.6 4.9  7.5 7.1   4.5 11.1  9.8 Junior/Senior  Third     CAS
+## 22 R01682815  9.1 6.4  7.2 7.5   5.7  9.2  9.4 Junior/Senior  Third     CAS
+## 23 R01603567  8.6 3.9  4.7 6.0   3.9  9.0  8.8       Gavigan Second    KSOM
+## 24 R01772798  6.1 7.5  5.3 8.0   4.9 11.0  8.9 Junior/Senior Fourth    KSOM
+## 25 R01743978  5.5 6.4  7.1 7.7   4.9 11.0  9.0 Junior/Senior  Third     CAS
+```
+
+---
+
+# Sampling
+
+- How did we obtain the sample data? We selected 25 UofS students **at random.** The "at random" part is important and we will return to this point shortly. 
+
+--
+
+- Section 1.3 covers sampling principles in detail. 
+
+--
+
+- Before we get into sampling principles, let's take a moment to reflect on how our (sample) data is represented. 
+
+---
+
+# Data Organization
+
+Let's look at the first five rows of our sample data:
+
+```
+##    r_number Sun Mon Tues Wed Thurs  Fri Sat        living   year college
+## 1 R01667567 8.7 7.3  8.1 5.6   5.4 10.4 8.9       Condron Second     CAS
+## 2 R01841529 8.2 7.4  6.5 5.1   5.1  9.3 8.3 Junior/Senior  Third    PCPS
+## 3 R01945135 8.5 5.9  6.4 7.3   5.5  8.3 8.2 Junior/Senior Fourth     CAS
+## 4 R01941344 6.0 7.0  7.4 6.1   5.0  8.9 8.6 Junior/Senior Fourth     CAS
+## 5 R01668908 8.9 5.0  6.8 6.3   5.6  8.7 9.0 Junior/Senior  Third     CAS
+```
+
+- Our data is organized into rows and columns, a so-called *data matrix* or *data frame*. Each row corresponds to a single **observation** which in this example is a single student. 
+
+- The columns of our data correspond to **variables**, that is, the information or characteristics we observe and record about our observations. 
+
+--
+
+- Variables can usually be classified according to a type system. 
+
+---
+
+# Variables and Their Types
+
+.pull-left[
+&lt;img src="./figures/variables.png" width="839" /&gt;
+]
+
+.pull-right[
+- `r_number` - not a variable
+- `Sun` - `Sat` - continuous numerical 
+- `living` &amp; `college` - nominal categorical 
+- `year` - ordinal categorical 
+]
+
+
+We repeat the first five rows of our sample data:
+
+```
+##    r_number Sun Mon Tues Wed Thurs  Fri Sat        living   year college
+## 1 R01667567 8.7 7.3  8.1 5.6   5.4 10.4 8.9       Condron Second     CAS
+## 2 R01841529 8.2 7.4  6.5 5.1   5.1  9.3 8.3 Junior/Senior  Third    PCPS
+## 3 R01945135 8.5 5.9  6.4 7.3   5.5  8.3 8.2 Junior/Senior Fourth     CAS
+## 4 R01941344 6.0 7.0  7.4 6.1   5.0  8.9 8.6 Junior/Senior Fourth     CAS
+## 5 R01668908 8.9 5.0  6.8 6.3   5.6  8.7 9.0 Junior/Senior  Third     CAS
+```
+
+--
+
+- `r_number` is not a variable because it is a unique identifier for each observation.
+
+--
+
+- Note that just because the value of a variable is a number does not necessarily make it numerical. For example, we could have recorded `year` as 1, 2, 3, or 4 instead of "First", "Second", "Third", or "Fourth". &lt;span style="color:red"&gt; A rule is, if it doesn't make sense to compute the average of a variable, then it's not numeric.&lt;/span&gt; 
+
+---
+
+# Categorical Variable Types
+
+![](https://github.com/allisonhorst/stats-illustrations/blob/master/other-stats-artwork/nominal_ordinal_binary.png?raw=true)&lt;!-- --&gt;
+
+---
+
+# Data Basics Lecture Video
+
+You should watch the following video on your own time. 
+
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/Mjif8PTgzUs" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+
+- **Question:** Which variable in the `county` data set discussed in the video is discrete and why?
+
+---
+
+# Another Example
+
+Consider the `possum` data set from the `openintro` R package that corresponds with the course text book, the first few rows are shown here:
+
+```r
+head(possum) # R command used to print first few rows of a data frame
+```
+
+```
+## # A tibble: 6 x 8
+##    site pop   sex     age head_l skull_w total_l tail_l
+##   &lt;int&gt; &lt;fct&gt; &lt;fct&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1 Vic   m         8   94.1    60.4    89     36  
+## 2     1 Vic   f         6   92.5    57.6    91.5   36.5
+## 3     1 Vic   f         6   94      60      95.5   39  
+## 4     1 Vic   f         6   93.2    57.1    92     38  
+## 5     1 Vic   f         2   91.5    56.3    85.5   36  
+## 6     1 Vic   f         1   93.1    54.8    90.5   35.5
+```
+
+--
+
+- State the type of each variable in the data matrix. 
+
+--
+
+    - `site`, `pop`, and `sex` are nominal categorical
+    - `age` is discrete numerical
+    - columns `head_l` to `tail_l` are continuous numerical 
+
+---
+
+# Sampling Principles
+
+- The first step in conducting research is to identify topics or questions that are to be investigated. For example, 
+
+&gt; "How much sleep do University of Scranton students get during the first week of classes?"
+
+- We need to consider how data are collected and how samples are obtained.
+
+--
+
+- Importantly, we need to avoid as much as possible picking a **biased** sample. 
+
+---
+
+# Data Collection
+
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/2N_bkiyTiXU" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+
+- Watch this video on your own time in order to reinforce the concepts of:
+
+    - populations, samples, and bias
+
+---
+
+# Biased Samples
+
+Consider the question:
+
+&gt; "What is the most popular Starbucks drink for current students at the University?"
+
+--
+
+- One approach to data collection to answer this question is to select some subset of students at the U and ask them about their favorite Starbucks drink. 
+
+--
+
+- For example, out of **convenience** we can ask this question to everyone in this class. In this case, our sample would be the students in this class. 
+
+--
+
+- However, restricting our sample to students in a single class might not produce a sample that is sufficiently representative of the entire population. In other words, we may introduce **bias** by taking as our sample student just in this class. 
+
+--
+
+- It is preferable to obtain a sample by choosing individuals at **random** from the population. Random samples reduce bias.  
+
+---
+
+# Sampling Strategies
+
+Let's watch this video together and discuss. 
+
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/KyuaX10l3GQ" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+
+--
+
+- **Question:** What is the difference(s) between experimental and observational studies? 
+
+---
+
+# Common Sampling Strategies
+
+Here we list and describe some of the most common sampling strategies:
+
+--
+
+  1. **Simple** random sampling. In a simple random sample, each case in the population has an equal chance of being included in the sample. 
+  
+--
+  
+  2. **Stratified** sampling. The population is divided into groups called **strata** that are chosen so that similar cases are grouped together. Then, some other sampling method such as simple random sampling is used to select a sample from within each group. (In our Starbucks example we could first divide students by cohort, First year, Second year, etc. and then take a sample from each cohort). 
+  
+--
+
+  3. **Cluster** sampling. This breaks the population up into many groups called clusters, then we sample a fixed number of clusters and include observations from each of those clusters. 
+  
+--
+
+  4. **Multistage** sampling. This is like cluster sampling but rather than keeping all observations in each cluster, we collect a random sample within each cluster. 
+  
+---
+
+# Relationship Between Variables
+
+- Many analyses are motivated by a researcher looking for a relationship between two or more variables. 
+
+    - For example, one could ask the question, is there a relationship between level of education of a person and their salary at age 30. 
+    
+--
+
+- When two variables show some connection with one another, they are called **associated**
+variables. 
+
+--
+
+&gt; "A pair of variables are either related in some way (associated) or not (independent). No pair of variables is both associated and independent."
+
+--
+
+- It is important to point out that **association does not imply causation.**
+
+--
+
+- In the next class meeting, we will go through an introduction to R where we will work with some data and see explicit examples where two (or more) variables in a data set might be related. 
+
+---
+
+# Explanatory and response variables
+
+- When we ask questions about the relationship between two variables, we sometimes also want to determine if the change in one variable causes a change in the other. 
+
+--
+
+- For example, consider the `county` data set from the `openintro` R package. The first few rows of select columns of this data set are shown below:
+
+
+```
+## # A tibble: 6 x 4
+##   name           state   pop_change median_hh_income
+##   &lt;chr&gt;          &lt;fct&gt;        &lt;dbl&gt;            &lt;int&gt;
+## 1 Autauga County Alabama       1.48            55317
+## 2 Baldwin County Alabama       9.19            52562
+## 3 Barbour County Alabama      -6.22            33368
+## 4 Bibb County    Alabama       0.73            43404
+## 5 Blount County  Alabama       0.68            47412
+## 6 Bullock County Alabama      -2.28            29655
+```
+
+--
+
+- We could consider the following question:
+
+&gt; "If there is an increase in the median household income in a county, does this drive an increase in its population?"
+
+--
+
+- Here we asking if *median household income* is an **explanatory** variable for the **response** variable *population change*.
+
+---
+
+# Reflection 
+
+In this lecture, we have covered the following topics and concepts:
+
+- Course logistics, syllabus, textbook, use or R, etc.
+
+- Data and it's structure, e.g., data matrices and variable types.
+
+- Sampling principles and strategies. 
+
+- Relationship between variables. 
+
+---
+
+# Before Next Class Meeting
+
+Before the next class meeting, please complete the following tasks:
+
+- Read the syllabus carefully. 
+
+- Respond via email to my "getting to know you" prompt. 
+
+- Review Chapter 1 of Textbook
+
+- Register for [RStudio Cloud](https://rstudio.cloud/), if you already have a gmail account, you can just log in using it. 
+
+- Accept my invitation to the MATH204 RStudio Cloud Workspace. 
+
+- Make sure to bring your computer with you to class.
+
+- Have a great rest of the day. 
+
+---
+
+# Looking Ahead
+
+If you want to get a head start for the next class or two, watch this video:
+
+<div class="vembedr" align="center">
+<div>
+<iframe src="https://www.youtube.com/embed/Xm0PPtci3JE" width="533" height="300" frameborder="0" allowfullscreen=""></iframe>
+</div>
+</div>
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

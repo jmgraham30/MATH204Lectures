@@ -1,0 +1,546 @@
+---
+title: "Lecture 1"
+subtitle: "Logistics and Introduction to Data"
+author: "JMG"
+institute: "MATH 204"
+date: "Tuesday, August 31"
+output:
+  xaringan::moon_reader:
+    css: [default, rladies, rladies-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(tidyverse)
+library(openintro)
+dorms_f <- sample(c("Casey","DE","Driscoll","Fitch","GLM","Giblin-Kelly","Hafey","Lynett","Martin","McCourt","Nevils"),973,replace = TRUE)
+dorms_s <- sample(c("Condron","Gavigan","Redington"),869,replace = TRUE)
+dorms_tf <- rep("Junior/Senior",1800)
+dorms_oc <- rep("Off Campus",700)
+dorms <- c(dorms_f,dorms_s,dorms_tf,dorms_oc)
+student_year <- c(rep("First",973),rep("Second",869),sample(c("Third","Fourth"),1800,replace=TRUE),sample(c("Second","Third","Fourth"),700,replace=TRUE))
+N <- length(dorms)
+r_number <- paste0(rep("R0",N),as.character(round(runif(N,1560001,1967834))))
+sleep_hours_Sun <- round(rnorm(N,8,1.25),1)
+sleep_hours_Mon <- round(rnorm(N,6,1),1)
+sleep_hours_Tues <- round(rnorm(N,6,1),1)
+sleep_hours_Wed <- round(rnorm(N,6,1),1)
+sleep_hours_Thur <- round(rnorm(N,5,0.5),1)
+sleep_hours_Fri <- round(rnorm(N,9,1.25),1)
+sleep_hours_Sat <- round(rnorm(N,9,0.5),1)
+college <- sample(c(rep("CAS",2605),rep("KSOM",1042),rep("PCPS",695)))
+df <- data.frame(r_number=r_number,Sun=sleep_hours_Sun,
+                 Mon=sleep_hours_Mon,
+                 Tues=sleep_hours_Tues,
+                 Wed=sleep_hours_Wed,
+                 Thurs=sleep_hours_Thur,
+                 Fri=sleep_hours_Fri,
+                 Sat=sleep_hours_Sat,
+                 living=dorms,
+                 year=student_year,
+                 college=college)
+```
+
+
+class: top, left
+
+# Welcome!
+
+Welcome to MATH 204 *Introduction to Statistics*! 
+
+--
+
+- The course description, learning outcomes, grade scheme, etc. may be found in the course syllabus posted on the course learning management system.
+
+- Please make sure you have read the syllabus carefully before the next class meeting. 
+ 
+- If you have any questions regarding the syllabus feel free to ask the instructor in-person (LSC 319A) or via email (jason.graham@scranton.edu).  
+
+- **Our first quiz will contain questions about the syllabus.** 
+
+- The number one rule for this course is, ask a lot of questions.
+
+- The number two rule for this course is, bring your computer to class each day. 
+
+---
+class: inverse, middle
+
+background-image: url(https://open.umn.edu/opentextbooks/storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcG9GIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--feb989447669e72524272a2fde0d56bd7a1f09f4/hero2x.jpg)
+background-size: contain
+
+--
+
+- The required textbook for this course is the 4th edition of [OpenIntro Statistics](https://www.openintro.org/book/os/) which is available for free and can be downloaded as a pdf file if you wish. You may also, for a modest price, purchase a print copy of the book.
+
+--
+
+- There are a number of very useful resources associated with this book such as [lecture videos](https://www.openintro.org/book/os/), [lecture slides](https://www.openintro.org/book/os/), data sets, etc. We will make extensive use of many of these additional resources.
+
+---
+
+# R and R Studio
+
+
+- In this course, we will exploit the power of the [R statistical computing environment](https://www.r-project.org/) and the interface to R provided by [RStudio](https://rstudio.com/). These can both be accessed via a web browser by using [RStudio Cloud](https://rstudio.cloud/).  
+
+- R, R Studio, and RStudio Cloud are all free. 
+
+--
+
+- You must sign up for a free RStudio Cloud account (you can use an existing google account if you have one). My plan in the course this semester is to add everyone to an RStudio Cloud workspace where you will be able to access homework and lab assignments.  
+
+--
+
+- What can you do with R?
+
+--
+
+- Great question!
+
+---
+
+# What can you do with R?
+
+- R can be used as a calculator:
+
+```{r}
+2 + 2
+```
+
+--
+
+- R can compute summary statistics of data:
+
+```{r}
+mean(c(5,7,2,3,2,5,4,7))
+```
+
+--
+
+- R can simulate random sampling
+
+```{r}
+rnorm(10)
+```
+
+--
+
+- R can do much, much more ...
+
+---
+
+# Learning R
+
+- R is a programming language and it takes a little time to learn it, we will soon work through an introduction to R and RStudio.
+
+- Once we get over the starting hurdle for learning R, I think you will really enjoy it. Plus, R will make learning statistics a much more enjoyable and useful experience. 
+
+--
+
+- If you want to start learning some R, or if you find that you want to learn more R than what we cover in this course, a great resource is the [swirl](package) which allows you to learn R interactively within R. Now that's meta `r emo::ji("smile")`. 
+
+--
+
+- I'm also happy to provide you with other resources upon request.  
+
+---
+
+# Ziggy
+
+.center[
+```{r ziggy, echo=FALSE, out.width="50%"}
+knitr::include_graphics("./figures/Ziggy.jpeg")
+```
+]
+
+Our dog Ziggy says, "hello!"
+
+---
+
+# What is MATH 204 About?
+
+- Obviously MATH 204 is about statistics, but what does this mean? 
+
+--
+
+- Statistics is fundamentally about data, how to collect data, how to analyze data, and how to use data to make inferences and draw conclusions about the real world.
+
+--
+
+- Section 1.1 of the textbook presents a case study to motivate the study of statistics. There is also a corresponding lecture video which you are asked to watch on your own time. For your convenience, the video is included in the next slide. 
+
+--
+
+- Some things to think about when watching the video are: 
+
+  - What is the research question? 
+  - What does the video say about random fluctuation? 
+
+---
+
+# Case Study: using stents to prevent strokes
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/nEHFF1ADpWE") %>%
+  vembedr::use_align("center")
+```
+
+- After watching the case study video, explain the difference between a treatment group and a control group. 
+
+---
+
+# On Data and it's Structure 
+
+The term **"data"** can be interpreted very broadly. However, the data that one typically analyzes using statistics or statistical methods have some common features that we will take a moment to point out:
+
+--
+
+  1. The data is **"structured"** in the sense that it has an underlying order to it. This will be explained in greater detail soon. 
+  
+--
+  
+  2. The data is typically a **"sample"** in that it is but a minor representation of all of the data one could possibly collect. 
+  
+---
+
+# An Example
+  
+Consider the following question: 
+
+> "How much sleep do University of Scranton students get during the first week of classes?"
+
+--
+
+- Can you think of a way to answer this question? 
+
+--
+
+- One way, at least in principle, would be to ask every single student at the University of Scranton to tell us how much they sleep during the first week of classes. 
+
+--
+
+- Do you think this is a good way to answer our question or not? 
+
+
+---
+
+# On Populations
+
+Observe that our question<sup>1</sup> is about a **population**<sup>2</sup>, in this case, **all** University of Scranton students. If we (hypothetically) record how much every single UofS student sleeps during the first week of classes, it might look something like this:
+```{r,echo=FALSE}
+df %>% head(5)
+```
+
+(**Note:** There would be around 4,000 rows, so only some are shown here.)
+
+--
+
+- A population is often large and it is unfeasible to observe every individual in a population.
+
+--
+
+- In practice, we take a **sample** and try to use the sample to **infer** something about the population. 
+
+.footnote[
+[1] Recall that our question is "How much sleep do University of Scranton students get during the first week of classes?"
+
+[2] <span style="color:red">Read section 1.3.1 for a discussion of populations and samples.</span>
+]
+---
+
+# On Samples 
+
+Here is a sample of the population of size $n = 25$:
+```{r, echo=FALSE}
+(df_samp <- df %>% slice_sample(n=25) )
+```
+
+---
+
+# Sampling
+
+- How did we obtain the sample data? We selected 25 UofS students **at random.** The "at random" part is important and we will return to this point shortly. 
+
+--
+
+- Section 1.3 covers sampling principles in detail. 
+
+--
+
+- Before we get into sampling principles, let's take a moment to reflect on how our (sample) data is represented. 
+
+---
+
+# Data Organization
+
+Let's look at the first five rows of our sample data:
+```{r,echo=FALSE}
+df_samp %>% head(5)
+```
+
+- Our data is organized into rows and columns, a so-called *data matrix* or *data frame*. Each row corresponds to a single **observation** which in this example is a single student. 
+
+- The columns of our data correspond to **variables**, that is, the information or characteristics we observe and record about our observations. 
+
+--
+
+- Variables can usually be classified according to a type system. 
+
+---
+
+# Variables and Their Types
+
+.pull-left[
+```{r variables, echo=FALSE}
+knitr::include_graphics("./figures/variables.png")
+```
+]
+
+.pull-right[
+- `r_number` - not a variable
+- `Sun` - `Sat` - continuous numerical 
+- `living` & `college` - nominal categorical 
+- `year` - ordinal categorical 
+]
+
+
+We repeat the first five rows of our sample data:
+```{r,echo=FALSE}
+df_samp %>% head(5)
+```
+
+--
+
+- `r_number` is not a variable because it is a unique identifier for each observation.
+
+--
+
+- Note that just because the value of a variable is a number does not necessarily make it numerical. For example, we could have recorded `year` as 1, 2, 3, or 4 instead of "First", "Second", "Third", or "Fourth". <span style="color:red"> A rule is, if it doesn't make sense to compute the average of a variable, then it's not numeric.</span> 
+
+---
+
+# Categorical Variable Types
+
+```{r variables cartoon, echo=FALSE}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/other-stats-artwork/nominal_ordinal_binary.png?raw=true")
+```
+
+---
+
+# Data Basics Lecture Video
+
+You should watch the following video on your own time. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Mjif8PTgzUs") %>%
+  vembedr::use_align("center")
+```
+
+- **Question:** Which variable in the `county` data set discussed in the video is discrete and why?
+
+---
+
+# Another Example
+
+Consider the `possum` data set from the `openintro` R package that corresponds with the course text book, the first few rows are shown here:
+```{r possum}
+head(possum) # R command used to print first few rows of a data frame
+```
+
+--
+
+- State the type of each variable in the data matrix. 
+
+--
+
+    - `site`, `pop`, and `sex` are nominal categorical
+    - `age` is discrete numerical
+    - columns `head_l` to `tail_l` are continuous numerical 
+
+---
+
+# Sampling Principles
+
+- The first step in conducting research is to identify topics or questions that are to be investigated. For example, 
+
+> "How much sleep do University of Scranton students get during the first week of classes?"
+
+- We need to consider how data are collected and how samples are obtained.
+
+--
+
+- Importantly, we need to avoid as much as possible picking a **biased** sample. 
+
+---
+
+# Data Collection
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/2N_bkiyTiXU") %>%
+  vembedr::use_align("center")
+```
+
+- Watch this video on your own time in order to reinforce the concepts of:
+
+    - populations, samples, and bias
+
+---
+
+# Biased Samples
+
+Consider the question:
+
+> "What is the most popular Starbucks drink for current students at the University?"
+
+--
+
+- One approach to data collection to answer this question is to select some subset of students at the U and ask them about their favorite Starbucks drink. 
+
+--
+
+- For example, out of **convenience** we can ask this question to everyone in this class. In this case, our sample would be the students in this class. 
+
+--
+
+- However, restricting our sample to students in a single class might not produce a sample that is sufficiently representative of the entire population. In other words, we may introduce **bias** by taking as our sample student just in this class. 
+
+--
+
+- It is preferable to obtain a sample by choosing individuals at **random** from the population. Random samples reduce bias.  
+
+---
+
+# Sampling Strategies
+
+Let's watch this video together and discuss. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/KyuaX10l3GQ") %>%
+  vembedr::use_align("center")
+```
+
+--
+
+- **Question:** What is the difference(s) between experimental and observational studies? 
+
+---
+
+# Common Sampling Strategies
+
+Here we list and describe some of the most common sampling strategies:
+
+--
+
+  1. **Simple** random sampling. In a simple random sample, each case in the population has an equal chance of being included in the sample. 
+  
+--
+  
+  2. **Stratified** sampling. The population is divided into groups called **strata** that are chosen so that similar cases are grouped together. Then, some other sampling method such as simple random sampling is used to select a sample from within each group. (In our Starbucks example we could first divide students by cohort, First year, Second year, etc. and then take a sample from each cohort). 
+  
+--
+
+  3. **Cluster** sampling. This breaks the population up into many groups called clusters, then we sample a fixed number of clusters and include observations from each of those clusters. 
+  
+--
+
+  4. **Multistage** sampling. This is like cluster sampling but rather than keeping all observations in each cluster, we collect a random sample within each cluster. 
+  
+---
+
+# Relationship Between Variables
+
+- Many analyses are motivated by a researcher looking for a relationship between two or more variables. 
+
+    - For example, one could ask the question, is there a relationship between level of education of a person and their salary at age 30. 
+    
+--
+
+- When two variables show some connection with one another, they are called **associated**
+variables. 
+
+--
+
+> "A pair of variables are either related in some way (associated) or not (independent). No pair of variables is both associated and independent."
+
+--
+
+- It is important to point out that **association does not imply causation.**
+
+--
+
+- In the next class meeting, we will go through an introduction to R where we will work with some data and see explicit examples where two (or more) variables in a data set might be related. 
+
+---
+
+# Explanatory and response variables
+
+- When we ask questions about the relationship between two variables, we sometimes also want to determine if the change in one variable causes a change in the other. 
+
+--
+
+- For example, consider the `county` data set from the `openintro` R package. The first few rows of select columns of this data set are shown below:
+
+```{r county, echo=FALSE}
+county %>% select(c(name,state,pop_change,median_hh_income)) %>% head()
+```
+
+--
+
+- We could consider the following question:
+
+> "If there is an increase in the median household income in a county, does this drive an increase in its population?"
+
+--
+
+- Here we asking if *median household income* is an **explanatory** variable for the **response** variable *population change*.
+
+---
+
+# Reflection 
+
+In this lecture, we have covered the following topics and concepts:
+
+- Course logistics, syllabus, textbook, use or R, etc.
+
+- Data and it's structure, e.g., data matrices and variable types.
+
+- Sampling principles and strategies. 
+
+- Relationship between variables. 
+
+---
+
+# Before Next Class Meeting
+
+Before the next class meeting, please complete the following tasks:
+
+- Read the syllabus carefully. 
+
+- Respond via email to my "getting to know you" prompt. 
+
+- Review Chapter 1 of Textbook
+
+- Register for [RStudio Cloud](https://rstudio.cloud/), if you already have a gmail account, you can just log in using it. 
+
+- Accept my invitation to the MATH204 RStudio Cloud Workspace. 
+
+- Make sure to bring your computer with you to class.
+
+- Have a great rest of the day. 
+
+---
+
+# Looking Ahead
+
+If you want to get a head start for the next class or two, watch this video:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Xm0PPtci3JE") %>%
+  vembedr::use_align("center")
+```
