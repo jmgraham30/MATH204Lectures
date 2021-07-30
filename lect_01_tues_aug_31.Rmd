@@ -143,7 +143,7 @@ rnorm(10)
 
 --
 
-- If you want to start learning some R, or if you find that you want to learn more R than what we cover in this course, a great resource is the [swirl](package) which allows you to learn R interactively within R. Now that's meta `r emo::ji("smile")`. 
+- If you want to start learning some R, or if you find that you want to learn more R than what we cover in this course, a great resource is the [swirl](https://swirlstats.com/) package which allows you to learn R interactively within R. Now that's meta `r emo::ji("smile")`. 
 
 --
 
@@ -400,7 +400,7 @@ Consider the question:
 
 --
 
-- One approach to data collection to answer this question is to select some subset of students at the U and ask them about their favorite Starbucks drink. 
+- One approach to data collection for answering this question is to select some subset of students at the U and ask them about their favorite Starbucks drink. 
 
 --
 
@@ -408,11 +408,11 @@ Consider the question:
 
 --
 
-- However, restricting our sample to students in a single class might not produce a sample that is sufficiently representative of the entire population. In other words, we may introduce **bias** by taking as our sample student just in this class. 
+- However, restricting our sample to students in a single class might not produce a sample that is sufficiently representative of the entire population. In other words, we may introduce **bias** by taking as our sample only students in this class. 
 
 --
 
-- It is preferable to obtain a sample by choosing individuals at **random** from the population. Random samples reduce bias.  
+- It is preferable (essential) to obtain a sample by choosing individuals at **random** from the population. **Random samples reduce bias!**
 
 ---
 
