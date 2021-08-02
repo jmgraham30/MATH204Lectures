@@ -155,7 +155,7 @@ rnorm(10)
 
 .center[
 ```{r ziggy, echo=FALSE, out.width="50%"}
-knitr::include_graphics("./figures/Ziggy.jpeg")
+knitr::include_graphics("https://www.dropbox.com/s/q29jr963etgg307/Ziggy.jpeg?raw=1")
 ```
 ]
 
@@ -298,7 +298,7 @@ df_samp %>% head(5)
 
 .pull-left[
 ```{r variables, echo=FALSE}
-knitr::include_graphics("./figures/variables.png")
+knitr::include_graphics("https://www.dropbox.com/s/iak7celnfkh7ss9/variables.png?raw=1")
 ```
 ]
 

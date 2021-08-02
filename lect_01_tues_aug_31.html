@@ -120,8 +120,8 @@ rnorm(10)
 ```
 
 ```
-##  [1] -9.786642e-03 -9.440844e-05 -1.895756e-01 -1.580991e+00 -6.854549e-01
-##  [6]  2.201198e-01 -9.205615e-01 -5.258453e-01  9.122990e-01 -3.377687e-01
+##  [1]  0.60390779 -0.24869094  0.79755952 -0.75724610 -1.24897105  0.64208798
+##  [7] -0.08911241  1.14685530 -0.75247560 -0.60156961
 ```
 
 --
@@ -149,7 +149,7 @@ rnorm(10)
 # Ziggy
 
 .center[
-&lt;img src="./figures/Ziggy.jpeg" width="50%" /&gt;
+&lt;img src="https://www.dropbox.com/s/q29jr963etgg307/Ziggy.jpeg?raw=1" width="50%" /&gt;
 ]
 
 Our dog Ziggy says, "hello!"
@@ -229,12 +229,12 @@ Consider the following question:
 Observe that our question&lt;sup&gt;1&lt;/sup&gt; is about a **population**&lt;sup&gt;2&lt;/sup&gt;, in this case, **all** University of Scranton students. If we (hypothetically) record how much every single UofS student sleeps during the first week of classes, it might look something like this:
 
 ```
-##    r_number  Sun Mon Tues Wed Thurs Fri Sat living  year college
-## 1 R01655436 10.1 4.1  5.5 7.1   5.3 9.5 8.4  Fitch First     CAS
-## 2 R01605523  9.7 5.9  4.8 6.6   4.1 8.5 8.9 Lynett First    KSOM
-## 3 R01869613  6.2 7.6  6.4 6.1   5.9 8.7 9.5 Nevils First    PCPS
-## 4 R01861223  8.2 5.6  5.8 5.3   5.0 8.6 8.7     DE First     CAS
-## 5 R01805578  8.6 5.0  6.6 5.4   4.1 8.4 9.5 Martin First     CAS
+##    r_number Sun Mon Tues Wed Thurs  Fri Sat living  year college
+## 1 R01621346 8.4 7.0  7.6 4.6   6.5  9.8 8.6  Hafey First     CAS
+## 2 R01672511 6.4 5.3  5.5 5.8   4.3  6.5 9.1  Fitch First     CAS
+## 3 R01775021 9.3 6.1  6.6 5.6   4.3 12.7 8.7 Martin First     CAS
+## 4 R01657005 8.3 3.7  6.2 5.3   5.2  9.0 9.0  Fitch First    KSOM
+## 5 R01792433 7.9 6.0  5.3 6.7   4.9  9.7 9.1 Nevils First    KSOM
 ```
 
 (**Note:** There would be around 4,000 rows, so only some are shown here.)
@@ -260,31 +260,31 @@ Here is a sample of the population of size `\(n = 25\)`:
 
 ```
 ##     r_number  Sun Mon Tues Wed Thurs  Fri  Sat        living   year college
-## 1  R01866552  7.8 6.4  5.4 5.2   5.2  7.9  9.2    Off Campus Fourth    KSOM
-## 2  R01861508  6.8 6.7  5.7 6.3   4.9  8.1  8.2       Condron Second     CAS
-## 3  R01719566  8.7 6.3  7.2 6.5   4.1 12.0  8.2        Lynett  First     CAS
-## 4  R01634721  6.7 6.5  5.7 6.6   5.4  9.2 10.5       Gavigan Second    KSOM
-## 5  R01705308  6.9 7.4  6.0 8.1   4.5  9.0  8.6 Junior/Senior Fourth     CAS
-## 6  R01920826  8.9 6.3  7.9 6.4   4.9 10.2  7.9         Hafey  First     CAS
-## 7  R01731297  8.5 5.7  7.0 5.7   5.6  9.2  9.3 Junior/Senior Fourth    KSOM
-## 8  R01780285  7.9 5.7  6.3 4.6   5.3  7.6  9.5    Off Campus Second    KSOM
-## 9  R01964405  7.8 5.2  6.7 6.8   5.0  7.8 10.0 Junior/Senior Fourth     CAS
-## 10 R01703035  9.0 5.7  6.3 6.4   4.5  8.2  8.0 Junior/Senior Fourth    PCPS
-## 11 R01876402  8.8 5.1  6.9 6.3   3.7  9.5  8.6 Junior/Senior Fourth     CAS
-## 12 R01796108  7.7 4.7  8.0 4.7   5.0 10.9  8.7       Condron Second     CAS
-## 13 R01940610  9.1 5.5  5.8 7.4   4.5  9.3  9.8    Off Campus Fourth     CAS
-## 14 R01563640  7.5 4.9  6.6 6.3   4.8  7.5  8.6       Gavigan Second    KSOM
-## 15 R01758271  9.5 5.2  6.2 6.2   5.0  8.2  8.8 Junior/Senior Fourth     CAS
-## 16 R01565105  6.0 6.5  5.6 5.7   4.4  8.4  8.7        Lynett  First    KSOM
-## 17 R01614630  9.3 5.6  5.4 6.0   4.4  9.1  8.5         Fitch  First    KSOM
-## 18 R01668124  7.5 5.7  4.7 5.5   4.5  8.2  9.1    Off Campus Fourth     CAS
-## 19 R01739416  7.8 7.2  4.8 5.4   5.3  9.5  9.1 Junior/Senior Fourth    PCPS
-## 20 R01917020 10.4 5.1  5.3 4.6   4.6  8.3  8.3    Off Campus Fourth     CAS
-## 21 R01751407  6.9 7.7  5.2 5.6   5.7 10.3  8.5 Junior/Senior Fourth     CAS
-## 22 R01840584  8.6 6.4  7.7 4.7   5.2  8.7  8.7    Off Campus Second    PCPS
-## 23 R01575137  7.9 4.9  6.0 5.5   4.3 10.1  9.2 Junior/Senior  Third    KSOM
-## 24 R01642748  9.6 7.5  5.6 5.1   6.3  9.1  8.9     Redington Second    KSOM
-## 25 R01964302  9.0 4.4  6.3 5.4   4.5  8.0  9.4 Junior/Senior  Third     CAS
+## 1  R01762401  9.1 7.4  5.3 4.7   6.1  7.1  9.1 Junior/Senior  Third    KSOM
+## 2  R01964133  7.7 7.2  5.8 5.3   6.1  7.3  9.0     Redington Second     CAS
+## 3  R01756038  7.0 5.4  8.3 7.3   4.8  8.3  8.1 Junior/Senior Fourth     CAS
+## 4  R01889852  7.4 4.8  8.1 7.0   4.9  9.9  9.5       Condron Second     CAS
+## 5  R01691345  7.2 6.5  5.5 5.7   5.6  8.8 10.3 Junior/Senior  Third     CAS
+## 6  R01843879  9.1 7.4  5.5 5.8   5.1  7.9  9.3           GLM  First     CAS
+## 7  R01764573  9.2 7.4  7.0 7.7   4.7 10.0  9.8     Redington Second     CAS
+## 8  R01931158  7.1 8.4  7.2 4.6   4.9  9.6  9.4           GLM  First    KSOM
+## 9  R01930336  8.4 7.7  6.7 7.0   4.3  9.3  9.4       Gavigan Second     CAS
+## 10 R01578914  7.2 7.3  5.6 5.5   4.8  7.6  9.9 Junior/Senior  Third     CAS
+## 11 R01881606  8.7 5.6  5.5 6.5   4.9  8.9  8.9        Lynett  First    PCPS
+## 12 R01797314  7.8 6.6  7.3 4.7   5.5 10.1  8.3    Off Campus  Third     CAS
+## 13 R01842340  7.6 6.5  5.0 6.0   5.2 10.2  8.5 Junior/Senior Fourth     CAS
+## 14 R01608477  7.3 5.4  6.1 8.0   5.7  8.7  8.8     Redington Second     CAS
+## 15 R01875546 11.6 5.1  7.5 6.6   5.3  8.0  8.3 Junior/Senior Fourth     CAS
+## 16 R01843397  8.3 6.7  5.3 6.5   5.2  9.5  8.6     Redington Second    PCPS
+## 17 R01641256 10.4 5.4  4.2 6.9   4.3  7.9  8.4 Junior/Senior Fourth    PCPS
+## 18 R01683437  9.0 4.7  6.3 4.8   5.1 10.2  8.7           GLM  First    KSOM
+## 19 R01633029  7.9 5.1  4.5 4.4   4.6 10.9  8.4 Junior/Senior Fourth    KSOM
+## 20 R01756865  8.6 6.9  3.8 5.6   4.6  8.0  9.2       McCourt  First    KSOM
+## 21 R01665544  8.0 5.2  6.5 4.5   5.0  8.3  9.0 Junior/Senior  Third     CAS
+## 22 R01734193  7.1 6.9  5.9 5.9   5.4  8.8  9.1 Junior/Senior  Third     CAS
+## 23 R01790235  7.8 5.7  8.3 7.0   4.8  8.9  9.1 Junior/Senior Fourth     CAS
+## 24 R01812534  6.9 7.2  5.6 6.2   5.6  8.8  8.7    Off Campus Second    KSOM
+## 25 R01743928  7.0 5.3  5.7 4.6   4.5  6.6 10.0 Junior/Senior  Third     CAS
 ```
 
 ---
@@ -308,12 +308,12 @@ Here is a sample of the population of size `\(n = 25\)`:
 Let's look at the first five rows of our sample data:
 
 ```
-##    r_number Sun Mon Tues Wed Thurs  Fri  Sat        living   year college
-## 1 R01866552 7.8 6.4  5.4 5.2   5.2  7.9  9.2    Off Campus Fourth    KSOM
-## 2 R01861508 6.8 6.7  5.7 6.3   4.9  8.1  8.2       Condron Second     CAS
-## 3 R01719566 8.7 6.3  7.2 6.5   4.1 12.0  8.2        Lynett  First     CAS
-## 4 R01634721 6.7 6.5  5.7 6.6   5.4  9.2 10.5       Gavigan Second    KSOM
-## 5 R01705308 6.9 7.4  6.0 8.1   4.5  9.0  8.6 Junior/Senior Fourth     CAS
+##    r_number Sun Mon Tues Wed Thurs Fri  Sat        living   year college
+## 1 R01762401 9.1 7.4  5.3 4.7   6.1 7.1  9.1 Junior/Senior  Third    KSOM
+## 2 R01964133 7.7 7.2  5.8 5.3   6.1 7.3  9.0     Redington Second     CAS
+## 3 R01756038 7.0 5.4  8.3 7.3   4.8 8.3  8.1 Junior/Senior Fourth     CAS
+## 4 R01889852 7.4 4.8  8.1 7.0   4.9 9.9  9.5       Condron Second     CAS
+## 5 R01691345 7.2 6.5  5.5 5.7   5.6 8.8 10.3 Junior/Senior  Third     CAS
 ```
 
 - Our data is organized into rows and columns, a so-called *data matrix* or *data frame*. Each row corresponds to a single **observation** which in this example is a single student. 
@@ -329,7 +329,7 @@ Let's look at the first five rows of our sample data:
 # Variables and Their Types
 
 .pull-left[
-&lt;img src="./figures/variables.png" width="839" /&gt;
+![](https://www.dropbox.com/s/iak7celnfkh7ss9/variables.png?raw=1)&lt;!-- --&gt;
 ]
 
 .pull-right[
@@ -343,12 +343,12 @@ Let's look at the first five rows of our sample data:
 We repeat the first five rows of our sample data:
 
 ```
-##    r_number Sun Mon Tues Wed Thurs  Fri  Sat        living   year college
-## 1 R01866552 7.8 6.4  5.4 5.2   5.2  7.9  9.2    Off Campus Fourth    KSOM
-## 2 R01861508 6.8 6.7  5.7 6.3   4.9  8.1  8.2       Condron Second     CAS
-## 3 R01719566 8.7 6.3  7.2 6.5   4.1 12.0  8.2        Lynett  First     CAS
-## 4 R01634721 6.7 6.5  5.7 6.6   5.4  9.2 10.5       Gavigan Second    KSOM
-## 5 R01705308 6.9 7.4  6.0 8.1   4.5  9.0  8.6 Junior/Senior Fourth     CAS
+##    r_number Sun Mon Tues Wed Thurs Fri  Sat        living   year college
+## 1 R01762401 9.1 7.4  5.3 4.7   6.1 7.1  9.1 Junior/Senior  Third    KSOM
+## 2 R01964133 7.7 7.2  5.8 5.3   6.1 7.3  9.0     Redington Second     CAS
+## 3 R01756038 7.0 5.4  8.3 7.3   4.8 8.3  8.1 Junior/Senior Fourth     CAS
+## 4 R01889852 7.4 4.8  8.1 7.0   4.9 9.9  9.5       Condron Second     CAS
+## 5 R01691345 7.2 6.5  5.5 5.7   5.6 8.8 10.3 Junior/Senior  Third     CAS
 ```
 
 --
