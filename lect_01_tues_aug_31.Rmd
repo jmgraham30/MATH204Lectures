@@ -317,7 +317,7 @@ df_samp %>% head(5)
 
 --
 
-- `r_number` is not a variable because it is a unique identifier for each observation.
+- `r_number` is not a variable because it is a **unique identifier** for each observation.
 
 --
 
