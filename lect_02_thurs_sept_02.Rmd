@@ -77,11 +77,43 @@ Follow me to [RStudio Cloud](https://rstudio.cloud/).
 
 # Reflection 
 
+In this lecture, we
+
+- introduced R, RStudio, and RStudio Cloud, 
+- learned to use R for numerical calculations, 
+- learned a little about working with data frames in R, 
+- introduced R packages and the `openintro` package, and
+- introduced [RMarkdown](https://rmarkdown.rstudio.com/) notebooks.
+
 ---
 
 # Before Next Class Meeting
 
+Before the next class meeting, make sure that you have completed the following tasks:
+
+- attempted the first two homework sets, 
+- completed the first concept quiz and participation assignment, and
+- watched the videos included in the next two slides. 
+
+--
+
+Have a great rest of the day!
 
 ---
 
-# Looking Ahead
+# Summarizing Numerical Data
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Xm0PPtci3JE") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# Exploring Categorical Data
+
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/7NhNeADL8fA") %>%
+  vembedr::use_align("center")
+```
