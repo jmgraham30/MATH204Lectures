@@ -40,3 +40,25 @@ In this lecture, we will
 # Exploratory Data Analysis (EDA)
 
 
+
+---
+
+# Tidy Data
+
+.center[
+```{r tidy_data, echo=FALSE, out.width="75%"}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/rstats-artwork/tidydata_1.jpg?raw=1")
+```
+]
+
+
+---
+
+# Visualizations in R
+
+.center[
+```{r ggplot2, echo=FALSE, out.width="60%"}
+knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/rstats-artwork/ggplot2_exploratory.png?raw=1")
+```
+]
+
