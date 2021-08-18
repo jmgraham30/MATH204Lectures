@@ -297,7 +297,7 @@ df_samp %>% head(5)
 # Variables and Their Types
 
 .pull-left[
-```{r variables, echo=FALSE}
+```{r variables, echo=FALSE, out.width="75%"}
 knitr::include_graphics("https://www.dropbox.com/s/iak7celnfkh7ss9/variables.png?raw=1")
 ```
 ]
