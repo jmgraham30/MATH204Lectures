@@ -1,6 +1,6 @@
 ---
 title: "Lecture 3"
-subtitle: " "
+subtitle: "Intro to Data Summaries"
 author: "JMG"
 institute: "MATH 204"
 date: "Tuesday, September 7"
@@ -30,11 +30,22 @@ In this lecture, we will
 
 - Introduce Numerical and Visual Summaries of Data
 
-    - We will introduce mean, median, mode, variance, and standard deviation.
-    - We discuss scatterplots, histograms, and boxplots for visualizing numerical data.
-    - We discuss contingency tables and bar plots for summarizing categorical data.
+    - We will introduce mean, median, mode, variance, and standard deviation. Textbook sections 2.1.2, 2.1.4, 2.1.5. 
+    - We discuss scatterplots, histograms, and boxplots for visualizing numerical data. Textbook sections 2.1.1, 2.1.3, 2.1.5. 
+    - We discuss contingency tables and bar plots for summarizing categorical data. Textbook section 2.2.1. 
     - We see how to use R to compute numerical summaries and visualizations for data. 
     
+
+---
+
+# Ziggy
+
+.center[
+```{r ziggy, echo=FALSE, out.width="50%"}
+knitr::include_graphics("https://www.dropbox.com/s/qqzywowynekav0z/ZiggyHairPins.jpg?raw=1")
+```
+]
+
 ---
 
 # Exploratory Data Analysis (EDA)
