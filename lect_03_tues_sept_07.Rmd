@@ -17,10 +17,11 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-library(magrittr)
+library(openintro)
 library(tidyverse)
 library(ggformula)
-library(openintro)
+library(patchwork)
+library(latex2exp)
 ```
 
 
@@ -34,7 +35,33 @@ In this lecture, we will
     - We discuss scatterplots, histograms, and boxplots for visualizing numerical data. Textbook sections 2.1.1, 2.1.3, 2.1.5. 
     - We discuss contingency tables and bar plots for summarizing categorical data. Textbook section 2.2.1. 
     - We see how to use R to compute numerical summaries and visualizations for data. 
-    
+ 
+ 
+---
+
+# Recollections
+
+Recall from last lecture, we introduced data, data collection and sampling strategies, and the structure of data and variable types. 
+
+- Research begins with a question
+
+--
+
+- Then, data is collected to answer the question 
+
+--
+
+- In this lecture, we describe the next step the research process 
+
+---
+
+# The Research Workflow
+
+.center[
+```{r research_workflow, echo=FALSE, out.width="50%"}
+knitr::include_graphics("https://www.dropbox.com/s/ycrjss9s0mn9o8e/3-s2.0-B9780128207888000109-f01-01-9780128207888.gif?raw=1")
+```
+]
 
 ---
 
@@ -50,26 +77,514 @@ knitr::include_graphics("https://www.dropbox.com/s/qqzywowynekav0z/ZiggyHairPins
 
 # Exploratory Data Analysis (EDA)
 
+- Once we have collected data, the next step in the statistical process is beginning to explore the data.
+
+--
+
+- Typically, it is not helpful (possible) to look at an entire data set and gain meaningful insight. Instead, we work with summaries of our data, both graphical summaries and numeric summaries.
+
+--
+
+- Numeric summaries of data are often called descriptive statistics. 
+
+--
+
+- It is important to note that the type of a variable will determine the kind of graphical or numeric summary that is used.  
 
 
 ---
 
-# Tidy Data
+# Exploring Numerical Variables
 
-.center[
-```{r tidy_data, echo=FALSE, out.width="75%"}
-knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/rstats-artwork/tidydata_1.jpg?raw=1")
+We begin our introduction to EDA by discussing summaries for numerical data. Specifically, we introduce
+
+- Scatterplots for paired numerical variables
+
+--
+
+- Dot plots and the mean
+
+--
+
+- Histograms and shape
+
+--
+
+- Variance and standard deviation
+
+--
+
+- Box plots, the median, and robust statistics
+
+These topics are discussed in section 2.1 of the textbook and the video included on the next slide provides an overview. 
+
+---
+
+# Summarizing and Graphing Numerical Data Video
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Xm0PPtci3JE") %>%
+  vembedr::use_align("center")
 ```
-]
+
+- Please watch this video on your own time.  
+
+---
+
+# Example Data Sets
+
+- In 2.1, the text discusses aspects of the `loan50` data set. It is helpful to look at what is contained in this data. 
+```{r}
+dim(loan50)
+```
+
+--
+
+- We see that the `loan50` data set contains 50 observations (*i.e.*, rows) and a total of 18 variables (*i.e.*, columns). 
+
+--
+
+- The `glimpse` command may be used to examine the types for each of the variables that is contained in the data.
+
+---
+
+# The `loan50` Variables
+
+```{r}
+glimpse(loan50)
+```
+
+---
+
+# Help on Data in R
+
+For a data set contained in a R package, it is often possible to obtain additional information using the `help` command. For example, the `loan50` data set is contained in the `openintro` package. 
+
+--
+
+- Go the console and run the following command:
+
+```{r, eval=FALSE}
+?openintro::loan50
+```
+
+- **Question:** For the numerical variables in `loan50`, are there any that are continuous? Are there any numerical variables that are discrete?
+
+---
+
+# Some R Practice 
+
+In section 2.1, the text also discusses the `epa2021` data set. In the R console, run the following commands to learn about this data. 
+
+- Size of the data
+
+```{r, eval=FALSE}
+dim(openintro::epa2021)
+```
+
+--
+
+- Details on the data
+
+```{r, eval=FALSE}
+?openintro::epa2021
+```
+
+--
+
+- Variable types
+
+```{r, eval=FALSE}
+dplyr::glimpse(openintro::epa2021)
+```
 
 
 ---
 
-# Visualizations in R
+# Scatterplots
 
-.center[
-```{r ggplot2, echo=FALSE, out.width="60%"}
-knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/rstats-artwork/ggplot2_exploratory.png?raw=1")
+In statistics, we are often interested to explore the relationship between variables in a data set, one way to do this is with a scatter plot. 
+
+- For example, in the `epa2021` data set we can try to assess any association between engine size and gas mileage:
+
+```{r eg_scatter, fig.height=4}
+gf_point(hwy_mpg~engine_displacement,data=epa2021)
 ```
-]
+
+---
+
+# Thinking About Scatterplots
+
+A scatterplot provides a case-by-case view of data for two numerical variables.
+
+--
+
+- **Question:** What does the scatterplot on the previous slide reveal about the data? How is the plot useful? How are scatter plots useful in general?
+
+---
+
+# Models
+
+Statistical models help us assess variable associations. For example, the curve shown in the following plot is obtained by fitting a type of statistical model to the data:
+```{r eg_model, fig.height=4, message=FALSE}
+gf_point(hwy_mpg~engine_displacement,data=epa2021) + geom_smooth()
+```
+
+This model suggests that the relationship between engine size and gas mileage is **nonlinear** since the curve deviates significantly from being a straight line.
+
+---
+
+# Single Numerical Variable Data Summaries
+
+Later, we will return to consider statistical relationships between variables. For now, let's shift our focus to understanding what can happen with just one variable in a data set.  
+
+--
+
+- Consider, for example, just the `interest_rate` variable in the `loan50` data.
+
+--
+
+- We could visualize `interest_rate` as a sort of one-dimensional scatterplot by simply plotting the values of the variable on the number line:
+```{r oneD_scatter,echo=FALSE,fig.height=3}
+loan50 %>% ggplot(aes(x=interest_rate,y=0)) + geom_point(size=3,alpha=0.5) + geom_hline(yintercept = 0,linetype="dashed") + ylim(c(-0.01,0.01)) + xlab("Interest Rate")
+```
+
+There is overlap in the data, so darker dots correspond to more points laid on top of one another (*i.e.*, and higher density).
+
+
+---
+
+# Dot Plots
+
+We could also stack points that take on the same values in order to create a **dot plot**:
+```{r eg_dot,echo=FALSE,fig.height=4}
+loan50 %>% ggplot(aes(x=round(interest_rate))) +
+  geom_dotplot(binwidth = .5) + ylim(c(0,0.25)) + xlab("Interest Rate (rounded to nearest percent)")
+```
+
+--
+
+- **Question:** What information is provided by this plot? 
+
+--
+
+- The previous dot plot provides a starting point for understanding the [**distribution**](https://en.wikipedia.org/wiki/Frequency_distribution) of our sample data. The distribution of a sample tells us about what values we see in the data, as well as how common (frequent) or not certain values may be.
+
+---
+
+# Descriptive Statistics 
+
+- Plots of data are very helpful in many ways. However, it is also nice to have simple ways to summarize and/or characterize the distribution of numerical data quantitatively. 
+
+--
+
+- In fact, statistics provides us with methods for summarizing and characterizing numerical data. The most common ones are:
+
+--
+
+- 1) The sample **mean** and **median** which measure the center of a distribution of data, and
+
+--
+
+- 2) the sample **variance** and **standard deviation** which measure the "spread" of a distribution of data. The variance is the average squared distance from the mean, and the standard deviation tells us how far the data are distributed from the mean. 
+
+--
+
+We will now give mathematical definitions for mean, median, variance, and standard deviation and show how to compute all of these quantities both by hand and using R. 
+
+---
+
+# Definition of Mean and Examples
+
+In words, we define the mean of sample data by
+
+$\text{sample mean (average) of data} = \frac{\text{sum of all sample data values}}{\text{sample size}}.$
+
+--
+
+Mathematically, we define the mean of sample data by the formula
+
+$\bar{x} = \frac{x_{1} + x_{2} + \cdots + x_{n}}{n}.$
+
+--
+
+Note that we read $\bar{x}$ as "x bar". 
+
+---
+
+# Example Computing Mean
+
+Consider the following list of numbers:
+```{r}
+x <- c(2,5,10,4,8,2,6,3,9,10,4,6,5,5,7)
+```
+We can calculate the mean (or average) of these `r length(x)` values in a few different ways:
+
+1. By hand
+
+$\frac{2 + 5 + 10 + 4 + 8 + 2 + 6 + 3 + 9 + 10 + 4 + 6 + 5 + 5 + 7}{15} = \frac{86}{15} \approx 5.73$
+
+2. Manually in R
+
+```{r}
+sum(x)/length(x)
+```
+
+3. Using the `mean` function in R
+
+```{r}
+mean(x)
+```
+
+---
+
+# Mean Example with Data
+
+Let's compute the mean of the `interest_rate` variable:
+```{r}
+mean(loan50$interest_rate)
+```
+
+--
+
+- **Question:** What is the value of $n$ (*i.e.*, the sample size) for the `interest_rate` data? 
+
+---
+
+# Thinking About the Mean
+
+The next plot shows the data for the `interest_rate` variable again but now with the mean value added to the figure:  
+```{r mean_plotted,echo=FALSE,fig.height=4}
+loan50 %>% ggplot(aes(x=round(interest_rate))) +
+  geom_dotplot(binwidth = .5) + 
+  geom_vline(xintercept = mean(loan50$interest_rate),linetype="dashed",color="red") + 
+  geom_text(x=mean(loan50$interest_rate), y=-0.01, label="Sample mean") + 
+  ylim(c(-0.01,0.25)) + 
+  xlab("Interest Rate (rounded to nearest percent)")
+```
+
+**Question:** In what sense does the sample mean of the `interest_rate` data measure the center of the distribution of the sample data? How much to "large" values contribute to the mean?
+
+---
+
+# Definition of Median
+
+If the data are ordered from smallest to largest, the sample **median** is the observation right in the middle. 
+
+--
+
+- If there are an even number of observations, there will be two values in the middle, and the median is taken as their average value. 
+
+--
+
+- The median is also known as the 50th percentile or 50th quantile. 
+
+---
+
+# Median Example
+
+Consider again the list of numbers contained in the vector `x`:
+```{r}
+x
+```
+
+--
+
+It is simple to order these from smallest to largest:
+```{r}
+sort(x)
+```
+
+The value in the middle is obviously 5.
+
+--
+
+Let's confirm this using the R command `median`:
+```{r}
+median(x)
+```
+
+
+---
+
+# Median with Even Number of Values
+
+
+To see what happens when we have an even number of sample values consider the following list of values:
+```{r}
+y <- c(2,5,3,7,8,1,4,2,6,7)
+```
+
+--
+
+Again, we can order them as
+```{r}
+sort(y)
+```
+
+--
+
+Then the median should be 
+
+$\frac{4+5}{2} = \frac{9}{2}=4.5$
+
+--
+
+Let's confirm this with R:
+```{r}
+median(y)
+```
+
+
+---
+
+# Median Example with Data
+
+
+
+The median of the `interest_rate` data is computed as
+```{r}
+median(loan50$interest_rate)
+```
+
+
+---
+
+# Thinking About the Median
+
+The following plot shows the interest rate data plus both the sample mean and sample median. 
+
+```{r plot_median,echo=FALSE,fig.height=4}
+loan50 %>% ggplot(aes(x=round(interest_rate))) +
+  geom_dotplot(binwidth = .5) + 
+  geom_vline(xintercept = mean(loan50$interest_rate),linetype="dashed",color="red") + 
+  geom_vline(xintercept = median(loan50$interest_rate),linetype="dashed",color="blue") + 
+  geom_text(x=mean(loan50$interest_rate), y=-0.03, label="Sample mean",angle="45") + 
+  geom_text(x=median(loan50$interest_rate), y=-0.03, label="Sample median",angle="45") + 
+  ylim(c(-0.05,0.15)) + 
+  xlab("Interest Rate (rounded to nearest percent)")
+```
+
+--
+
+- **Question:** In what sense does the sample median of the `interest_rate` data measure the center of the distribution of the sample data? How much to "large" values contribute to the mean?
+
+---
+
+# Some R Practice
+
+Go to the R console and run the following commands:
+
+--
+
+- Compute the mean for the highway gas mileage `hwy_mpg` variable from the  `epa2021` data set.
+```{r,eval=FALSE}
+mean(epa2021$hwy_mpg)
+```
+
+--
+
+- Compute the median for the highway gas mileage `hwy_mpg` variable from the  `epa2021` data set.
+```{r,eval=FALSE}
+median(epa2021$hwy_mpg)
+```
+
+---
+
+# Definition of Variance and Standard Deviation
+
+Mathematically, we define the sample **variance** (denoted by $s^2$) by the formula
+
+$s^2 = \frac{(x_1 - \bar{x})^2+(x_{2} - \bar{x})^2+\cdots +(x_{n}-\bar{x})^2}{n-1}.$
+
+Take care to note that the denominator is $n-1$, that is the sample size minus 1. 
+
+--
+
+The sample **standard deviation** (denoted by $s$) is simply the square root of the sample variance. That is 
+
+$s = \sqrt{\text{sample variance}} = \sqrt{\frac{(x_1 - \bar{x})^2+(x_{2} - \bar{x})^2+\cdots +(x_{n}-\bar{x})^2}{n-1}}.$
+
+---
+
+# Computing Variance and Standard Deviation
+
+In R, we compute the sample variance using the command `var` and the sample standard deviation using the command `sd`. For example
+
+```{r}
+(var(x))
+(sd(x))
+```
+
+--
+
+Notice that
+```{r}
+sqrt(var(x))
+```
+
+give the same as `sd(x)`.
+
+---
+
+# Variance and Standard Deviation for Data
+
+
+Let's compute the sample variance and standard deviation for the `interest_rate` data:
+```{r}
+(var(loan50$interest_rate))
+(sd(loan50$interest_rate))
+```
+
+---
+
+# Thinking About Variance and Standard Deviation
+
+Consider the following plot:
+```{r sd_plot,echo=FALSE,warning=FALSE,message=FALSE,fig.height=4}
+x_bar <- mean(loan50$interest_rate)
+s <- sd(loan50$interest_rate)
+one_sd_l <- TeX("$\\bar{x}-s$")
+one_sd_r <- TeX("$\\bar{x}+s$")
+loan50 %>% ggplot(aes(x=round(interest_rate))) +
+  geom_dotplot(binwidth = .5) + 
+  geom_vline(xintercept = mean(loan50$interest_rate),linetype="dashed",color="red") +
+  geom_vline(xintercept = x_bar-s,linetype="dashed") + 
+  geom_vline(xintercept = x_bar+s,linetype="dashed") + 
+  geom_text(x=mean(loan50$interest_rate), y=-0.01, label="Sample mean") +
+  geom_text(x=(x_bar-s)-0.5, y=-0.01, label=one_sd_l) + 
+  geom_text(x=(x_bar+s)+0.5, y=-0.01, label=one_sd_r) + 
+  ylim(c(-0.01,0.25)) + 
+  xlab("Interest Rate (rounded to nearest percent)")
+```
+
+Now notice that of 50 data points, 34 of them lie within one standard deviation of the mean. That is, 34 of the data values lie in the interval $(\bar{x}-s,\bar{x}+s)$. That is `r 34/50*100` percent of the data. 
+
+---
+# Two Standard Deviations
+
+What percent of the data lie within two standard deviations of the mean, that is, within the interval $(\bar{x}-2s,\bar{x}+2s)$? Let's see:
+```{r two_sd,echo=FALSE,warning=FALSE,message=FALSE,fig.height=4}
+x_bar <- mean(loan50$interest_rate)
+s <- sd(loan50$interest_rate)
+two_sd_l <- TeX("$\\bar{x}-2s$")
+two_sd_r <- TeX("$\\bar{x}+2s$")
+loan50 %>% ggplot(aes(x=round(interest_rate))) +
+  geom_dotplot(binwidth = .5) + 
+  geom_vline(xintercept = mean(loan50$interest_rate),linetype="dashed",color="red") +
+  geom_vline(xintercept = x_bar-2*s,linetype="dashed") + 
+  geom_vline(xintercept = x_bar+2*s,linetype="dashed") + 
+  geom_text(x=mean(loan50$interest_rate), y=-0.01, label="Sample mean") +
+  geom_text(x=(x_bar-2*s)-0.5, y=-0.01, label=two_sd_l) + 
+  geom_text(x=(x_bar+2*s)+0.5, y=-0.01, label=two_sd_r) + 
+  ylim(c(-0.01,0.25)) + 
+  xlab("Interest Rate (rounded to nearest percent)")
+```
+
+Of 50 data points, 48 lie within two standard deviations of the mean. That is, 48 of the data values lie in the interval $(\bar{x}-2s,\bar{x}+2s)$. That is `r 48/50*100` percent of the data. 
+
+Not always true, but often about 70% of data lie within one standard deviation of the mean and about 96% of data lie within two standard deviations of the mean. 
+
+
+
 
