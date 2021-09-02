@@ -41,7 +41,7 @@ In this lecture, we will
 
 # Recollections
 
-Recall from last lecture, we introduced data, data collection and sampling strategies, and the structure of data and variable types. 
+Recall from a previous lecture, we introduced data, data collection and sampling strategies, and the structure of data and variable types. 
 
 - Research begins with a question
 
@@ -51,7 +51,7 @@ Recall from last lecture, we introduced data, data collection and sampling strat
 
 --
 
-- In this lecture, we describe the next step the research process 
+- In this lecture, we describe the next step in the research process 
 
 ---
 
@@ -89,7 +89,7 @@ knitr::include_graphics("https://www.dropbox.com/s/qqzywowynekav0z/ZiggyHairPins
 
 --
 
-- It is important to note that the type of a variable will determine the kind of graphical or numeric summary that is used.  
+- It is important to note that the type of a variable, *i.e.*, numerical or categorical, will determine the kind of graphical or numeric summary that is used.  
 
 
 ---
@@ -174,7 +174,7 @@ For a data set contained in a R package, it is often possible to obtain addition
 
 # Some R Practice 
 
-In section 2.1, the text also discusses the `epa2021` data set. In the R console, run the following commands to learn about this data. 
+Another data set associated with the text is the `epa2021` data set. In the R console, run the following commands to learn about this data. 
 
 - Size of the data
 
@@ -320,17 +320,23 @@ x <- c(2,5,10,4,8,2,6,3,9,10,4,6,5,5,7)
 ```
 We can calculate the mean (or average) of these `r length(x)` values in a few different ways:
 
-1. By hand
+--
+
+- By hand
 
 $\frac{2 + 5 + 10 + 4 + 8 + 2 + 6 + 3 + 9 + 10 + 4 + 6 + 5 + 5 + 7}{15} = \frac{86}{15} \approx 5.73$
 
-2. Manually in R
+--
+
+- Manually in R
 
 ```{r}
 sum(x)/length(x)
 ```
 
-3. Using the `mean` function in R
+--
+
+- Using the `mean` function in R
 
 ```{r}
 mean(x)
@@ -467,7 +473,90 @@ loan50 %>% ggplot(aes(x=round(interest_rate))) +
 
 --
 
-- **Question:** In what sense does the sample median of the `interest_rate` data measure the center of the distribution of the sample data? How much to "large" values contribute to the mean?
+- **Question:** In what sense does the sample median of the `interest_rate` data measure the center of the distribution of the sample data? How much to "large" values contribute do the mean?
+
+---
+
+# Robust Statistics
+
+Consider our data `x` again, 
+
+```{r}
+x
+(mean(x))
+(median(x))
+```
+
+--
+
+Let's add an **outlier**
+
+```{r}
+(xl <- c(x,20))
+```
+
+---
+
+# Mean and Median with Outliers
+
+Observe what happens if we compute the mean and median with an outlier in the data:
+
+```{r}
+(xl <- c(x,20))
+(mean(xl))
+(median(xl))
+```
+
+--
+
+- Notice that the median is much less sensitive to the outlier than the mean is. Because of this, we call the median a **robust statistic**.
+
+---
+
+# IQR
+
+The interquartile range (IQR) is another example of a robust statistic. 
+
+```{r}
+(IQR(x))
+(IQR(xl))
+```
+
+--
+
+- What exactly is the interquartile range? It will take a couple of slides to answer this quest. 
+
+---
+
+# Boxplots
+
+.center[
+```{r boxplot, echo=FALSE, out.width="75%"}
+knitr::include_graphics("https://www.dropbox.com/s/qpgw6veozn2z4jx/boxPlotLayoutNumVar.jpg?raw=1")
+```
+]
+
+---
+
+# Definition of IQR
+
+$IQR = Q_{3} - Q_{1}$
+
+where 
+
+- $Q_{1} =$ the 25th percentile
+
+- $Q_{3} =$ the 75th percentile 
+
+---
+
+# Boxplots with R
+
+Suppose we want to create a boxplot for our `interest_rate` variable in the `loan50` data, then we would do as follows:
+
+```{r eg_box, fig.height=4}
+gf_boxplot(~interest_rate,data=loan50) + coord_flip()
+```
 
 ---
 
@@ -497,7 +586,7 @@ Mathematically, we define the sample **variance** (denoted by $s^2$) by the form
 
 $s^2 = \frac{(x_1 - \bar{x})^2+(x_{2} - \bar{x})^2+\cdots +(x_{n}-\bar{x})^2}{n-1}.$
 
-Take care to note that the denominator is $n-1$, that is the sample size minus 1. 
+Take care to note that the denominator is $n-1$, that is, the sample size minus 1. 
 
 --
 
@@ -583,8 +672,7 @@ loan50 %>% ggplot(aes(x=round(interest_rate))) +
 
 Of 50 data points, 48 lie within two standard deviations of the mean. That is, 48 of the data values lie in the interval $(\bar{x}-2s,\bar{x}+2s)$. That is `r 48/50*100` percent of the data. 
 
-Not always true, but often about 70% of data lie within one standard deviation of the mean and about 96% of data lie within two standard deviations of the mean. 
-
+Not always, but very often about 70% of data lie within one standard deviation of the mean and about 96% of data lie within two standard deviations of the mean. 
 
 
 
