@@ -747,12 +747,53 @@ p1 + p2 + p3
 
 ---
 
+# Multimodal Distributions
+
+A distriubtion with one peak is called unimodal, a distribution with two peaks is called bimodal, and a distribution with more than two peaks is called multimodal. 
+
+--
+
+```{r,eg_modals,echo=FALSE,fig.height=6,fig.width=10}
+um <- c(runif(50,0,2),runif(300,2,3),runif(50,3,5))
+bm <- c(runif(175,0,1),runif(50,1,4),runif(175,4,5)) 
+mm <- c(runif(130,0,1),runif(20,1,3),runif(130,3,4),runif(20,4,6),runif(100,6,7))
+modal_df <- tibble(um=um,bm=bm,mm=mm)
+p1 <- modal_df %>% gf_histogram(~um) + ggtitle("Unimodal")
+p2 <- modal_df %>% gf_histogram(~bm) + ggtitle("Bimodal")
+p3 <- modal_df %>% gf_histogram(~mm) + ggtitle("Multimodal")
+p1 + p2 + p3
+```
+
+---
+
 # Reflection
+
+In this lecture, we covered the topics of
+
+- Descriptive statistics: mean, median, variance, and standard deviation; and
+
+- we introduced scatterplots, histograms, and boxplots for visualizing numerical data
+
+--
+
+- R commands for computing mean, median, variance, and standard deviation were introduced; and 
+
+- we one way to obtain a boxplot or a histogram using R. 
+
+--
+
+- We also introduced the concept of outliers and robust statistics. 
 
 
 ---
 
 # For Next Time
 
+In the next lecture, 
 
+- We explore methods for summarizing categorical data such as contingency tables and bar plots. Textbook section 2.2.1.
+
+--
+
+- We will also look at some more involved examples of exploratory data analysis (EDA) using R. 
 
