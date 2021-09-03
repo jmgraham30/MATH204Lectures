@@ -674,5 +674,73 @@ Of 50 data points, 48 lie within two standard deviations of the mean. That is, 4
 
 Not always, but very often about 70% of data lie within one standard deviation of the mean and about 96% of data lie within two standard deviations of the mean. 
 
+---
+
+# Histograms and Shape
+
+- Dot plots show the exact value for each observation in a sample.
+
+--
+
+- A histogram "bins" the sample data into distinct intervals and counts the frequency of data points occurring within each bin interval. 
+
+---
+
+# Histogram Example with Data
+
+The following plot shows a histogram for the `interest_rate` variable in the `loan50` data set:
+
+```{r eg_hist, warning=FALSE,message=FALSE,fig.height=4}
+gf_histogram(~interest_rate,data=loan50,boundary=5,binwidth=2.5,color="black") +
+  scale_x_continuous(breaks = c(5,10,15,20,25))
+```
+
+--
+
+- Let's examine how this histogram is contructed. 
+
+---
+
+# Constructing a histogram
+
+Look at the `interest_rate` variable data after sorting it:
+
+```{r sort_interest,echo=FALSE}
+sort(loan50$interest_rate)
+```
+
+--
+
+- If our bins are the intervals $[5,7.5], [7.5,10.0], \ldots $, then we see that there are 11 data points in bin 1, 15 data points in bin 2, etc.  
+
+---
+
+# The Use of Histograms
+
+- Histograms provide a visualization of the density of sample data. 
+
+--
+
+- That is, higher bars represent higher frequency of a range of values. 
+
+--
+
+- Histograms also indicate the shape of the distribution of data. 
+
+---
+
+# Shape of a Distribution
+
+
+
+---
+
+# Reflection
+
+
+---
+
+# For Next Time
+
 
 
