@@ -731,6 +731,18 @@ sort(loan50$interest_rate)
 
 # Shape of a Distribution
 
+A histogram might suggest if our data is **skewed**:
+
+```{r,eg_skew,echo=FALSE,fig.height=6,fig.width=10}
+xl <- c(runif(50,0,2),runif(100,2,4),runif(275,4,5))
+xs <- rnorm(425,2.5,0.75) 
+xr <- c(runif(275,0,1),runif(100,1,2),runif(50,2,5))
+skew_df <- tibble(xl=xl,xs=xs,xr=xr)
+p1 <- skew_df %>% gf_histogram(~xl) + ggtitle("Left skewed")
+p2 <- skew_df %>% gf_histogram(~xs) + ggtitle("Symmetric")
+p3 <- skew_df %>% gf_histogram(~xr) + ggtitle("Right skewed")
+p1 + p2 + p3
+```
 
 
 ---
