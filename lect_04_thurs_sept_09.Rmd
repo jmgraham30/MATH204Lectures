@@ -1,6 +1,6 @@
 ---
 title: "Lecture 4"
-subtitle: "EDA Continued "
+subtitle: "Data Summaries for Categorical Data "
 author: "JMG"
 institute: "MATH 204"
 date: "Thursday, September 9"
@@ -28,15 +28,78 @@ library(latex2exp)
 
 In this lecture, we will
 
+- Continue our discussion of numerical and visual summaries of data
+
+    - We discuss contingency tables and bar plots for summarizing categorical data. Textbook section 2.2.1. 
+    - We see how to use R to compute numerical summaries and visualizations for categorical data. 
+    
+---
+
+# Summaries of Categorical Data Video
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/7NhNeADL8fA") %>%
+  vembedr::use_align("center")
+```
+
+- Please watch this video on your own time. 
 
 
+---
+
+# A Note on Categorical Variables in R
+
+- Often, a categorical variable is called a **factor**, and each category is called a **level**. 
+
+--
+
+- For example, consider letter grades such as we assign at the University. This is a factor with 11 levels: A, A-, B+, B, B-, C+, C, C-, D+, D, and F.  
+
+--
+
+- Note that here we know all of the possible outcomes (levels) *a priori*. 
 
 
+---
 
+# Creating a Factor in R
 
+Here is an example of creating a factor in R:
 
+```{r}
+my_grades <- factor(
+  c(rep("A",4),rep("B",6),rep("B-",4),rep("C",8),rep("C-",2),
+                      rep("D",2),rep("F",3)),
+                    levels=c("A","A-","B+","B","B-","C+","C","C-","D+","D","F")
+  )
+```
 
+---
 
+# Recall the `table` Function 
+
+```{r}
+table(my_grades)
+```
+
+--
+
+- The `table` function returns the count of how many times each level of a factor appears in the data. This is sometimes called a frequency table. 
+
+--
+
+- A table such as the one we just obtained is a typical way to summarize a single categorical variable. 
+
+---
+
+# Bar Plots
+
+A barplot is the visual analog of a frequency table. 
+
+```{r,fig.height=4}
+grades_df <- tibble(my_grades=my_grades)
+gf_bar(~my_grades,data=grades_df)
+```
 
 ---
 
