@@ -6,7 +6,7 @@ institute: "MATH 204"
 date: "Thursday, September 9"
 output:
   xaringan::moon_reader:
-    css: [rladies, rladies-fonts]
+    css: [default, rladies, rladies-fonts]
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -20,8 +20,15 @@ options(htmltools.dir.version = FALSE)
 library(openintro)
 library(tidyverse)
 library(ggformula)
+library(ggmosaic)
 library(patchwork)
 library(latex2exp)
+loans_dat <- loans_full_schema %>% select("homeownership","application_type") %>% filter(homeownership == "MORTGAGE" | homeownership == "OWN" | homeownership == "RENT")
+loans_dat$homeownership <- factor(loans_dat$homeownership,levels=c("MORTGAGE","OWN","RENT"))
+loans_dat$application_type <- factor(loans_dat$application_type,levels=c("individual","joint"))
+stack_bar_dat <- as_tibble(with(loans_dat,addmargins(prop.table(table(application_type,homeownership),
+                                     margin=2)))) %>%
+  dplyr::filter(application_type != "Sum" & homeownership != "Sum")
 ```
 
 # Learning Objectives
@@ -103,6 +110,226 @@ gf_bar(~my_grades,data=grades_df)
 
 ---
 
+# Summarizing Data for Two Categorical Variables
+
+Scatterplots provide a way to summarize together two numerical variables, methods for summarizing together two categorical variables include:
+
+--
+
+- Contingency tables 
+
+--
+
+- Proportion tables
+
+--
+
+- Stacked or side-by-side bar plots
+
+--
+
+- Mosaic plots
+
+--
+
+We will explain each of these tools and illustrate how to obtain them in R. We will work with the `loans_dat` data set. This data set represents thousands of loans made through the Lending Club platform, which is a platform that allows individuals to lend to other individuals. 
+
+
+---
+
+# Contingency Tables
+
+Contingency tables display the number of times a particular combination of variable outcomes occurs. 
+
+--
+
+- For example, we construct a contingency table for the variables `homeownership` (ownership status of the applicant's residence) and `application_type` (type of application: either individual or joint):
+
+--
+
+```{r}
+with(loans_dat,addmargins(table(application_type,homeownership)))
+```
+
+--
+
+- If we create a barplot for `homeownership`, we will see bars corresponding to the first three values in the last row of our table. Similarly, a barplot for `application_type` will show bars corresponding to the first two values in the last column of our table. 
+
+---
+
+# Bar Plots for `loans_dat`
+
+```{r,echo=FALSE,fig.height=5, fig.width=10}
+p1 <- gf_bar(~homeownership,data=loans_dat)
+p2 <- gf_bar(~application_type,data=loans_dat)
+p1 + p2
+with(loans_dat,addmargins(table(application_type,homeownership)))
+```
+
+---
+
+# Proportion Tables
+
+At times, it is useful to compute proportions instead of counts. 
+
+--
+
+- A proportion table displays the same essential information as a contingency table except we divide entries by either the row sums (row proportion table) or the column sum (column proportion table). 
+
+--
+
+- For example, if we divide each entry in the first row of the previous table by 8505, and divide each entry in the second row by 1495, we obtain
+```{r}
+(c(3839,1170,3496) / 8505)
+(c(950, 183, 362) / 1495)
+```
+
+--
+
+- This gives us our values for a row proportion table. 
+
+---
+
+# Proportion Tables Example
+
+- Row proportion table
+
+```{r}
+with(loans_dat,addmargins(prop.table(table(application_type,homeownership),
+                                     margin=1)))
+```
+
+--
+
+- Column proportion table
+
+
+```{r}
+with(loans_dat,addmargins(prop.table(table(application_type,homeownership),
+                                     margin=2)))
+```
+
+
+---
+
+# Stacked and Side-By-Side Barplots
+
+```{r,fig.width=11,fig.height=5}
+p1 <- gf_bar(~homeownership,data=loans_dat,fill=~application_type) + 
+  ggtitle("Stacked")
+p2 <- gf_bar(~homeownership,data=loans_dat,fill=~application_type,
+             position = position_dodge()) + ggtitle("Side-By-Side")
+p1 + p2
+```
+
+
+---
+
+# Standardized Stacked Bar Plot
+
+Stacked bar plots can be used to contruct a visualization of a proportion table. 
+
+--
+
+- For example, the following stacked bar plot displays our column proportion table as a plot:
+
+```{r,echo=FALSE,fig.height=3}
+stack_bar_dat %>% ggplot(aes(x=homeownership,y=n,fill=application_type)) + geom_bar(stat="identity")
+```
+
+
+```{r,echo=FALSE}
+with(loans_dat,addmargins(prop.table(table(application_type,homeownership),
+                                     margin=2)))
+```
+
+
+---
+
+# Mosaic Plots
+
+A **mosiac plot** is a visualization that corresponds to contingency tables. They can be one-variable of multi-variable.
+
+```{r,echo=FALSE,fig.height=5,fig.width=11}
+p1 <- loans_dat %>% ggplot() + 
+  geom_mosaic(aes(x=product(homeownership),fill=homeownership)) + theme(legend.position = "none",axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+p2 <- loans_dat %>% ggplot() + 
+  geom_mosaic(aes(x=product(application_type,homeownership),fill=homeownership)) + theme(legend.position = "none")
+p3 <- loans_dat %>% ggplot() + 
+  geom_mosaic(aes(x=product(homeownership,application_type),fill=homeownership)) + theme(legend.position = "none")
+p1 + p2 + p3 
+```
+
+
+---
+
+# Grouped Numerical Data
+
+- Grouped numerical data arises when we want to study the distribution of a numerical variable across two or more distinguishing groups. 
+
+--
+
+- In other words, we are looking for association between two variables where one variable is numerical (typically viewed as the response variable) and the other is categorical (typically viewed as the explanatory variable). 
+
+--
+
+- For example, consider out `possum` data set again.
+
+```{r}
+head(possum,5)
+```
+
+--
+
+- We could ask, is there a difference in the distribution of possum tail length between female and male possums?  
+
+---
+
+# Grouped Summaries
+
+We can compute grouped numerical summaries:
+
+```{r}
+possum %>% group_by(sex) %>% summarise(mean_tail_l=mean(tail_l),
+                                        median_tail_l=median(tail_l),
+                                        tail_l_var=var(tail_l),
+                                        sd_tail_l=sd(tail_l))
+```
+
+---
+
+# Grouped plots
+
+We can also create grouped plots:
+
+```{r,fig.height=5,fig.width=11}
+p1 <- gf_boxplot(tail_l~sex,data=possum,color=~sex,binwidth=2)
+p2 <- gf_histogram(~tail_l | sex,data=possum,fill=~sex,binwidth=2)
+p1 + p2
+```
+
+---
+
+# R Tips: the Tidyverse
+
+In order to work with data, compute summaries, and obtain visualizations, we are employing the [tidyverse](https://www.tidyverse.org/) family of R packages. This includes 
+
+- `dplyr` for working with and summarizing data
+
+- `ggplot2` for graphics and visualizations 
+
+- `readr` for reading data into R
+
+- etc. 
+
+--
+
+- The tidyverse utilizes the principle of **tidy** data for facilitating analyses. 
+
+---
+
 # Tidy Data
 
 .center[
@@ -121,4 +348,38 @@ knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blo
 knitr::include_graphics("https://github.com/allisonhorst/stats-illustrations/blob/master/rstats-artwork/ggplot2_exploratory.png?raw=1")
 ```
 ]
+
+---
+
+# Reflection
+
+In this lecture, we covered the topics of
+
+--
+
+- Graphical and numerical summaries for categorical data
+
+--
+
+- We discussed contigency tables and bar plot
+
+--
+
+- We introduced the notion of grouped data and grouped summaries
+
+
+
+---
+
+# For Next Time
+
+In the next lecture, we will begin our discussion of probability which forms the foundation of statistics. In preparation, you are encouraged to watch the included video.
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/rG-SLQ2uF8U") %>%
+  vembedr::use_align("center")
+```
+
+
+
 
