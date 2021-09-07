@@ -711,7 +711,7 @@ sort(loan50$interest_rate)
 
 --
 
-- If our bins are the intervals $[5,7.5], [7.5,10.0], \ldots $, then we see that there are 11 data points in bin 1, 15 data points in bin 2, etc.  
+- If our bins are the intervals $[5,7.5], [7.5,10.0], \ldots$, then we see that there are 11 data points in bin 1, 15 data points in bin 2, etc.  
 
 ---
 
