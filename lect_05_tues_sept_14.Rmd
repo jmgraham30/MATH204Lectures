@@ -1,6 +1,6 @@
 ---
 title: "Lecture 5"
-subtitle: " "
+subtitle: "Introduction to Probability "
 author: "JMG"
 institute: "MATH 204"
 date: "Tuesday, September 14"
@@ -17,56 +17,152 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-library(magrittr)
+library(openintro)
+library(tidyverse)
+library(ggformula)
+library(patchwork)
+library(latex2exp)
 ```
 
 
-class: inverse, center, middle
+# Learning Objectives
 
-# Get Started
+In this lecture, we will
+
+- Introduce the concept of probability as it pertains to statistical applications. 
+
+    - We will introduce the ideas of random process, outcome, event, probability, and probability distribution. Textbook sections 3.1.2, 3.1.3, 3.1.4, and 3.1.5. 
+    - We discuss mutually exclusive and idependent events. Textbook sections 3.1.3, 3.1.7, 2.1.5. 
+    - We explain the notion of conditional probability. Textbook section 3.2.1. 
+    - We discuss sampling with and without replacement.
+    - We use R to illustrate some of the basic probability concepts. 
+ 
+ 
+---
+
+# Why Do We Study Probability? 
+
+- Probability forms the foundation of statistics. 
+
+--
+
+- Probability provides us with a precise langauge for discussing uncertainty. 
 
 ---
 
-class: inverse 
+# Probability Video
 
-# Another Slide
-
----
-
-# Imbed Video
+Please review this video at your earliest convenience:
 
 ```{r,echo=FALSE}
-vembedr::embed_url("https://www.youtube.com/watch?v=M3skTMQbCD0&t=757s") %>%
+vembedr::embed_url("https://youtu.be/rG-SLQ2uF8U") %>%
   vembedr::use_align("center")
 ```
 
+---
+
+# Random Processes
+
+- Consider the game of rolling a single six-sided (fair) die. 
+
+.center[
+```{r a_die, echo=FALSE, out.width="50%"}
+knitr::include_graphics("https://www.dropbox.com/s/jh4segwkakz1qpr/a_die.png?raw=1")
+```
+]
 
 ---
 
-# Hello World
+# Dice as a Random Process
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
-
-```{r eval=FALSE, tidy=FALSE}
-remotes::install_github("yihui/xaringan")
-```
+- Tossing a single die provides an example of a **random process.**
 
 --
 
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
+- A random process is any process with a well-defined but unpredictable set of possible outcomes.
 
 --
 
-- Click the `Knit` button to compile it;
+- For example, we know that tossing a die will result in "rolling" a value of one of 1, 2, 3, 4, 5, or 6. However, we can not predict with absolute certainty which value we will roll on any given toss of the die. 
 
 --
 
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
+- Can you think of another example of a random process? Can you think of an example of a process that is not a random process? 
 
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
+---
 
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
+# Outcomes of a Random Process
+
+- An outcome for a random process is any one of the possible results from the random process. 
+
+--
+
+- For example, the set of outcomes for the random process of tossing a single six-sided die is the values 1, 2, 3, 4, 5, 6.
+
+--
+
+- Any collection of outcomes is called an **event**. 
+
+--
+
+- For example, the event of rolling a even value is made up of the collection of events 2, 4, 6. 
+
+--
+
+- Two events are said to be **mutually exclusive** is they cannot both happen at the same time. For example, the events or rolling an even number and rolling an odd number after tossing a six-sided die are two mutually exclusive events. 
+
+--
+
+- On the other hand the events of rolling an even number and rolling a number less than five are NOT mutually exclusive. 
+
+---
+
+# Assignig Probabilities
+
+> The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of time. 
+
+--
+
+- The probability of any individual outcome for the random process of tossing a six-sided (fair) die is $\frac{1}{6}$.
+
+---
+
+# Some Notation
+
+- In probability theory, we often denote events by capital letters such as $A$, $B$, etc., or sometimes even with subscripts such as $A_{1}$, $A_{2}$, etc. 
+
+--
+
+- We denote the probability of an event, say $A$ by $P(A)$. 
+
+--
+
+- For example, if $A$ is the event of rolling an even number after tossing a six-sided (fair) die, then $P(A) = \frac{1}{2}$. 
+
+---
+
+# The Addition Rule
+
+- If $A_{1}$ and $A_{2}$ are mutually exclusive events, then $P(A_{1} \text{ or } A_{2}) = P(A_{1}) + P(A_{2})$. 
+
+--
+
+- For example, let $A_{1}$ be the event of rolling a number less than 3 and let $A_{2}$ be the event of rolling a number greater than or equal to 4. (Explain why these events are mutually exclusive.) Then 
+
+$$
+\begin{align*}
+P(A_{1} \text{ or } A_{2})&= P(\text{rolling less than 3, or greater or equal to 4})  \\
+&= P(\text{ rolling 1, 2, 4, 5, 6}) \\
+&= P(A_{1}) + P(A_{2}) \\
+&= P(\text{rolling less than 3}) + P(\text{rolling greater or equal to 4}) \\
+&= P(\text{rolling 1, 2}) + P(\text{rolling 4, 5, 6}) \\
+&= \frac{2}{6} + \frac{3}{6} \\
+&= \frac{5}{6}
+\end{align*}
+$$
+
+
+---
+
+# Probability Distributions
+
