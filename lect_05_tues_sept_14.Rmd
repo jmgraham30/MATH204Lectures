@@ -22,6 +22,7 @@ library(tidyverse)
 library(ggformula)
 library(patchwork)
 library(latex2exp)
+library(kableExtra)
 ```
 
 
@@ -117,13 +118,17 @@ knitr::include_graphics("https://www.dropbox.com/s/jh4segwkakz1qpr/a_die.png?raw
 
 ---
 
-# Assignig Probabilities
+# Assigning Probabilities
 
-> The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of time. 
+> The probability of an outcome is the proportion of times the outcome would occur if we observed the random process an infinite number of times. 
 
 --
 
 - The probability of any individual outcome for the random process of tossing a six-sided (fair) die is $\frac{1}{6}$.
+
+--
+
+- Note that in general a probability value must be a number between 0 and 1 since it is a proportion. 
 
 ---
 
@@ -185,4 +190,171 @@ $$
 ---
 
 # Probability Distributions
+
+A **probability** distribution is a table of all mutually excusive outcomes and their associated probabilities. 
+
+--
+
+- For example, consider the random process of tossing two six-sided fair dice and recording the sum of the value of the two dice. Then the possible outcomes are the values 2 through 12. The following table displays the probability for each outcome. 
+
+--
+
+```{r prob_dist_ex, echo=FALSE}
+a2<-c("2","1/36")
+a3<-c("3","2/36")
+a4<-c("4","3/36")
+a5<-c("5","4/36")
+a6<-c("6","5/36")
+a7<-c("7","6/36")
+a8<-c("8","5/36")
+a9<-c("9","4/36")
+a10<-c("10","3/36")
+a11<-c("11","2/36")
+a12<-c("12","1/36")
+df <- data.frame(a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,row.names = c("Dice sum","Probability"))
+names(df)<-NULL
+df %>% kbl() %>% kable_styling()
+```
+
+
+---
+
+# Displaying Probability Distributions
+
+Often, we can display a probability distribution as a barplot; For example, 
+
+```{r prob_bar, echo=FALSE,fig.height=5}
+df_t <- as_tibble(t(df))
+df_t$Probability <- c(1/36,2/36,3/36,4/36,5/36,6/36,5/36,4/36,3/36,2/36,1/36)
+df_t$`Dice sum` <- factor(df_t$`Dice sum`,levels=c("2","3","4","5","6","7","8","9","10","11","12"))
+df_t %>% ggplot(aes(x=`Dice sum`,y=Probability)) + geom_bar(stat="identity")
+```
+
+
+---
+
+# Independent Events
+
+- Suppose we want to solve the following problem: Toss two coins one at a time, what is the probability that they both land heads up? 
+
+--
+
+- It is a fact that knowing the outcome of the first coin toss provides no information about what the outcome of the second coin toss will be. 
+
+--
+
+- This example illustrates the concept of **independence** or **independent events**. 
+
+---
+
+# Working with Independent Events
+
+- If two events $A_{1}$ and $A_{2}$ are independent, then
+
+$$P(A_{1} \text{ and } A_{2}) = P(A_{1}) P(A_{2})$$
+
+--
+
+- We can use this to solve our question from the last slide. The event of landing two heads can be thought of as the event $A_{1} \text{ and } A_{2}$ where $A_{1}$ is the event that the first toss lands heads and $A_{2}$ is the event that the second toss lands heads. Then
+
+$$P(A_{1} \text{ and } A_{2}) = P(A_{1}) P(A_{2}) = \frac{1}{2}\frac{1}{2} = \frac{1}{4}$$
+
+--
+
+- Here is an example of two events that are NOT independent. Suppose that $A_{1}$ is the event of rolling an even number from a die toss and $A_{2}$ is the event of rolling an odd number from a die toss. Then $A_{1}$ and $A_{2}$ are not independent. In fact, mutually exclusive events are only indepent if the probability of one of them is zero. 
+
+---
+
+# An Application of Independence
+
+Suppose we randomly select a person. Furthermore, suppose that the probability of randomly selecting a left-handed person is $0.48$ and suppose that probability of randomly selecting a person who likes cats is $0.33$. We would expect that handedness and prediclection for cats are independent. Thus, the probability of randomly selecting a left-handed person who likes cats is
+
+```{r}
+0.48*0.33
+```
+
+---
+
+# Conditional Probability
+
+Suppose we have two jars, one (jar 1) with 3 red marbles and 2 black marbles; and one (jar 2) with 2 red marbles and 3 blue marbles. Next, suppose that we roll a die and if the die rolls 1 or 2 we randomly draw a marble from jar 1 while if the die rolls 3, 4, 5, or 6 we randomly draw a marble from jar 2.  Consider the two following questions:
+
+--
+
+- What is the probability that we draw a red marble? 
+
+--
+
+- What is the probability that we draw a red marble given that the die rolls a 2?
+
+--
+
+- It should see plausible that these probability values are not going to be the same. In fact, the answer to the first question is $\frac{3}{30}\approx 0.43$ (we will see how to compute this soon) and it is $\frac{3}{5}=0.6$ for the second (this should be pretty obvious). 
+
+--
+
+- The second question illustrates the concept of **conditional probability**. Let's examine this concept a little further. 
+
+---
+
+# Computing Conditional Probabilities 
+
+A mathematical expression for conditional probability may be written down:
+
+> The conditional probability of outcome $A$ given condition $B$ is computed as follows:
+
+$$P(A | B) = \frac{P(A \text{ and } B)}{P(B)}$$
+--
+
+- Example: Suppose that we roll two dice, and let $F$ be the event that the first die rolls a 1 and $S$ be the event that the second die rolls a 1. What is the probability that the second die rolls a 1 given that the first die rolls a 1, that is, what is the probability of the event $S | F$? We can use the previous equation to compute this:
+
+$$P(S | F) = \frac{\frac{1}{36}}{\frac{1}{6}} = \frac{1}{36}\frac{6}{1} = \frac{6}{36} = \frac{1}{6}$$
+
+--
+
+- **Question:** Is this the result you would have expected? 
+
+
+---
+
+# Multiplication Rule
+
+> If $A$ and $B$ are two events, then
+
+$$P(A \text{ and } B) = P(A|B)P(B)$$
+
+--
+
+- Reconsidering our game of rolling a die and drawing marbles from a jar, what is the probability of rolling a 2 **and** drawing a red marble? We can use the multiplication rule. Let $A$ be the event that we draw a red marble and $B$ the event that we roll a 2. Then, 
+
+$$P(A \text{ and } B) = P(A|B)P(B) = \frac{3}{5} \frac{1}{6} = \frac{3}{30}=\frac{1}{10}$$
+
+---
+
+# The Law of Total Probability
+
+If $B_{1}, B_{2}, B_{3}, \ldots, B_{n}$ are all exclusive, and if $A$ is any event, then
+
+$$P(A) = P(A|B_{1})P(B_{1}) + P(A|B_{2})P(B_{2}) + \cdots + P(A|B_{n})P(B_{n})$$
+
+
+--
+
+- We can use the law of total probability to compute the probability that we draw a red marble in out die toss marble draw game. Let $A$ be the event that we draw a red marblem, let $B_{1}$ be the event that we roll a 2, and let $B_{2}$ be the event that we do not roll a two, that is, that we roll 1, 3, 4, 5, or 6. Notice that $B_{1}$ and $B_{2}$ are exclusive. Therefore, by the law of total probability
+
+$$
+\begin{align*}
+P(A) &= P(A|B_{1})P(B_{1}) + P(A|B_{2})P(B_{2}) \\
+     &= \frac{3}{5}\frac{1}{6} + \frac{2}{5}\frac{5}{6} \\
+     &= \frac{3}{30} + \frac{10}{30} \\
+     &= \frac{13}{30} \approx 0.43
+\end{align*}
+$$
+
+
+---
+
+# Break for More Examples
+
+Let's take a few minutes to work some examples from the textbook for the probability topics we have covered so far. 
 
