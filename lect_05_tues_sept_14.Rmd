@@ -35,7 +35,6 @@ In this lecture, we will
     - We will introduce the ideas of random process, outcome, event, probability, and probability distribution. Textbook sections 3.1.2, 3.1.3, 3.1.4, and 3.1.5. 
     - We discuss mutually exclusive and idependent events. Textbook sections 3.1.3, 3.1.7, 2.1.5. 
     - We explain the notion of conditional probability. Textbook section 3.2.1. 
-    - We discuss sampling with and without replacement.
     - We use R to illustrate some of the basic probability concepts. 
  
  
@@ -106,11 +105,11 @@ knitr::include_graphics("https://www.dropbox.com/s/jh4segwkakz1qpr/a_die.png?raw
 
 --
 
-- For example, the event of rolling a even value is made up of the collection of events 2, 4, 6. 
+- For example, the event of rolling a even value is made up of the collection of outcomes 2, 4, 6. 
 
 --
 
-- Two events are said to be **mutually exclusive** is they cannot both happen at the same time. For example, the events or rolling an even number and rolling an odd number after tossing a six-sided die are two mutually exclusive events. 
+- Two events are said to be **mutually exclusive** if they cannot both happen at the same time. For example, the events of rolling an even number and rolling an odd number after tossing a six-sided die are two mutually exclusive events. 
 
 --
 
@@ -169,11 +168,11 @@ $$
 
 # The Complement of an Event
 
-- The complement of an event is the collections of all outcomes that **do not** belong the that event. If $A$ is an event, we denote its complement by $A^{C}$.
+- The complement of an event is the collections of all outcomes that **do not** belong to that event. If $A$ is an event, we denote its complement by $A^{C}$.
 
 --
 
-- Suppose that $A$ is the event of rolling a value less than or equal to 2. The $A^{C}$ is the event of rolling a value greater or equal to 3. 
+- Suppose that $A$ is the event of rolling a value less than or equal to 2. Then $A^{C}$ is the event of rolling a value greater or equal to 3. 
 
 --
 
@@ -181,7 +180,7 @@ $$
 
 --
 
-- If $P(A)$ is the probability of an event, then $P(A^{C}) = 1 - P(A)$. 
+- If $P(A)$ is the probability of an event, then $P(A^{C}) = 1 - P(A)$. Likewise, $P(A) = 1 - P(A^C)$. 
 
 --
 
@@ -289,7 +288,7 @@ Suppose we have two jars, one (jar 1) with 3 red marbles and 2 black marbles; an
 
 --
 
-- It should see plausible that these probability values are not going to be the same. In fact, the answer to the first question is $\frac{3}{30}\approx 0.43$ (we will see how to compute this soon) and it is $\frac{3}{5}=0.6$ for the second (this should be pretty obvious). 
+- It should seem plausible that these probability values are not going to be the same. In fact, the answer to the first question is $\frac{3}{30}\approx 0.43$ (we will see how to compute this soon) and it is $\frac{3}{5}=0.6$ for the second (this should be pretty obvious). 
 
 --
 
@@ -328,6 +327,24 @@ $$P(A \text{ and } B) = P(A|B)P(B)$$
 - Reconsidering our game of rolling a die and drawing marbles from a jar, what is the probability of rolling a 2 **and** drawing a red marble? We can use the multiplication rule. Let $A$ be the event that we draw a red marble and $B$ the event that we roll a 2. Then, 
 
 $$P(A \text{ and } B) = P(A|B)P(B) = \frac{3}{5} \frac{1}{6} = \frac{3}{30}=\frac{1}{10}$$
+
+---
+
+# Another Perspective on Independence
+
+> It is a fact that two events $A$ and $B$ are independent if $P(A|B) = P(A)$. 
+
+--
+
+- This follows from the definition of conditional probability and the multiplication rule for independent events:
+
+$$
+\begin{align*}
+P(A|B) &= \frac{P(A \text{ and } B)}{P(B)}  \\
+&= \frac{P(A)P(B)}{P(B)} \ \ \ \ \ \  \text{assuming independence} \\
+&= P(A)
+\end{align*}
+$$
 
 ---
 
