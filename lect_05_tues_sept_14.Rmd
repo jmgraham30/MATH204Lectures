@@ -358,3 +358,29 @@ $$
 
 Let's take a few minutes to work some examples from the textbook for the probability topics we have covered so far. 
 
+
+
+
+
+
+
+
+
+---
+
+# Next Time
+
+In the next class, 
+
+--
+
+- We will have our first data lab assignment. 
+
+--
+
+- With whatever time is left, we will begin to introduce random variables. 
+
+--
+
+- Before the next class, make sure to accept an invitation to the MATH204LabAssignment01 RStudio Cloud project. 
+
