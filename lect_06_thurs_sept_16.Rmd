@@ -141,7 +141,7 @@ $$P(X <= 5) = \frac{1}{36}+\frac{2}{36}+\frac{3}{36}+\frac{4}{36}=\frac{10}{36}=
 
 # Expectation
 
-- Expectation, or the expected value of a random variable $X$ measures the average outcome for $X$. We typically denote the expectation of $X$ by $E(X)$.  
+- Expectation, or the expected value of a random variable $X$ measures the average outcome for $X$. We typically denote the expectation of $X$ by $E(X)$, or sometimes by $\mu$.  
 
 --
 
@@ -166,9 +166,41 @@ $$
 
 ---
 
-# Another Example
+# Considering Data
 
-- Suppose we let $X$ be the random variable that counts the number of heads afer a single toss of a coin with probability of getting heads $p$. 
+- The following shows the first few rows from data collected after repeatedly tossing two dice 5,000 times and adding up their values after each toss:
+
+```{r dice_data,echo=FALSE}
+d_samp <- function(i){
+  return(as.integer(sample(c(1,2,3,4,5,6),1)))
+}
+d_1 <- map_int(1:5000,d_samp)
+d_2 <- map_int(1:5000,d_samp)
+d_df <- tibble(die_1=d_1,die_2=d_2) %>% mutate(sum=die_1+die_1)
+d_df %>% head()
+```
+
+--
+
+- Let's compute the mean for the sum variable:
+
+```{r samp_e,echo=FALSE}
+mean(d_df$sum)
+```
+
+--
+
+- The point is that expected value is to random variables what the mean is to data. 
+
+--
+
+- That is, if we take a very large number of samples from a random variable and compute the sample mean, then this will give us an accurate (but not exact) estimate for the expected value.  
+
+---
+
+# Another Expectation Example
+
+- Suppose we let $X$ be the random variable that counts the number of heads after a single toss of a coin with probability of getting heads $p$. 
 
 --
 
@@ -179,4 +211,97 @@ $$E(X) = 1 \cdot p + 0 \cdot (1-p) = p$$
 --
 
 - If our coin is fair, then $p=\frac{1}{2}$ and $E(X) = \frac{1}{2}$. 
+
+--
+
+- Here's the mean of 1,000 samples from this random variable (number of heads for a fair coin):
+
+```{r, samp_e_coin,echo=FALSE}
+mean(rbinom(1000,1,0.5))
+```
+
+---
+
+# Basic Properties of Expectation
+
+- The expected value satisfies some important properties, among the most important are:
+
+--
+
+- If we multiply a random variable $X$ by a number $a$, and then add another number $b$, then we can compute the expected value in either of two ways and get the same answer. Mathematically, 
+
+$$E(aX + b) = aE(X) + b.$$
+
+--
+
+- If we have two random variables $X$ and $Y$, and we multiply them each by a different number and add the result, then we can compute the expected value in either of two ways and get the same answer. Mathematically,
+
+$$E(aX+bY) = aE(X) + bE(Y)$$
+
+--
+
+- The previous result extends to any number of random variables. In particular, 
+
+$$E(X_{1} + X_{2} + \cdots + X_{n}) = E(X_{1}) + E(X_{2}) + \cdots + E(X_{n})$$
+---
+
+# Examples Working with Expectation
+
+- We will take a pause from the slides to work out some examples together. 
+
+---
+
+# Variance of a Random Variable
+
+- We have seen that expected value is to random variables what the mean is to data. What is the analog of the sample variance of data for a random variable? 
+
+--
+
+- The answer is the **variance** of a random variable. If $X$ is a random variable and $\mu$ is its expected value, then the variance of $X$ is 
+
+$$\text{Var}(X) = E((X - \mu)^2)$$
+
+- The standard deviation of a random variable $X$ is the square root of its variance $\text{sd}(X) = \sqrt{\text{Var}(X)}$. 
+
+--
+
+- In this class, we will not need to compute the variance for random variables by hand. However, it is helpful to know that if $a$ and $b$ are numbers and if $X$ is a random variable, then
+
+$$\text{Var}(aX + b) = a^2\text{Var}(X)$$
+
+---
+
+# Considering Data for Variance
+
+- You can take it on faith that if $X$ is the random variable that returns the number of heads after a single toss of a fair coin, then $\text{Var}(X) = \frac{1}{4}=0.25$. Let's see how this compares with the sample variance of some data:
+
+--
+
+- The sample variance after 1,000 sample tosses is
+
+```{r samp_v,echo=FALSE}
+var(rbinom(1000,1,0.5))
+```
+
+
+---
+
+# Examples Working with Variance
+
+- We will take a pause from the slides to work out some examples together. 
+
+
+---
+
+# The Geometric Distribution
+
+
+---
+
+# The Binomial Distribution
+
+---
+
+# Continuous Distributions
+
 
