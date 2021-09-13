@@ -26,3 +26,23 @@ library(latex2exp)
 
 
 # Learning Objectives
+
+In this lecture, we will
+
+- Examine the most important concepts related to our study of random variables.
+
+--
+
+- Recall from the last lecture that we introduced the notion of a random variable, that is, something that assigns a numerical value to events from a random process.
+
+--
+
+- We typically denote random variables by capital letters at the end of the alphabet such as $X$, $Y$, or $Z$.
+
+--
+
+- Our primary goal is to study methods that allow us to better understand the distribution of a random variable. 
+
+---
+
+# 

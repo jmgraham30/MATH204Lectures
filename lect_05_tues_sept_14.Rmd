@@ -34,7 +34,8 @@ In this lecture, we will
 
     - We will introduce the ideas of random process, outcome, event, probability, and probability distribution. Textbook sections 3.1.2, 3.1.3, 3.1.4, and 3.1.5. 
     - We discuss mutually exclusive and idependent events. Textbook sections 3.1.3, 3.1.7, 2.1.5. 
-    - We explain the notion of conditional probability. Textbook section 3.2.1. 
+    - We explain the notion of conditional probability. Textbook section 3.2.1.
+    - We begin our discussion on the imporant notion of random variables. 
     - We use R to illustrate some of the basic probability concepts. 
  
  
@@ -46,7 +47,11 @@ In this lecture, we will
 
 --
 
-- Probability provides us with a precise langauge for discussing uncertainty. 
+- Probability provides us with a precise language for discussing uncertainty.
+
+--
+
+- Suppose we want to know about the average amount of coffee students consume. If we take repeated samples, we will likely get a different mean value for each sample. How much variation is to be expected for the sample mean? This is a question that probability provides us with the tools to answer. 
 
 ---
 
@@ -190,7 +195,7 @@ $$
 
 # Probability Distributions
 
-A **probability** distribution is a table of all mutually excusive outcomes and their associated probabilities. 
+A **probability distribution** is a table of all mutually excusive outcomes and their associated probabilities. 
 
 --
 
@@ -377,10 +382,121 @@ Let's take a few minutes to work some examples from the textbook for the probabi
 
 
 
+---
+
+# Introduction to Random Variables
+
+- It's often useful to model a process using what's called a **random variable**. 
+
+--
+
+- Suppose we toss a coin ten times and add up the number of heads that have appeared. Tossing a coin ten times is a random process, the total number of heads after ten tosses is a random variable.
+
+--
+
+- In general, a random variable assigns a numerical value to events from a random process. 
+
+--
+
+- We will see later that random variables have distributions associated with them, and we want to be able to describe the distributions of random variables. 
+
+--
+
+- The sample mean is an important example of a random variable and its distribution is called a **sampling distribution**. 
+
+---
+
+# Notation for Random Variables
+
+- We typically denote random variables by capital letters at the end of the alphabet such as $X$, $Y$, or $Z$.
+
+--
+
+- For example, let $X$ be the random variable that is the sum of the number of heads that we obtain after tossing a coin ten times. The possible values that $X$ can take on are $X=0$, $X=1$, $X=2$, $\ldots$, $X=10$. 
+
+--
+
+- Typical question that we ask are ones such as, what is the probability that $X=2$, or what is the probability that $X$ is less than 5. What do these questions mean in the context of our coin tossing example? 
 
 
+--
 
+- The distribution of $X$ allows us to answer such questions. 
 
+---
+
+# A Look at Some Data
+
+- Let's look at six rounds if tossing a coin ten times. At each toss, we record 1 if we land heads and 0 if we land tails. Then we can add up the 1's to get the total number of heads after ten tosses. Our data might look as follows:
+
+```{r a_dist, echo=FALSE}
+toss_df <- data.frame(round_1=rbinom(10,1,0.5),round_2=rbinom(10,1,0.5),
+                      round_3=rbinom(10,1,0.5),round_4=rbinom(10,1,0.5),
+                      round_5=rbinom(10,1,0.5),round_6=rbinom(10,1,0.5))
+dist_df <- data.frame(t(toss_df))
+dist_df <- dist_df %>% mutate(total_heads=X1+X2+X3+X4+X5+X6+X7+X8+X9+X10)
+dist_df %>% kbl() %>% kable_styling()
+```
+
+--
+
+- Let's repeat this process many more time and create a barplot that shows the number of times each of the values 0, 1, ..., 10 occurs. 
+
+---
+
+# The Distribution of the Number of Heads
+
+```{r coin_dist,echo=FALSE,fig.height=5}
+count_heads <- function(ct){
+  s <- sum(rbinom(10,1,0.5))
+  return(s)
+}
+res <- map_int(1:5000,count_heads)
+res_df <- tibble(heads_count=res)
+counts_char <- factor(res_df$heads_count,levels=c("0","1","2","3","4","5","6","7","8","9","10"))
+res_df$heads_count_char <- counts_char
+res_df %>% gf_bar(~heads_count_char)
+```
+
+--
+
+- If we divide all of the counts by the total, we get the density. This provides an estimate for the probability value of each outcome. 
+
+---
+
+# Probabilities for Number of Heads
+
+This plot show the density instead of count for the previous barplot.
+
+```{r probs, echo=FALSE, fig.height=5}
+res_df %>% ggplot(aes(x = heads_count_char)) +  
+  geom_bar(aes(y = (..count..)/sum(..count..))) + ylab("Density")
+```
+
+--
+
+- From this plot, we can easily estimate probability values. For example, what is the pobability of getting 4 heads out of ten tosses? It's about 0.2. What is the probability of getting less than three heads? It's about 0.04 + 0.01 + 0.0025 = 0.0525. 
+
+---
+
+# The Mean and Variance for Number of Heads
+
+We can compute the mean and variance for the number of heads, in which case we get:
+
+```{r E_Var,echo=FALSE}
+E <- mean(res_df$heads_count)
+Var <- var(res_df$heads_count)
+sprintf("The mean is %f",E)
+sprintf("The variance is %f",Var)
+```
+
+--
+
+- This tells us the the "average" number of heads out of ten tosses is about 5. How does this correspond with your real life experience or expectations? 
+
+--
+
+- These values provide estimates for the **expected value** and **variance** of our random variable. These concepts will be defined and discussed in detail in the next lecture. 
 
 
 ---
@@ -395,7 +511,7 @@ In the next class,
 
 --
 
-- With whatever time is left, we will begin to introduce random variables. 
+- With whatever time is left, we will continue our introduction to random variables. 
 
 --
 
