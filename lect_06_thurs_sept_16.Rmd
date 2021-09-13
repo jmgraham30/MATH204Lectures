@@ -1,6 +1,6 @@
 ---
 title: "Lecture 6"
-subtitle: "Introduction to Random Variables"
+subtitle: "Random Variables"
 author: "JMG"
 institute: "MATH 204"
 date: "Thursday, September 16"
@@ -22,6 +22,7 @@ library(tidyverse)
 library(ggformula)
 library(patchwork)
 library(latex2exp)
+library(kableExtra)
 ```
 
 
@@ -43,6 +44,139 @@ In this lecture, we will
 
 - Our primary goal is to study methods that allow us to better understand the distribution of a random variable. 
 
+--
+
+- Specifically, we will cover expectation, variance, discrete and continuous distributions, and some common random variables and their distributions. See textbook sections 3.4, 3.5, 4.1, 4.2, and 4.3.    
+
 ---
 
-# 
+# Random Variable Distributions
+
+- If a random variable has only a very small number of outcomes, then we can simply list its distribution. 
+
+--
+
+- For example, reconsider the process of rolling two six-sided dice. Let $X$ be the random variable that records the sum of the values shown by the two dice. Then the distribution for $X$ is
+
+```{r small_dist, echo=FALSE}
+a2<-c("X=2","1/36")
+a3<-c("X=3","2/36")
+a4<-c("X=4","3/36")
+a5<-c("X=5","4/36")
+a6<-c("X=6","5/36")
+a7<-c("X=7","6/36")
+a8<-c("X=8","5/36")
+a9<-c("X=9","4/36")
+a10<-c("X=10","3/36")
+a11<-c("X=11","2/36")
+a12<-c("X=12","1/36")
+df <- data.frame(a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,row.names = c("Dice sum","Probability"))
+names(df)<-NULL
+df %>% kbl() %>% kable_styling()
+```
+
+--
+
+- We can compute probability values associated with $X$ such as
+
+$$P(X=3) = \frac{2}{36}=\frac{1}{18}$$
+
+or
+
+$$P(X <= 5) = \frac{1}{36}+\frac{2}{36}+\frac{3}{36}+\frac{4}{36}=\frac{10}{36}=\frac{5}{18}$$
+
+---
+
+# Tossing a Coin
+
+-Consider the random process of tossing a coin where the probability of landing heads is a number $p$. Let $X$ be the random variable that counts the number of heads after a single toss. 
+
+--
+
+- Construct the probability distribution for $X$. Note that the only possible outcomes for $X$ is 0 or 1.
+
+--
+
+- Obviously $P(X=1) = p$. 
+
+--
+
+- By the complement rule, we must have $P(X=0) = 1 - p$. 
+
+---
+
+# Summaries for Random Variable Distributions
+
+- In cases where it is not easy to completely write down the probability distribution for a random variable, it is useful to be able to characterize the distribution. 
+
+--
+
+- The two most common characteristics we consider for the distribution of a random variable are its **expectation** or expected value, and its **variance**.
+
+--
+
+- We will discuss expectation first.
+
+---
+
+# Discrete Vs. Continuous Random Variables
+
+- Before we define the expectation of a random variable, it is helpful to distinguish two types of random variables. 
+
+--
+
+- A random variable $X$ is called **discrete** if its outcomes form a discrete set. 
+
+- A set is discrete if it can be labeled by the whole numbers 1, 2, 3, ...
+
+--
+
+- For example, the random variable that adds the values after a roll of two six-sided dice is a discrete random variable. Additionally, the random variable that counts the number of heads after tossing a coin 10 times is a discrete random variable. 
+
+--
+
+- Later we will describe continuous random variables. However, it's important to note that there are random variables that are neither discrete or continuous. 
+ 
+---
+
+# Expectation
+
+- Expectation, or the expected value of a random variable $X$ measures the average outcome for $X$. We typically denote the expectation of $X$ by $E(X)$.  
+
+--
+
+- The expected value of a discrete random variable $X$ is the sum of the products of its outcomes times its probability values. 
+
+--
+
+- Mathematically,
+
+$$E(X) = x_{1}P(X=x_{1}) + x_{2}P(X=x_{2}) + \cdots + x_{n}P(X=x_{n})$$
+--
+
+- For example, if $X$ is the random variable that adds the values after a roll of two six-sided dice, then
+
+$$
+\begin{align*}
+E(X) &= 2\frac{1}{36}+3\frac{2}{36}+4\frac{3}{36}+5\frac{4}{36}+6\frac{5}{36} \\
+& +7\frac{6}{36}+8\frac{5}{36}+9\frac{4}{36}+10\frac{3}{36}+11\frac{2}{36}+12\frac{1}{36} \\
+&= \frac{245}{36} \approx 6.8
+\end{align*}
+$$
+
+---
+
+# Another Example
+
+- Suppose we let $X$ be the random variable that counts the number of heads afer a single toss of a coin with probability of getting heads $p$. 
+
+--
+
+- Then,
+
+$$E(X) = 1 \cdot p + 0 \cdot (1-p) = p$$
+
+--
+
+- If our coin is fair, then $p=\frac{1}{2}$ and $E(X) = \frac{1}{2}$. 
+
