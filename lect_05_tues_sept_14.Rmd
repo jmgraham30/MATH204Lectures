@@ -362,14 +362,14 @@ $$P(A) = P(A|B_{1})P(B_{1}) + P(A|B_{2})P(B_{2}) + \cdots + P(A|B_{n})P(B_{n})$$
 
 --
 
-- We can use the law of total probability to compute the probability that we draw a red marble in out die toss marble draw game. Let $A$ be the event that we draw a red marblem, let $B_{1}$ be the event that we roll a 2, and let $B_{2}$ be the event that we do not roll a two, that is, that we roll 1, 3, 4, 5, or 6. Notice that $B_{1}$ and $B_{2}$ are exclusive. Therefore, by the law of total probability
+- We can use the law of total probability to compute the probability that we draw a red marble in our die toss marble draw game. Let $A$ be the event that we draw a red marble, let $B_{1}$ be the event that we roll a 1, let $B_{2}$ be the event that we roll a 2, and let $B_{3}$ be the event that we roll 3, 4, 5, or 6. Notice that $B_{1}$, $B_{2}$, and $B_{3}$ are exclusive. Therefore, by the law of total probability
 
 $$
 \begin{align*}
-P(A) &= P(A|B_{1})P(B_{1}) + P(A|B_{2})P(B_{2}) \\
-     &= \frac{3}{5}\frac{1}{6} + \frac{2}{5}\frac{5}{6} \\
-     &= \frac{3}{30} + \frac{10}{30} \\
-     &= \frac{13}{30} \approx 0.43
+P(A) &= P(A|B_{1})P(B_{1}) + P(A|B_{2})P(B_{2}) + P(A|B_{3})P(B_{3})  \\
+     &= \frac{3}{5}\frac{1}{6} + \frac{3}{5}\frac{1}{6} +  \frac{2}{5}\frac{4}{6} \\
+     &= \frac{1}{30} + \frac{1}{30} + \frac{8}{30} \\
+     &= \frac{10}{30} \approx 0.33
 \end{align*}
 $$
 

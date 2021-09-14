@@ -293,8 +293,84 @@ var(rbinom(1000,1,0.5))
 
 ---
 
+# Famous Distributions and Their Properties
+
+- Now that we have covered the principal concepts regarding random variables, we introduce some famous types of random variables and describe their distributions. 
+
+--
+
+- We begin with some famous discrete distributions.
+
+--
+
+- Bernoulli, Geometric, and Binomial
+
+--
+
+- Then we discuss continuous random variables and the most famous continuous distribution, the normal distribution. 
+
+
+---
+
+# Bernoulli Random Variable
+
+A **Bernoulli random variable** (section 4.2.1) is a random variable $X$ corresponding to a random process with exactly two possible outcomes typically labeled "success" and "failure", a so-called Bernoulli trial.  We define $X$ by counting the number of successes after a single trial so that $X=1$ (for a success) and $X=0$ for failure. 
+
+--
+
+- If $p$ is the probability of success, then the probability distribution of $X$ is
+
+```{r bern_dist,echo=FALSE}
+b0<-c("X=0","1-p")
+b1<-c("X=1","p")
+df <- data.frame(b0,b1,row.names = c("Num Successes","Probability"))
+names(df)<-NULL
+df %>% kbl() %>% kable_styling()
+```
+
+--
+
+- If $X$ is a Bernoulli random variable, then
+
+$$\mu=E(X) = p, \ \ \text{ and } \ \ \sigma^2=\text{Var}(X) = p(1-p)$$
+
+--
+
+- Note that the flip of a coin can be modeled by a Bernoulli random variable if we think of tossing heads as a success and if the probability of tossing heads is $p$.
+
+---
+
+# Bernoulli Examples
+
+- We take a break from the slides to work out some examples related to Bernoulli random variables. 
+
+---
+
 # The Geometric Distribution
 
+The geometric distribution is used to describe how many trials it takes to observe a success.
+
+--
+
+- Suppose we conduct a sequence of $n$ independent Bernoulli trials with probability of success $p$. What is the probability that it takes $n$ trials to obtain the first success? 
+
+--
+
+- Let $A$ be the event that the first success occurs on the $n$-th trial. Then $A$ can be realized as the event $A = F_{1} \text{ and } F_{2} \text { and } \cdots \text{ and }F_{n-1} \text{ and }S_{1}$, where and $F$ corresponds to a failure event and an $S$ corresponds to a success event. Since there are all independent, we have
+
+$$P(A) = P(F_{1})P(F_{2})\cdots P(F_{n-1})P(S_{1}) = (1-p)^{n-1}p$$
+
+--
+
+- If $X$ is a random variable with a geometric distribution, then
+
+$$\mu=E(X) = \frac{1}{p}, \ \ \text{ and }\ \ \sigma^{2}=\text{Var}(X) = \frac{1-p}{p^2}$$
+
+---
+
+# Geometric Distribution Examples
+
+- We take a break from the slides to work out some examples related to Geometric random variables.
 
 ---
 
@@ -303,5 +379,10 @@ var(rbinom(1000,1,0.5))
 ---
 
 # Continuous Distributions
+
+
+---
+
+# R Commands for Distributions
 
 
