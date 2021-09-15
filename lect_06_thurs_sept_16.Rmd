@@ -89,7 +89,7 @@ $$P(X <= 5) = \frac{1}{36}+\frac{2}{36}+\frac{3}{36}+\frac{4}{36}=\frac{10}{36}=
 
 # Tossing a Coin
 
--Consider the random process of tossing a coin where the probability of landing heads is a number $p$. Let $X$ be the random variable that counts the number of heads after a single toss. 
+- Consider the random process of tossing a coin where the probability of landing heads is a number $p$. Let $X$ be the random variable that counts the number of heads after a single toss. 
 
 --
 
@@ -101,7 +101,15 @@ $$P(X <= 5) = \frac{1}{36}+\frac{2}{36}+\frac{3}{36}+\frac{4}{36}=\frac{10}{36}=
 
 --
 
-- By the complement rule, we must have $P(X=0) = 1 - p$. 
+- By the complement rule, we must have $P(X=0) = 1 - p$. Therefore, 
+
+```{r coin_dist,echo=FALSE}
+b0<-c("X=0","1-p")
+b1<-c("X=1","p")
+df <- data.frame(b0,b1,row.names = c("Num Heads","Probability"))
+names(df)<-NULL
+df %>% kbl() %>% kable_styling()
+```
 
 ---
 
@@ -265,7 +273,7 @@ $$\text{Var}(X) = E((X - \mu)^2)$$
 
 --
 
-- In this class, we will not need to compute the variance for random variables by hand. However, it is helpful to know that if $a$ and $b$ are numbers and if $X$ is a random variable, then
+- It is helpful to know that if $a$ and $b$ are numbers and if $X$ is a random variable, then
 
 $$\text{Var}(aX + b) = a^2\text{Var}(X)$$
 
@@ -375,6 +383,59 @@ $$\mu=E(X) = \frac{1}{p}, \ \ \text{ and }\ \ \sigma^{2}=\text{Var}(X) = \frac{1
 ---
 
 # The Binomial Distribution
+
+- The binomial distribution is used to describe the number of successes in a fixed number of trials. This is different from the geometric distribution, which describes the number of trials we must wait before we observe a success. 
+
+--
+
+- For a binomial distribution, 
+
+--
+
+  - The number of trials, $n$, is fixed. 
+  
+--
+  
+  - The trials are independent. 
+  
+--
+  
+  - Each trial outcome can be classified as a success or failure.
+  
+--
+  
+  - The probability of a success, $p$, is the same for each trial. 
+  
+---
+
+# Mathematics of the Binomial Distribution
+
+- Suppose the probability of a single trial being a success is $p$.
+  Then the probability of observing exactly $k$ successes
+  in $n$ independent trials is given by
+  
+$$
+\begin{align*}
+  {n\choose k}p^k(1-p)^{n-k} &= \frac{n!}{k!(n-k)!}p^k(1-p)^{n-k}
+\end{align*}
+$$
+
+--
+
+- The mean, variance, and standard deviation
+  of the number of observed successes are
+  
+$$
+\begin{align*}
+  \mu &= np &\sigma^2 &= np(1-p)  &\sigma&= \sqrt{np(1-p)}
+\end{align*}
+$$
+
+---
+
+# Binomial Distribution Examples
+
+- We take a break from the slides to work out some examples related to Binomial random variables.
 
 ---
 
