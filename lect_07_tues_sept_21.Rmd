@@ -128,7 +128,8 @@ get_means <- function(i){
 }
 
 ms <- map_dbl(1:2500,get_means)
-tibble(means=ms) %>% head()
+means_df <- tibble(means=ms)
+means_df %>% head()
 ```
 
 ---
@@ -138,7 +139,7 @@ tibble(means=ms) %>% head()
 - Here is a histogram of the data we obtained from the game described on the previous slide:
 
 ```{r samp_mean_hist,echo=FALSE,fig.height=4}
-tibble(means=ms) %>% gf_histogram(~means,color="black")
+means_df %>% gf_histogram(~means,color="black")
 ```
 
 --
@@ -148,4 +149,99 @@ tibble(means=ms) %>% gf_histogram(~means,color="black")
 ---
 
 # A Normal Density Function
+
+- The following plot shows a **normal** density curve:
+
+```{r norm_dens,fig.height=5}
+gf_dist("norm")
+```
+
+---
+
+# Center and Shape of a Normal Curve
+
+- There are two parameters called $\mu$ and $\sigma$ that determine the center and shape, respectively of a normal curve. For example,:
+
+```{r norm_comps,echo=FALSE,fig.height=5,warning=FALSE}
+lab1a <- TeX("$\\mu = 0.0$")
+lab1b <- TeX("$\\sigma = 1.0$")
+lab2a <- TeX("$\\mu = 1.0$")
+lab2b <- TeX("$\\sigma = 0.5$")
+
+ggplot(data.frame(x = c(-4, 4)), aes(x)) + 
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), col='#88CCEE',lwd=1) +
+  stat_function(fun = dnorm, args = list(mean = 1, sd = .5), col='#CC6677',lwd=1) + geom_vline(xintercept = 0,linetype="dashed",col="#88CCEE") + 
+  geom_vline(xintercept = 1,linetype="dashed",col="#CC6677") + 
+  annotate(geom="text",x=-1.5,y=0.3,label=lab1a,col="#88CCEE",size=6) + 
+  annotate(geom="text",x=-2,y=0.2,label=lab1b,col="#88CCEE",size=6) + 
+  annotate(geom="text",x=2,y=0.7,label=lab2a,col="#CC6677",size=6) + 
+  annotate(geom="text",x=2,y=0.6,label=lab2b,col="#CC6677",size=6)
+  
+```
+
+---
+
+# Going Back to Data
+
+- Recall that to obtain our data, we drew 15 samples from a binomial distribution with $n=25$ and $p=0.5$, took the sample mean, and repeated this many times. The following plot shows the histogram of our data (with density instead of count on the $y$-axis) and overlays a particular normal density curve. 
+
+```{r norm_fit,echo=FALSE,fig.height=5,warning=FALSE}
+n <- 25
+p <- 0.5
+labSa <- TeX("$\\mu = np$")
+labSb <- TeX("$\\sigma = \\frac{\\sqrt{np(1-p)}}{\\sqrt{n}}$")
+means_df %>% ggplot(aes(x = means)) + 
+    geom_histogram(aes(y =..density..),binwidth = 0.25,
+                   colour = "black",fill="grey") +
+stat_function(fun = dnorm, args = list(mean = n*p, sd = sqrt(p*(1-p))),color="#CC6677",lwd=1) + 
+  annotate(geom="text",x=13,y=0.8,label=labSa,col="#CC6677",size=6) + 
+  annotate(geom="text",x=13.5,y=0.7,label=labSb,col="#CC6677",size=6)
+
+```
+
+---
+
+# Sampling Distribution of the Mean
+
+- We can think of the sample mean as a random variable. The sample mean inputs sample data of a fixed size from a population and returns the mean of the data. The point is that the sample mean will vary as the sample varies. 
+
+--
+
+- What the last slide shows us is that, at least in the particular example, the distribution of the sample mean (viewed as a random variable) is very close to a random variable that is normally distributed.
+
+--
+
+- In general, we call the distribution of the sample mean (viewed as a random variable), the **sampling distribution of the mean**.  It is a general fact that the sampling distribution of the mean is always very close to a normal distribution, regardless of the type of distribution used to sample the data for which the sample mean is computed. 
+
+--
+
+- This is the reason why the normal distribution plays such a central role in statistics. 
+
+---
+
+# Notation for Normal Random Variables
+
+- If $X$ is a random variable with expected value $\mu=E(X)$ and standard deviation $\sigma = \sqrt{\text{Var}(X)}$, then we write $X \sim N(\mu,\sigma)$. 
+
+--
+
+- For example, if we have a normal random variable $X$ with expected value $12.5$ and standard deviation $0.5$, then we write $X \sim N(\mu=12.5,\sigma=0.5)$. 
+
+--
+
+- Our next goal is to see how to use the normal density function to compute probability values for a random variable that follows a normal distribution. 
+
+---
+
+# Probability for Normal R.V.'s
+
+- The first think to know is that the total area under a normal density function is equal to 1. This is true regardless of the values for $\mu$ and $\sigma$. Thus, the shaded area shown below is 1:
+
+```{r unit_area,echo=FALSE,fig.height=5}
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + 
+  annotate(geom="text",x=0,y=0.2,label="total area is 1",size=6)
+```
+
 
