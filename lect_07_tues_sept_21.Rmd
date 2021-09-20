@@ -68,7 +68,7 @@ tibble(x=rnorm(5000,66,3.5)) %>% gf_histogram(~x,color="black")
 
 # Normal Histogram Discussion 
 
-- Think of the histogram on the previous slide as showing data for measurements of human heights in inches.  
+- Think of the histogram on the previous slide as showing sample data for measurements of human heights in inches.  
 
 --
 
@@ -91,6 +91,14 @@ tibble(x=rnorm(5000,66,3.5)) %>% gf_histogram(~x,color="black")
 # Normal Distribution Facts
 
 > Many random variables are nearly normal, but none are exactly normal. Thus the normal distribution, while not perfect for any single problem, is very useful for a variety of problems. We will use it in data exploration and to solve important problems in statistics. 
+
+--
+
+- Let's spend some time to develop some intuition for how the normal distribution is often used in practice.
+
+--
+
+- We start by generating some data that is not necessarily normally distributed. 
 
 ---
 
@@ -127,7 +135,7 @@ tibble(means=ms) %>% head()
 
 # Plotting Our Data
 
-- Here is a histogram of the data we obtained from the game described on teh previous slide:
+- Here is a histogram of the data we obtained from the game described on the previous slide:
 
 ```{r samp_mean_hist,echo=FALSE,fig.height=4}
 tibble(means=ms) %>% gf_histogram(~means,color="black")
@@ -136,3 +144,8 @@ tibble(means=ms) %>% gf_histogram(~means,color="black")
 --
 
 - The mean of our data is `r round(mean(ms),3)`. What is the expected value of a binomial random variable with $n=25$ and $p=0.5$? 
+
+---
+
+# A Normal Density Function
+
