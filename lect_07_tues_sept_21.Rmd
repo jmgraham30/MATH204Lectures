@@ -229,6 +229,10 @@ stat_function(fun = dnorm, args = list(mean = n*p, sd = sqrt(p*(1-p))),color="#C
 
 --
 
+- We call a random variable $Z$ that satisfies $Z \sim N(\mu=0,\sigma=1)$ a **standard normal variable** and we call the normal distribution with $\mu=0$ and $\sigma=1$ the **standard normal distribution**. 
+
+--
+
 - Our next goal is to see how to use the normal density function to compute probability values for a random variable that follows a normal distribution. 
 
 ---
