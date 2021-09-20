@@ -108,7 +108,7 @@ tibble(x=rnorm(5000,66,3.5)) %>% gf_histogram(~x,color="black")
 
 --
 
-  3) We repeat steps 1 & 2 a very large number of times, say 1,000. 
+  3) We repeat steps 1 & 2 a very large number of times, say 2,500. 
   
 --
 
@@ -119,7 +119,7 @@ get_means <- function(i){
   return(mean(rbinom(15,25,0.5)))
 }
 
-ms <- map_dbl(1:1000,get_means)
+ms <- map_dbl(1:2500,get_means)
 tibble(means=ms) %>% head()
 ```
 
@@ -135,4 +135,4 @@ tibble(means=ms) %>% gf_histogram(~means,color="black")
 
 --
 
-- The mean of our data is `r round(mean(ms),2)`. What is the expected value of a binomial random variable with $n=25$ and $p=0.5$? 
+- The mean of our data is `r round(mean(ms),3)`. What is the expected value of a binomial random variable with $n=25$ and $p=0.5$? 
