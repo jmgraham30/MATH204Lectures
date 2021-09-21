@@ -416,7 +416,7 @@ Let's take a few minutes to work some examples from the textbook for the probabi
 
 --
 
-- Typical question that we ask are ones such as, what is the probability that $X=2$, or what is the probability that $X$ is less than 5. What do these questions mean in the context of our coin tossing example? 
+- Typical questions that we ask are ones such as, what is the probability that $X=2$, or what is the probability that $X$ is less than 5. What do these questions mean in the context of our coin tossing example? 
 
 
 --
@@ -440,7 +440,7 @@ dist_df %>% kbl() %>% kable_styling()
 
 --
 
-- Let's repeat this process many more time and create a barplot that shows the number of times each of the values 0, 1, ..., 10 occurs. 
+- Let's repeat this process many more times and create a barplot that shows the number of times each of the values 0, 1, ..., 10 occurs. 
 
 ---
 
@@ -492,7 +492,7 @@ sprintf("The variance is %f",Var)
 
 --
 
-- This tells us the the "average" number of heads out of ten tosses is about 5. How does this correspond with your real life experience or expectations? 
+- This tells us that the "average" number of heads out of ten tosses is about 5. How does this correspond with your real life experience or expectations? 
 
 --
 

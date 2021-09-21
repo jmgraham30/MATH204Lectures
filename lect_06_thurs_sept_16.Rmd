@@ -459,7 +459,7 @@ vembedr::embed_url("https://youtu.be/tKmyzhvgudw") %>%
 
 --
 
-- Continuous random variables are tricky to define precisely. Roughly, a random variable $X$ is a continuous random variable is its outcomes are continuous numerical value. 
+- Continuous random variables are tricky to define precisely. Roughly, a random variable $X$ is a continuous random variable if its outcomes are continuous numerical values. 
 
 --
 
