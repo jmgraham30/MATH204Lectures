@@ -160,7 +160,7 @@ gf_dist("norm")
 
 # Center and Shape of a Normal Curve
 
-- There are two parameters called $\mu$ and $\sigma$ that determine the center and shape, respectively of a normal curve. For example,:
+- There are two **parameters** called $\mu$ (mean) and $\sigma$ (sd) that determine the center and shape, respectively of a normal curve. For example,:
 
 ```{r norm_comps,echo=FALSE,fig.height=5,warning=FALSE}
 lab1a <- TeX("$\\mu = 0.0$")
@@ -203,7 +203,12 @@ stat_function(fun = dnorm, args = list(mean = n*p, sd = sqrt(p*(1-p))),color="#C
 
 # Sampling Distribution of the Mean
 
-- We can think of the sample mean as a random variable. The sample mean inputs sample data of a fixed size from a population and returns the mean of the data. The point is that the sample mean will vary as the sample varies. 
+- We can think of the sample mean as a random variable. The sample mean inputs 
+sample data of a fixed size from a population and returns the mean of the data. 
+
+--
+
+- The point is that the sample mean will vary as the sample varies. 
 
 --
 
@@ -221,7 +226,7 @@ stat_function(fun = dnorm, args = list(mean = n*p, sd = sqrt(p*(1-p))),color="#C
 
 # Notation for Normal Random Variables
 
-- If $X$ is a random variable with expected value $\mu=E(X)$ and standard deviation $\sigma = \sqrt{\text{Var}(X)}$, then we write $X \sim N(\mu,\sigma)$. 
+- If $X$ is a normal random variable with expected value $\mu=E(X)$ and standard deviation $\sigma = \sqrt{\text{Var}(X)}$, then we write $X \sim N(\mu,\sigma)$. 
 
 --
 
@@ -237,6 +242,60 @@ stat_function(fun = dnorm, args = list(mean = n*p, sd = sqrt(p*(1-p))),color="#C
 
 ---
 
+# Standardizing with Z-scores
+
+- Let $X \sim N(\mu,\sigma)$ be a normal random variable. 
+
+--
+
+- Define a new random variable $Z = \frac{X - \mu}{\sigma}$. We can compute the expectation and variance of $Z$ as follows:
+
+--
+
+$$E\left(Z\right)=E\left(\frac{X - \mu}{\sigma}\right)=\frac{1}{\sigma}E\left(X - \mu\right) = \frac{1}{\sigma}(E(X) - \mu) = \frac{1}{\sigma}(\mu - \mu) = 0$$
+
+--
+
+$$\text{Var}\left(Z\right)=\text{Var}\left(\frac{X - \mu}{\sigma}\right)=\frac{1}{\sigma^2}\text{Var}\left(X - \mu\right)=\frac{1}{\sigma^2}\text{Var}(X) = \frac{\sigma^2}{\sigma^2}=1$$
+
+--
+
+- So, if $X\sim N(\mu,\sigma)$, then $Z\sim N(0,1)$, where $Z = \frac{X-\mu}{\sigma}$. 
+
+
+--
+
+- This is all a little abstract, so let't think about standarding from a different perspective. 
+
+---
+
+# Standardizing Data
+
+- The following table shows the mean and standard deviation for total scores on the SAT and ACT exams:
+
+```{r exam_stats,echo=FALSE}
+exam_stats <- data.frame(SAT=c(1100,200),ACT=c(21,6),row.names = c("Mean","SD"))
+exam_stats %>% kbl() %>% kable_styling()
+```
+
+--
+
+- Suppose we know that one person scored 1300 on the SAT and another person scored 24 on the ACT. Who had the better exam score? The numbers alone can not be compared. But their standardized $Z$-scores can.
+
+--
+
+$$\text{person 1 Z-score}=\frac{1300-1100}{200}=1,\ \ \text{person 2 Z-score}=\frac{24-21}{6}=\frac{1}{2}$$
+
+--
+
+- So we conclude that person 1 had the better exam score. 
+
+--
+
+- Note that observations above the mean have a positive $Z$-score while observations below the mean have a negative $Z$-score. 
+
+---
+
 # Probability for Normal R.V.'s
 
 - The first think to know is that the total area under a normal density function is equal to 1. This is true regardless of the values for $\mu$ and $\sigma$. Thus, the shaded area shown below is 1:
@@ -248,4 +307,49 @@ ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
   annotate(geom="text",x=0,y=0.2,label="total area is 1",size=6)
 ```
 
+---
 
+# Tail Areas
+
+
+- Suppose that $X \sim N(\mu,\sigma)$, how do we find an area such as one of the ones shown below. That is, how do we find the area under one of the tails of a normal density function? 
+
+```{r tail_areas,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_l <- function(x) {
+    y <- dnorm(x)
+    y[x >= -1.5] <- NA
+    return(y)
+}
+
+dnorm_limit_r <- function(x) {
+    y <- dnorm(x)
+    y[x < 1.8] <- NA
+    return(y)
+}
+
+p_1 <- ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_l, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = -1.5,linetype="dashed",color="red") + 
+  annotate(geom="text",x=-2.1,y=0.3,label="x=-1.5",size=6,color="red")
+
+p_2 <- ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_r, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = 1.8,linetype="dashed",color="red") + 
+  annotate(geom="text",x=2.3,y=0.3,label="x=1.8",size=6,color="red")
+
+p_1 + p_2
+```
+
+---
+
+# Interpreting Tail Areas
+
+- In the last slide, the shaded area on the left represents the probability of an outcome being less than or equal to -1.5. 
+
+--
+
+- In the last slide, the shaded area on the right represents the probability of an outcome being greater than or equal to 1.8.
+
+--
+
+- We will use $Z$-scores and the standard normal distribution to compute such areas. 
