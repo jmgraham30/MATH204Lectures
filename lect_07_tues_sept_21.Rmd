@@ -60,7 +60,7 @@ vembedr::embed_url("https://youtu.be/S_p5D-YXLS4") %>%
 
 - The following histogram shows 5,000 random samples from a normal random variable:
 
-```{r norm_samps,fig.height=5}
+```{r norm_samps,fig.height=5,fig.width=8}
 tibble(x=rnorm(5000,66,3.5)) %>% gf_histogram(~x,color="black")
 ```
 
@@ -138,7 +138,7 @@ means_df %>% head()
 
 - Here is a histogram of the data we obtained from the game described on the previous slide:
 
-```{r samp_mean_hist,echo=FALSE,fig.height=4}
+```{r samp_mean_hist,echo=FALSE,fig.height=4,fig.width=8}
 means_df %>% gf_histogram(~means,color="black")
 ```
 
@@ -162,7 +162,7 @@ gf_dist("norm")
 
 - There are two **parameters** called $\mu$ (mean) and $\sigma$ (sd) that determine the center and shape, respectively of a normal curve. For example,:
 
-```{r norm_comps,echo=FALSE,fig.height=5,warning=FALSE}
+```{r norm_comps,echo=FALSE,fig.height=5,fig.width=8,warning=FALSE}
 lab1a <- TeX("$\\mu = 0.0$")
 lab1b <- TeX("$\\sigma = 1.0$")
 lab2a <- TeX("$\\mu = 1.0$")
@@ -185,7 +185,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 - Recall that to obtain our data, we drew 15 samples from a binomial distribution with $n=25$ and $p=0.5$, took the sample mean, and repeated this many times. The following plot shows the histogram of our data (with density instead of count on the $y$-axis) and overlays a particular normal density curve. 
 
-```{r norm_fit,echo=FALSE,fig.height=5,warning=FALSE}
+```{r norm_fit,echo=FALSE,fig.height=5,fig.width=8,warning=FALSE}
 n <- 25
 p <- 0.5
 labSa <- TeX("$\\mu = np$")
@@ -330,12 +330,12 @@ dnorm_limit_r <- function(x) {
 p_1 <- ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
   stat_function(fun = dnorm_limit_l, geom = "area", fill = "blue", alpha = 0.2) +
   stat_function(fun = dnorm) + geom_vline(xintercept = -1.5,linetype="dashed",color="red") + 
-  annotate(geom="text",x=-2.1,y=0.3,label="x=-1.5",size=6,color="red")
+  annotate(geom="text",x=-2.1,y=0.3,label="x=-1.5",size=6,color="red") + labs(caption="A left tail area") + theme(plot.caption=element_text(hjust=0,size=18))
 
 p_2 <- ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
   stat_function(fun = dnorm_limit_r, geom = "area", fill = "blue", alpha = 0.2) +
   stat_function(fun = dnorm) + geom_vline(xintercept = 1.8,linetype="dashed",color="red") + 
-  annotate(geom="text",x=2.3,y=0.3,label="x=1.8",size=6,color="red")
+  annotate(geom="text",x=2.3,y=0.3,label="x=1.8",size=6,color="red") + labs(caption="A right tail area") + theme(plot.caption=element_text(size=18))
 
 p_1 + p_2
 ```
@@ -353,3 +353,301 @@ p_1 + p_2
 --
 
 - We will use $Z$-scores and the standard normal distribution to compute such areas. 
+
+--
+
+- We proceed by first learning to compute tail areas under the standard normal density curve which corresponds to a random variable $Z \sim N(\mu=0,\sigma=1)$. 
+
+---
+
+# Standard Normal Tail Areas
+
+- We spell out the steps for computing tail areas under the standard normal density function. 
+
+--
+
+  - First, draw a picture of the tail area you want to compute. 
+  
+--
+  
+  - Decide if it's a left tail area or a right tail area. 
+  
+--
+
+  - If it's a left tail area, use `pnorm(z)` in R to compute the value.
+  
+--
+
+ - If it's a right tail area, use `1 - pnorm(z)` in R to compute the value. 
+ 
+--
+
+- The next slide explains why this approach works. 
+
+---
+
+# The Meaning of `pnorm`
+
+- The R command `pnorm(z)` computes the area under the standard normal density function for values less than or equal to $z$. That is, it computes the tail area to the left of the value `z`. 
+
+```{r left_tail_area,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_l2 <- function(x) {
+    y <- dnorm(x)
+    y[x >= -0.5] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_l2, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = -0.5,linetype="dashed",color="red") + 
+  annotate(geom="text",x=-0.6,y=0.38,label="z",size=6,color="red") +
+  annotate(geom="text",x=-1.2,y=0.05,label="area = pnorm(z)",size=6) +
+  labs(caption="A left tail area") + theme(plot.caption=element_text(hjust=0,size=18))
+
+```
+
+
+---
+
+# Right Tail Areas
+
+- This figure explains why we use `1-pnorm(z)` to compute right tail areas.
+
+```{r right_tail_area,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_l3 <- function(x) {
+    y <- dnorm(x)
+    y[x >= 0.5] <- NA
+    return(y)
+}
+
+dnorm_limit_r3 <- function(x) {
+    y <- dnorm(x)
+    y[x <= 0.5] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_l3, geom = "area", fill = "#CC6677") +
+  stat_function(fun = dnorm_limit_r3, geom = "area", fill = "blue",alpha=0.5) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = 0.5,linetype="dashed",size=1) + 
+  annotate(geom="text",x=0.65,y=0.38,label="z",size=6) +
+  annotate(geom="text",x=-0.8,y=0.1,label="area = pnorm(z)",size=6) + 
+  annotate(geom="text",x=1.3,y=0.04,label="area = 1-pnorm(z)",size=6)
+
+```
+
+--
+
+- Since the total area is 1 and `pnorm(z)` gives the left tail area it must be that `1-pnorm(z)` gives the right tail area. 
+
+---
+
+# Left Tail Example
+
+- What is the area under the standard normal density curve to the left of -2? That is, what is the area shown in the figure? 
+
+```{r left_examp,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_l_examp <- function(x) {
+    y <- dnorm(x)
+    y[x >= -2] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_l_examp, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = -2,linetype="dashed",color="red") + 
+  annotate(geom="text",x=-2.3,y=0.2,label="z=-2",size=6,color="red")
+
+```
+
+
+--
+
+- It is `pnorm(-2) = ` `r pnorm(-2)`. 
+
+
+---
+
+# Right Tail Example
+
+- What is the area under the standard normal density curve to the right of 1? That is, what is the area shown in the figure? 
+
+```{r right_examp,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_r_examp <- function(x) {
+    y <- dnorm(x)
+    y[x <= 1] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_r_examp, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = 1,linetype="dashed",color="red") + 
+  annotate(geom="text",x=1.1,y=0.38,label="z=1",size=6,color="red")
+
+```
+
+
+--
+
+- It is `1-pnorm(1) = ` `r 1-pnorm(1)`. 
+
+
+---
+
+# Middle Areas
+
+- You are probably curious as to how we can compute a "middle" area such as the one shown below.
+
+```{r mid_area,echo=FALSE,fig.height=5,fig.width=10}
+dnorm_limit_mid <- function(x) {
+    y <- dnorm(x)
+    y[x <= -0.5 | x >= 1.2] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_mid, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = -0.5,linetype="dashed",size=1) + geom_vline(xintercept = 1.2,linetype="dashed",size=1) +   annotate(geom="text",x=-0.8,y=0.0,label="z=-0.5",size=6) + 
+annotate(geom="text",x=1.5,y=0.0,label="z=1.2",size=6) + 
+  annotate(geom="text",x=0.3,y=0.15,label="area=?",size=6)
+
+```
+
+
+--
+
+- The answer is simple, find the left **and** right tail areas and then subtract from 1. 
+
+---
+
+# Middle Area Example
+
+- To compute the area shown:
+
+```{r mid_area_examp,echo=FALSE,fig.height=4,fig.width=8}
+dnorm_limit_mid <- function(x) {
+    y <- dnorm(x)
+    y[x <= -0.5 | x >= 1.2] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+  stat_function(fun = dnorm_limit_mid, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm) + geom_vline(xintercept = -0.5,linetype="dashed",size=1) + geom_vline(xintercept = 1.2,linetype="dashed",size=1) +   annotate(geom="text",x=-0.8,y=0.0,label="z=-0.5",size=6) + 
+annotate(geom="text",x=1.5,y=0.0,label="z=1.2",size=6) + 
+  annotate(geom="text",x=0.3,y=0.15,label="area=?",size=6)
+
+```
+
+
+--
+
+```{r}
+l_area <- pnorm(-0.5) # compute left tail area
+r_area <- 1 - pnorm(1.2) # copute right tail area
+(mid_area <- 1 - (l_area + r_area)) # subtract tails areas from 1
+```
+
+---
+
+# Alternative Method for Mid Areas
+
+- Notice that the following computation also finds the mid area shown on the previous slide
+
+```{r}
+pnorm(1.2) - pnorm(-0.5)
+```
+
+--
+
+- Take a minute to think about why this works and then we will discuss together. 
+
+--
+
+- What does `pnorm(1.2)` represent? Draw the area under the standard normal density curve that it represents. 
+
+--
+
+- What does `pnorm(-0.5)` represent? Draw the area under the standard normal density curve that it represents. 
+
+--
+
+- Now what does the difference `pnorm(1.2) - pnorm(-0.5)` represent? 
+
+---
+
+# Areas for General Normal Density Curves
+
+- Suppose that $X \sim N(\mu = 10, \sigma=2.5)$. How can we find the left tail area the density curve corresponding to $N(\mu = 10, \sigma=2.5)$ that lies to the left of $x=7.3$? This area is shown below.
+
+```{r gen_left_examp,echo=FALSE,fig.height=4,fig.width=8}
+dnorm_gen_l_examp <- function(x) {
+    y <- dnorm(x,mean=10,sd=2.5)
+    y[x >= 7.3] <- NA
+    return(y)
+}
+
+ggplot(data.frame(x = c(10-3*2.5, 10+3*2.5)), aes(x = x)) +
+  stat_function(fun = dnorm_gen_l_examp, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dnorm,args=list(mean=10,sd=2.5)) + geom_vline(xintercept = 7.3,linetype="dashed",color="red") + 
+  annotate(geom="text",x=6.6,y=0.15,label="x=7.3",size=6,color="red")
+
+```
+
+--
+
+- The answer is, we first standardize to find $z=\frac{x-\mu}{\sigma}=\frac{7.3-10}{2.5}=$ `r (7.3-10.0)/2.5`, then we compute `pnorm(z) = ` `r pnorm((7.3-10.0)/2.5)`. 
+
+---
+
+# General Steps for Normal Curve Areas
+
+- To compute the area under a normal density curve for $N(\mu,\sigma)$, 
+
+--
+
+  - First draw a picture and determine if it is a left tail area, right tail area, or middle area. 
+  
+--
+
+  - Then standardize by subtracting the mean $\mu$ and dividing by the standard deviation $\sigma$. 
+  
+--
+
+  - Finally, use `pnorm` in R as we have explained over the last several slides. 
+  
+--
+
+- We take a break from the slides to work out some examples together. 
+
+---
+
+# The 68-95-99.7 Rule
+
+- The following figure shows the percentage of area under a normal curve that lies within 1, 2, and 3 standard deviations of the mean, respectively.
+
+.center[
+```{r 6895997, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://www.dropbox.com/s/2e73g42uinqq5gz/6895997.png?raw=1")
+```
+]
+
+
+---
+
+# Worked Examples
+
+- Let's take a break from lecture slides to go through some worked examples using the normal distribution. 
+
+---
+
+# Foundations for Inference
+
+- We have now developed the probability tools we need to begin to discuss statistical inference. Before the next lecture, please watch this video:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/oLW_uzkPZGA") %>%
+  vembedr::use_align("center")
+```
+
+

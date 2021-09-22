@@ -1,6 +1,6 @@
 ---
 title: "Lecture 8"
-subtitle: " "
+subtitle: "Foundations for Inference"
 author: "JMG"
 institute: "MATH 204"
 date: "Thursday, September 23"
@@ -17,56 +17,14 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-library(magrittr)
+library(openintro)
+library(tidyverse)
+library(ggformula)
+library(patchwork)
+library(latex2exp)
+library(kableExtra)
 ```
 
-
-class: inverse, center, middle
-
-# Get Started
-
----
-
-class: inverse 
-
-# Another Slide
-
----
-
-# Imbed Video
-
-```{r,echo=FALSE}
-vembedr::embed_url("https://www.youtube.com/watch?v=M3skTMQbCD0&t=757s") %>%
-  vembedr::use_align("center")
-```
+# Statistical Inference
 
 
----
-
-# Hello World
-
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
-
-```{r eval=FALSE, tidy=FALSE}
-remotes::install_github("yihui/xaringan")
-```
-
---
-
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
-
---
-
-- Click the `Knit` button to compile it;
-
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](https://slides.yihui.org/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
