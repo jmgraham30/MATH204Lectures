@@ -491,7 +491,7 @@ u_df %>% gf_histogram(~unif_samp,boundary=0,binwidth = 0.05,color="black")
 
 ---
 
-# Uniform Distriubtion: Density
+# Uniform Distribution: Density
 
 - The following plot shows the **probability density function** for a uniformly distributed random variable on $[0,1]$:
 

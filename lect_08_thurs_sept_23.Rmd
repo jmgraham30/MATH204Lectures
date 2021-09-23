@@ -27,4 +27,208 @@ library(kableExtra)
 
 # Statistical Inference
 
+- The goal of statistical inference it to use sample data to infer some information about a population. 
+
+--
+
+- There is a particular flow of logic that we will follow in this course as we conduct various specific statistical analyses. 
+
+--
+
+- The goal of this lecture is to explain this flow of logic and to define the important terms and concepts that we use to talk about statistical inference. 
+
+--
+
+- The main ideas are 
+
+--
+
+  - parameter estimates, or point estimates
+  
+--
+
+  - confidence intervals
+  
+--
+
+  - tests of statistical hypotheses
+  
+--
+
+- Note that all of these concepts are covered in Chapter 5 of the textbook. The videos inlcuded in the next few slides are recommended. 
+
+
+  
+---
+
+# Central Limit Theorem Video 
+
+- You are encouraged to watch this video on point estimates and the central limit theorem. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/oLW_uzkPZGA") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# Confidence Intevals Video
+
+- You are encouraged to watch this video on confidence intervals. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/A6_W8qY8zJo") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# Hypothesis Testing Video 
+
+- You are encouraged to watch this video on hypothesis testing. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/NVbPE1_Cbx8") %>%
+  vembedr::use_align("center")
+```
+
+
+---
+
+# Some Motivation
+
+- Random variables and probability distributions provide models for random processes and help us to compute the probability of outcomes for a random process. 
+--
+
+- For example, if we toss a coin 100 times and we know that the coin is fair, then we can model this process by a binomial random variable and use a binomial distribution with $n=100$ and $p=\frac{1}{2}$ to compute the probability of getting some number of heads, say $k$, out of 100 tosses. 
+
+--
+
+- There is a kind of inverse question though. Given a coin or type of coin, how do we know in advance if it is a fair coin or not. It seems reasonable to assume that  the number of heads $k$ out of $n$ tosses follows a binomial distribution for some value $p$ for the probability of getting heads, but what specific value of $p$? 
+
+--
+
+- What we can do is to take a sample, that is, to flip the coin some number of times and then take the proportion $\hat{p}$ of the heads that appear out of the total number of tosses. Then, we expect $\hat{p}$ to be a good indicator of the value of $p$. In other words, we use sample data and a sample statistic to estimate the value of an unknown population parameter. 
+
+---
+
+# Estimation and Hypothesis Testing
+
+- So, we use data to estimate parameter values. 
+
+--
+
+- However, each time we repeat our estimation procedure we are likely to obtain a different estimate $\hat{p}$ due to natural variability. Thus our estimate $\hat{p}$ is really a random variable called the **sample proportion**. 
+
+--
+
+- It's not enough to have just an estimate, we also need to know or estimate how much variability to reasonably expect for our estimate $\hat{p}$ as a random variable. 
+
+--
+
+- Furthermore, one can ask a related but slightly different question. Maybe we don't want an accurate estimate for the probability $p$ of getting heads, maybe all we want to know is if the coin is fair ( $p = \frac{1}{2}$ ) or not ( $p \neq  \frac{1}{2}$ ). Addressing this type of question is known as hypothesis testing. 
+
+--
+
+- In statistical hypothesis testing, we state two mutually exclusive hypotheses (*e.g.*, the coin is fair or it is not). Then we collect evidence in the form of sample data. Finally, we ask how likely is it to observe the sample data if we assume that  one of the specific mutually exclusive hypotheses is in fact true. 
+
+
+---
+
+# Next Steps
+
+- In order to get a feeling for statistical inference, we look at a particular example situation that we hope is fairly intuitive to understand. 
+
+--
+
+- In the context of our example, we study
+
+--
+
+  - point estimation, then
+  
+--
+
+ - confidence intervals, and finally
+ 
+--
+
+ - hypothesis testing.
+ 
+--
+
+- We will start with a computational example to get a feel for what is going on.
+
+
+---
+
+# A Computational Example
+
+- Suppose we want to estimate the probability of getting heads (success) $p$ for a coin. In order to do so, we start by tossing the coin 100 times, adding up the number of heads, and dividing the total number of heads by 100. Then we get a proportion:
+
+$$\hat{p} = \frac{\text{num. heads after 100 tosses}}{100}$$
+
+- For example, suppose we get $\hat{p} = \frac{47}{100}=0.47$. 
+
+--
+
+- Let's repeat this process a large number of times and record the outcomes. The first few rows of our data looks as follows.
+
+```{r samp_dat, echo=FALSE}
+get_ps <- function(i){
+  n <- 100
+  samp <- sum(rbinom(n,1,0.5))
+  p_hat <- samp / n
+  return(p_hat)
+}
+
+N <- 10000
+dts <- map_dbl(1:N,get_ps)
+
+p_df <- tibble(p_estimate=dts)
+p_df %>% head()
+```
+
+
+---
+
+# Histogram of Data for Example
+
+- Let's look at a histogram of our data. 
+
+```{r p_hist,echo=FALSE,fig.height=4}
+p_df %>% gf_histogram(~p_estimate,color="black")
+```
+
+--
+
+- This histogram provides insight into what the distribution of the sample proportion $\hat{p}$ might be. We refer to this distribution as **the sampling distribution of the sample proportion**. It turns out to be very close to normal, but with what $\mu$ and $\sigma$?
+
+---
+
+# The Central Limit Theorem for Proportion
+
+- The **central limit theorem** for the sample proportion says the following:
+
+> For a sample of size $n$, the sampling distribution for the sample proportion is very close to $N(\mu=p,\sigma=\sqrt{\frac{p(1-p)}{n}})$, where $p$ is the true value of the population proportion. 
+
+--
+
+- In lecture 7, we saw that the sampling distribution of the sample mean is also very close to normal. Thus, there is also a central limit theorem for the sample mean and we will discuss this more later in the course. 
+
+--
+
+- The point here is that, when the central limit theorem applies, we can use a normal distribution to assess the uncertainty in our point estimates. For example, to estimate **standard error** and obtain confidence intervals. 
+
+--
+
+- Furthermore, when the central limit theorem applies, we can use a normal distribution for conducting hypothesis tests. This will be discussed later.
+
+--
+
+- Before we go on, let's explore the concepts of standard error and confidence intervals. 
+
+---
+
+# Standard Error
 
