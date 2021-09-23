@@ -232,3 +232,23 @@ p_df %>% gf_histogram(~p_estimate,color="black")
 
 # Standard Error
 
+- The variance of a sampling distribution is called **standard error**. 
+
+--
+
+- For example, the variance of the sampling proportion $\hat{p}$ would be the standard error for $\hat{p}$. By the central limit theorem, the standard error for $\hat{p}$ is (very nearly)
+
+$$SE_{\hat{p}} = \sqrt{\frac{p(1-p)}{n}},$$
+where $p$ is the true population proportion. 
+
+--
+
+- The central limit theorem is a powerful theoretical result. However, in practice we do not know the value for the true population proportion $p$. If we did, there would be no need for inference. 
+
+--
+
+- In practice, we use the "plug-in principle" to estimate $SE_{\hat{p}}$ by substituting our estimate $\hat{p}$ for the true population proportion to obtain an estimate
+
+$$SE_{\hat{p}} \approx \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}.$$
+
+
