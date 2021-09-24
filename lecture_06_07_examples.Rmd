@@ -130,4 +130,150 @@ pnorm(z_b) - pnorm(z_a)
 
 ```
 
+### Guided Practice 4.11
+
+```{r}
+gf_dist("norm",mean=1100,sd=200,fill = ~(x<=1500),geom="area")
+```
+
+Percentile:
+```{r}
+z <- (1500-1100)/200
+pnorm(z)
+```
+
+Percentage that did better than Stuart:
+```{r}
+1 - pnorm(z)
+```
+
+
+### Guided Practice 4.15
+
+(a) 
+
+```{r}
+qnorm(0.95,1100,200)
+```
+
+(b)
+
+```{r}
+qnorm(0.975,1100,200)
+```
+
+### Guided Practice 4.20
+
+(a) 1 standard deviation
+
+```{r}
+gf_dist("norm",fill = ~(x >= -1 & x<= 1),geom="area")
+```
+
+
+```{r}
+pnorm(1) - pnorm(-1)
+```
+
+(b) 2 standard deviations
+
+```{r}
+gf_dist("norm",fill = ~(x >= -2 & x<= 2),geom="area")
+```
+
+
+```{r}
+pnorm(2) - pnorm(-2)
+```
+
+(c)
+
+```{r}
+gf_dist("norm",fill = ~(x >= -3 & x<= 3),geom="area")
+```
+
+
+```{r}
+pnorm(3) - pnorm(-3)
+```
+
+
+
+### Exercise 4.4
+
+(a)
+
+Men, Ages 30-34 distribution is $N(\mu=4313,\sigma=583)$.
+
+Women, Ages 25-29 distribution is $N(\mu=5261,\sigma=807)$.
+
+(b)
+
+Leo's $Z$-score
+```{r}
+(4948-4313)/583
+```
+
+Mary's $Z$-score
+```{r}
+(5513-5261)/807
+```
+
+(d)
+
+```{r}
+gf_dist("norm",mean=4313,sd=583,fill = ~(x<=4948),geom="area")
+```
+
+
+
+```{r}
+z_leo <- (4948-4313)/583
+pnorm(z_leo)
+```
+
+### Exercise 4.39
+
+(a)
+
+Start by drawing a picture. 
+
+```{r}
+(z_score <- qnorm(0.75))
+```
+
+(b)
+
+Mean is 1650 and 75-th is 1800
+
+(c)
+
+```{r}
+(std_dev <- (1800-1650)/ 0.67) 
+```
+
+### Exercise 448
+
+(a)
+
+
+```{r}
+dgeom(2,1/4)
+```
+
+
+(b)
+
+
+```{r}
+dbinom(3,5,1/4) + dbinom(4,5,1/4) 
+```
+
+(c)
+
+```{r}
+dbinom(3,5,1/4) + dbinom(4,5,1/4) + dbinom(5,5,1/4)
+```
+
+
 
