@@ -1,0 +1,133 @@
+---
+title: "Lectures 6 and 7 Worked Examples"
+author: "JMG"
+date: "9/24/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggformula)
+```
+
+## R Commands for Distributions from Lecture 6
+
+### Examples of Using a Geometric Distribution
+
+1) If $X$ is a geometric random variable with probability of success $p=0.4$, then the probability of getting a success on the 12-th trial is
+
+```{r}
+dgeom(11,0.4)
+```
+
+Note that this is the same as
+```{r}
+(1-0.4)^(12-1)*(0.4)
+```
+
+2) If $X$ is a geometric random variable with probability of success $p=0.4$, then the probability of getting a success by at least the 5-th trial is
+```{r}
+pgeom(4,0.4)
+```
+
+Note that this is the same as
+```{r}
+dgeom(0,0.4) + dgeom(1,0.4) + dgeom(2,0.4) + dgeom(3,0.4) + dgeom(4,0.4)
+```
+
+which is the same as
+```{r}
+sum(dgeom(c(0,1,2,3,4),0.4))
+```
+
+which is also the same as
+```{r}
+sum(0.4*(1-0.4)^c(0,1,2,3,4))
+```
+
+3) Draw 6 random samples from a geometric distribution with probability of success $p=0.25$
+```{r}
+rgeom(6,0.25)
+```
+
+### Examples Using a Binomial Distribution
+
+1) Let $X$ be a binomial random variable with size $n=12$ and probability of success $p=0.4$. Then the probability of getting 3 successes is
+```{r}
+dbinom(3,12,0.4)
+```
+
+Note that this is the same as
+```{r}
+choose(12,3)*(1-0.4)^(12-3)*(0.4)^3
+```
+
+2) Let $X$ be a binomial random variable with size $n=12$ and probability of success $p=0.4$. Then the probability of getting at least 5 successes is
+```{r}
+pbinom(5,12,0.4)
+```
+
+Note that this is the same as
+```{r}
+sum(dbinom(c(0,1,2,3,4,5),12,0.4))
+```
+
+3) Draw 6 random samples from a binomial distribution with size $n=8$ and probability of success $p=0.25$
+```{r}
+rbinom(6,8,0.25)
+```
+
+## R Commands for Worked Examples from Lecture 7
+
+### Plotting Normal Density Functions
+
+1) Plot a normal density function corresponding to the distribution $N(\mu=12,\sigma=1.5)$.
+```{r}
+gf_dist("norm",mean=12,sd=1.5)
+```
+
+2) Plot the left tail area $x \leq 10$ of a normal density function corresponding to the distribution $N(\mu=12,\sigma=1.5)$
+```{r}
+gf_dist("norm",mean=12,sd=1.5,fill = ~(x<=10),geom="area")
+```
+
+Compute the left tail area that we just plotted.
+
+```{r}
+z <- (10-12)/1.5
+
+pnorm(z)
+
+```
+
+3) Plot the right tail area $x \geq 14$ of a normal density function corresponding to the distribution $N(\mu=12,\sigma=1.5)$
+```{r}
+gf_dist("norm",mean=12,sd=1.5,fill = ~(x>=14),geom="area")
+```
+
+Compute the right tail area that we just plotted.
+
+```{r}
+z <- (14-12)/1.5
+
+1 - pnorm(z)
+
+```
+
+4) Plot the mid-area $10 \leq x \leq 13$ of a normal density function corresponding to the distribution $N(\mu=12,\sigma=1.5)$
+```{r}
+gf_dist("norm",mean=12,sd=1.5,fill = ~(x >= 10 & x<= 13),geom="area")
+```
+
+Compute the mid-area that we just plotted.
+
+```{r}
+z_a <- (10-12)/1.5
+z_b <- (13-12)/1.5
+
+pnorm(z_b) - pnorm(z_a)
+
+```
+
+
