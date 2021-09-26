@@ -1,0 +1,98 @@
+---
+title: "Examples For Lecture 8"
+author: "JMG"
+date: "9/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggformula)
+```
+
+### Example 5.4
+
+In this example we are given that the sampling distribution for the sample proportion $\hat{p}$ is $N(\mu_{\hat{p}}=0.88,SE_{\hat{p}}=0.01)$. 
+
+For an $\hat{p}$ to be within 2% of the population proportion $p=0.88$, we must have $\hat{P}$ between $0.88-0.02=0.86$ and $0.88+0.02=0.9$. The corresponding $Z$-scores are
+
+$$Z_{0.86}=\frac{0.86-0.88}{0.01}=-2, \ \text{ and } \ Z_{0.9}=\frac{0.9-0.88}{0.01}=2$$
+
+We need to compute the area under the standard normal density function between -2 and 2. That is, the area shown below:
+```{r}
+gf_dist("norm",fill = ~(x >= -2 & x<= 2),geom="area")
+```
+
+We can compute this area as
+```{r}
+pnorm(2) - pnorm(-2)
+```
+
+Thus, 95.45% of the time, we expect the sample proportion to be within 2% of the population proportion $p=0.88$. 
+
+### Exercise 5.1
+
+
+(a) mean
+
+
+(b) mean
+
+
+(c) proportion 
+
+
+(d) mean 
+
+
+(e) proportion 
+
+
+### Exercise 5.3
+
+(a) population is those chips manufactured during the week the sample is taken
+
+
+
+(b) proportion of defective chips
+
+
+
+(c) observed $\hat{p} = \frac{27}{212}\approx 0.13$
+
+
+
+(d) standard error for the sample proportion
+
+
+
+
+(e) $SE_{\hat{p}} \approx  \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}=\sqrt{\frac{0.13(1-0.13)}{212}} \approx 0.023$
+
+
+
+(f) We expect that 95% of the time the observed sample proportion will fall within 1.96 times the standard error. That is about within
+```{r}
+(0.13 - 1.96* 0.023)
+(0.13 + 1.96* 0.023)
+```
+
+Since 10% is well within this interval, we should not be surprised.
+
+
+
+(g) 
+
+```{r}
+sqrt((0.1*(1-0.1))/212)
+```
+
+There isn't much of a difference. 
+
+
+
+
+
+
+
