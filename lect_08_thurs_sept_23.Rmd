@@ -327,5 +327,43 @@ CI_df %>%
 
 # Hypothesis Testing
 
+- Consider the question, is a coin fair? Then there are two mutually exclusive competing hypothesis:
 
+--
+
+  - The coin is fair, that is, the probability of success $p=\frac{1}{2}$.
+  
+--
+
+  - The coin is not fair, that is, the probability of success $p \neq \frac{1}{2}$.
+  
+--
+
+- We refer to the first hypothesis (*i.e.*, the coin is fair) as the **null hypothesis** and denote it by $H_{0}$. 
+
+--
+
+- We refer to the second hypothesis (*i.e.*, the coin is not fair) as the **alternative hypothesis** and denote it by $H_{A}$.
+
+--
+
+- Typically, the null hypothesis corresponds to a situation of "no difference", or "no effect". The null hypothesis is the status quo. 
+
+---
+
+# Testing Procedure
+
+- In hypothesis testing we collect evidence, and make a decision whether to reject the null hypothesis or fail to reject the null hypothesis. Note that failing to reject the null hypothesis is not the same as accepting it as true. 
+
+--
+
+- Failing to reject the null hypothesis only means that the evidence we have collected just not provide sufficient support for rejecting the null hypothesis. 
+
+--
+
+- We also do not accept an alternative hypothesis although some people do use that phrase in hypothesis testing. 
+
+---
+
+# 
 
