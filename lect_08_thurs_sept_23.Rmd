@@ -104,7 +104,7 @@ vembedr::embed_url("https://youtu.be/NVbPE1_Cbx8") %>%
 
 --
 
-- There is a kind of inverse question though. Given a coin or type of coin, how do we know in advance if it is a fair coin or not. It seems reasonable to assume that  the number of heads $k$ out of $n$ tosses follows a binomial distribution for some value $p$ for the probability of getting heads, but what specific value of $p$? 
+- There is a kind of inverse question though. Given a coin or type of coin, how do we know if it is a fair coin or not. It seems reasonable to assume that the number of heads $k$ out of $n$ tosses follows a binomial distribution for some value $p$ for the probability of getting heads, but what specific value of $p$? 
 
 --
 
@@ -164,7 +164,7 @@ vembedr::embed_url("https://youtu.be/NVbPE1_Cbx8") %>%
 
 # A Computational Example
 
-- Suppose we want to estimate the probability of getting heads (success) $p$ for a coin. In order to do so, we start by tossing the coin 100 times, adding up the number of heads, and dividing the total number of heads by 100. Then we get a proportion:
+- Suppose we want to estimate the probability of getting heads (success) $p$ for a coin. In order to do so, we start by tossing the coin 100 times, adding up the number of heads, and dividing the total number of heads by 100. Then we get an observed sample proportion:
 
 $$\hat{p} = \frac{\text{num. heads after 100 tosses}}{100}$$
 
@@ -197,7 +197,7 @@ p_df %>% head()
 - Let's look at a histogram of our data. 
 
 ```{r p_hist,echo=FALSE,fig.height=4}
-p_df %>% gf_histogram(~p_estimate,color="black")
+p_df %>% gf_histogram(~p_estimate,color="black",binwidth=0.025)
 ```
 
 --
@@ -210,7 +210,7 @@ p_df %>% gf_histogram(~p_estimate,color="black")
 
 - The **central limit theorem** for the sample proportion says the following:
 
-> For a sample of size $n$, the sampling distribution for the sample proportion is very close to $N(\mu=p,\sigma=\sqrt{\frac{p(1-p)}{n}})$, where $p$ is the true value of the population proportion. 
+> For a sample of size $n$, the sampling distribution for the sample proportion is very close to $N(\mu=p,\sigma=\sqrt{\frac{p(1-p)}{n}})$, where $p$ is the true value of the population proportion. This is provided the sample size $n$ is sufficiently large. 
 
 --
 
@@ -232,11 +232,11 @@ p_df %>% gf_histogram(~p_estimate,color="black")
 
 # Standard Error
 
-- The variance of a sampling distribution is called **standard error**. 
+- The standard deviation of a sampling distribution is called **standard error**. 
 
 --
 
-- For example, the variance of the sampling proportion $\hat{p}$ would be the standard error for $\hat{p}$. By the central limit theorem, the standard error for $\hat{p}$ is (very nearly)
+- For example, the standard deviation of the sample proportion $\hat{p}$ would be the standard error for $\hat{p}$. By the central limit theorem, the standard error for $\hat{p}$ is (very nearly)
 
 $$SE_{\hat{p}} = \sqrt{\frac{p(1-p)}{n}},$$
 where $p$ is the true population proportion. 
@@ -250,5 +250,82 @@ where $p$ is the true population proportion.
 - In practice, we use the "plug-in principle" to estimate $SE_{\hat{p}}$ by substituting our estimate $\hat{p}$ for the true population proportion to obtain an estimate
 
 $$SE_{\hat{p}} \approx \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}.$$
+
+---
+
+# Confidence Intervals for a Proportion
+
+- The sample proportion $\hat{p}$ provides a plausible value for the population proportion $p$. However, there is some standard error associated with it. 
+
+--
+
+- When stating an estimate for the population proportion, it is better practice to provide a plausible *range of values* instead of just a point estimate alone. 
+
+--
+
+- The standard error represents the standard deviation of the point estimate, and when the central limit theorem applies, the point estimate closely follows a normal distribution. In a normal distribution, 95% of the data is within 1.96 standard deviations of the mean. 
+
+--
+
+- In the case when the central limit theorem applies, we call the formula
+
+$$\text{point estimate} \pm 1.96 \times SE$$
+a **95% confidence interval**. 
+
+--
+
+- We will work out some examples together soon. Before doing so, let's try to understand the meaning of 95%. 
+
+
+---
+
+# Meaning of 95 Percent CI
+
+```{r ninty_five,echo=FALSE,fig.width=10}
+library(tidyverse)
+
+n <- 100
+tp <- 0.5
+
+mu_p <- tp
+SE_p <- sqrt((tp*(1-tp))/n)
+
+get_est <- function(i){
+  samp <- rbinom(n,1,tp)
+  p_hat <- sum(samp) / n
+  lwr <- p_hat - 1.96 * SE_p
+  uppr <- p_hat + 1.96 * SE_p
+  dt <- list(index=i,estimate=p_hat,a=lwr,b=uppr)
+  return(dt)
+}
+
+N <- 100
+
+CI_list <- map(1:N,get_est)
+
+df_list <- function(x_list){
+  x_df <- tibble(index=x_list$index,estimate=x_list$estimate,a=x_list$a,b=x_list$b)
+  return(x_df)
+}
+
+CI_df <- map_df(CI_list,df_list)
+
+CI_df %>% 
+  ggplot(aes(x=index,y=estimate)) + 
+  geom_point(color="#88CCEE",size=2) + 
+  geom_hline(yintercept = tp,linetype="dashed") + 
+  geom_linerange(aes(ymin=a,ymax=b),color="#CC6677") + ylim(c(0,1))
+```
+
+---
+
+# Break for Examples
+
+- Let's take a break from the slides and work some examples for the concepts that we have covered so far. 
+
+---
+
+# Hypothesis Testing
+
 
 
