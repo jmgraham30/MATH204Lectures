@@ -126,7 +126,7 @@ vembedr::embed_url("https://youtu.be/NVbPE1_Cbx8") %>%
 
 --
 
-- Furthermore, one can ask a related but slightly different question. Maybe we don't want an accurate estimate for the probability $p$ of getting heads, maybe all we want to know is if the coin is fair ( $p = \frac{1}{2}$ ) or not ( $p \neq  \frac{1}{2}$ ). Addressing this type of question is known as hypothesis testing. 
+- Furthermore, one can ask a related but slightly different question. Maybe we don't require an accurate estimate for the probability $p$ of getting heads, maybe all we want to know is if the coin is fair ( $p = \frac{1}{2}$ ) or not ( $p \neq  \frac{1}{2}$ ). Addressing this type of question is known as hypothesis testing. 
 
 --
 
@@ -228,6 +228,7 @@ p_df %>% gf_histogram(~p_estimate,color="black",binwidth=0.025)
 
 - Before we go on, let's explore the concepts of standard error and confidence intervals. 
 
+
 ---
 
 # Standard Error
@@ -250,6 +251,23 @@ where $p$ is the true population proportion.
 - In practice, we use the "plug-in principle" to estimate $SE_{\hat{p}}$ by substituting our estimate $\hat{p}$ for the true population proportion to obtain an estimate
 
 $$SE_{\hat{p}} \approx \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}.$$
+
+---
+
+# When Does CLT Apply? 
+
+- For a proportion, the central limit theorem (CLT) applies when the sample size $n$ is such that 
+
+$$np \geq 10, \ \text{ and } \ n(1-p) \geq 10$$
+
+--
+
+- Let's consider Example 5.3 from the textbook. In this case our sampling distribution for the sample proportion is binomial with $p=0.88$ and $n=1000$, then $np =$ `r 0.88 * 1000`, and $n(1-p) =$ `r 1000*(1-0.88)`. Both of these values are greater or equal to 10 so the CLT applies. 
+
+--
+
+- Now that we know that the CLT applies, we can use it to compute the theoretical mean and standard error. The theoretical mean is $\mu_{\hat{p}} = 0.88$, and the standard error is 
+$$SE_{\hat{p}} = \sqrt{\frac{0.88(1-0.88)}{1000}}=0.01$$
 
 ---
 
