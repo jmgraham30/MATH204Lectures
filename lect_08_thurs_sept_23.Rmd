@@ -524,3 +524,96 @@ pbinom(35,100,0.5) + (1-pbinom(64,100,0.5))
 - This tells us that under the null hypothesis (that is, the assumption that the coin is fair) we expect to observe an outcome that is as or more extreme than getting 65 heads about 3.5% of the time. If $\alpha=0.05$, then we would reject the null hypothesis at the 0.05 significance level.  
 
 
+---
+
+# Another Approach
+
+- Reconsider the question of whether we have a fair coin. Instead of counting the number $k$ of heads out of $n$ tosses, we could compute the proportion $\hat{p} = \frac{k}{n}$. The point here is that if the sample size $n$ is large enough, then the test statistic $\hat{p}$, which is the sample proportion (very nearly) has a $N\left(p,\sqrt{\frac{p(1-p)}{n}}\right)$ distribution by the CLT. 
+
+--
+
+- Again, suppose we obtain $\hat{p} = \frac{54}{100}=0.54$. Then 
+
+$$n\hat{p} = 54 \geq 10, \ \text{ and } \ n(1-p)=46 \geq 10$$
+
+so the CLT applies. 
+
+--
+
+- A 95% confidence interval is obtained using a normal distribution as follows:
+```{r}
+(CI <- 0.54 + 1.96*c(-1,1)*sqrt((0.54*(1-0.54))/100))
+```
+
+--
+
+- Our null hypothesis $H_{0}$ is $p=0.5$. Since 0.5 is well within the CI $(0.44,0.63)$ we fail to reject the null hypothesis.  
+
+---
+
+# p-values
+
+- Continuing from the last slide, we can use a normal distribution to obtain a so-called **p-value**. (We will define this carefully soon.)
+
+--
+
+- We begin by assuming the null hypothesis holds. In this case, applying the CLT gives null distribution as (very nearly) $N\left(\mu=0.5,\sigma=\sqrt{\frac{0.5(1-0.5)}{100}}\right)$. 
+
+--
+
+- Next, we use the null distribution to compute the probability of observing at value that is as or more extreme than $\hat{p}=0.54$ under the assumption that the null hypothesis is true. In order to do this, we first need to obtain a $Z$-score:
+
+$$z = \frac{0.54 - 0.5}{\sqrt{\frac{0.5(1-0.5)}{100}}} \approx 0.179$$
+
+- Now we compute the tail areas under the normal curve lying to the left of $-0.179$ and to the right of $0.179$. (This is an example of a two-tailed test.)
+
+```{r}
+pnorm(-0.179) + (1-pnorm(0.179))
+```
+
+
+---
+
+# Continuing
+
+- In the last slide, we obtained that about 86% of the time we expect to observe a proportion of heads that is as or more extreme than 0.54 under the assumption that the true proportion is $p=0.5$. 
+
+--
+
+- This leads us to fail to reject the null hypothesis. 
+
+--
+
+- In the last slide, we obtained a p-value of about 0.86. 
+
+--
+
+> The p-value is the probability of observing data at least as favorable to the alternative hypothesis as our current data set, if the null hypothesis were true. We typically use a summary statistic (a so-call test statistic) of the data, *e.g.*, sample proportion, to help compute the p-value and evaluate the hypotheses. 
+
+--
+
+- We compare a p-value with a significance level to decide whether to reject or fail to reject the null hypothesis. 
+
+---
+
+# More Examples 
+
+- We take a break from the slides to work out some more examples of testing hypotheses. 
+
+---
+
+# Summary
+
+
+
+---
+
+# Next Time
+
+- In the next lecture, we discuss inference for a single proportion and the difference of two proportions. To get a head start, please watch this video:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
+  vembedr::use_align("center")
+```
+
