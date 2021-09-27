@@ -132,3 +132,8 @@ Thus, about 99% of the time, a normal random variable will fall within 2.58 stan
 ```
 
 
+### Guided Practice 5.27
+
+How could we reduce the Type 2 Error rate in US courts? What influence would this have on the Type 1 Error rate? 
+
+To lower the Type 2 Error rate we need to convict more guilty people. This will result in more wrongful convictions, raising the Type 1 Error rate. 

@@ -340,7 +340,7 @@ CI_df %>%
 
 # Confidence Intervals for a Normal r.v.
 
-- If $X\sim N(\mu,\sigma)$ is a normal random variable, and if $z^{\ast}$ is the $Z$-score value for $X$ such that $\alpha$ % of the area under the standard normal density curve falls between $-z^{\ast}$ and $z^{\ast}$, then an ** $\alpha$ % confidence interval** for $X$ is 
+- If $X\sim N(\mu,\sigma)$ is a normal random variable, and if $z^{\ast}$ is the $Z$-score value for $X$ such that $\theta$ % of the area under the standard normal density curve falls between $-z^{\ast}$ and $z^{\ast}$, then an ** $\theta$ % confidence interval** for $X$ is 
 
 $$\mu \pm z^{\ast} \sigma$$
 
@@ -474,5 +474,53 @@ pbinom(46,100,0.5) + (1-pbinom(53,100,0.5))
 knitr::include_graphics("https://www.dropbox.com/s/p2xl0gksodav0oy/TestingErrorsTable.png?raw=1")
 ```
 ]
+
+--
+
+- In a US court, the defendant is either innocent ( $H_{0}$ ) or guilty ( $H_{A}$ ). What does a Type 1 Error represent in this context? What does a Type 2 Error represent? 
+
+---
+
+# Signigicance Level
+
+- As a principle, we do not reject $H_{0}$ unless we have strong evidence. 
+
+--
+
+- The **significance level** (denoted by $\alpha$) specifies our level of comfort in making a Type 1 Error, that is, with incorrectly rejecting the null hypothesis. The lower the significance level, the more conservative we are being with regard to our decision to reject the null hypothesis.
+
+--
+
+- A common value for a significance level is $\alpha = 0.05$. This says, that for those cases where the null hypothesis is actually true, we do not want to incorrectly reject $H_{0}$ more than 5% of the time. 
+
+--
+
+> So, given hypotheses $H_{0}$ and $H_{A}$, we will only reject the null hypothesis at a level of significance $\alpha$ if under the assumption that the null hypothesis is true, the probability of observing a test statistic value that is as or more extreme that what we observe from the data is at most $\alpha$.
+
+---
+
+# An Example
+
+- Suppose we toss a coin 100 times and get $65$ heads. We want to test the hypothesis 
+
+  - $H_{0}:$ the coin is fair ( $p= \frac{1}{2}$ ), versus
+  
+  - $H_{A}:$ the coin is not fair ( $p\neq \frac{1}{2}$ ).
+  
+--
+
+- A probability distribution corresponding to the null hypothesis is a binomial distribution with size $n=100$ and probability of success $p=\frac{1}{2}$.  
+
+--
+
+- Now we compute the probability for getting 65 or more heads, or 65 or more tails (which is 35 or fewer heads):
+
+```{r}
+pbinom(35,100,0.5) + (1-pbinom(64,100,0.5))
+```
+
+--
+
+- This tells us that under the null hypothesis (that is, the assumption that the coin is fair) we expect to observe an outcome that is as or more extreme than getting 65 heads about 3.5% of the time. If $\alpha=0.05$, then we would reject the null hypothesis at the 0.05 significance level.  
 
 
