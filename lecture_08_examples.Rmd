@@ -11,6 +11,8 @@ library(tidyverse)
 library(ggformula)
 ```
 
+## Examples for Point Estimation 
+
 ### Example 5.4
 
 In this example we are given that the sampling distribution for the sample proportion $\hat{p}$ is $N(\mu_{\hat{p}}=0.88,SE_{\hat{p}}=0.01)$. 
@@ -91,8 +93,42 @@ sqrt((0.1*(1-0.1))/212)
 There isn't much of a difference. 
 
 
+## Examples for Confidence Intervals
+
+### Guided Practice 5.6
+
+If we want to be very certain we capture the population proportion, should we use a wider interval or a smaller interval? 
 
 
+### Example 5.8
 
+We are given that $\hat{p}$ follows a normal distribution and has a standard error $SE_{\hat{p}}=0.01$. Then a 95% confidence interval (CI) is
+```{r}
+0.887 + c(-1,1)*1.96*0.01
+```
+
+This tells us that if we were to repeatedly sample from the same population many many times, we would expect the true proportion to fall within the 86.7% to 90.7%  range 95% of the time. 
+
+### Guided Practice 5.9
+
+The following plot shows the area under the standard normal density curve that lies within 2.58 standard deviations of the mean. 
+
+```{r}
+gf_dist("norm",fill = ~(x >= -2.58 & x<= 2.58),geom="area")
+```
+
+We can compute this area by
+```{r}
+pnorm(2.58) - pnorm(-2.58)
+```
+
+Thus, about 99% of the time, a normal random variable will fall within 2.58 standard deviations from the mean. 
+
+### Exercise 5.8
+
+```{r}
+(z_ast <- qnorm(0.005)) 
+(CI <- 0.52 + c(1,-1)*z_ast*0.024)
+```
 
 

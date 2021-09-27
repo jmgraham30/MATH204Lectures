@@ -335,6 +335,27 @@ CI_df %>%
   geom_linerange(aes(ymin=a,ymax=b),color="#CC6677") + ylim(c(0,1))
 ```
 
+
+---
+
+# Confidence Intervals for a Normal r.v.
+
+- If $X\sim N(\mu,\sigma)$ is a normal random variable, and if $z^{\ast}$ is the $Z$-score value for $X$ such that $\alpha$ % of the area under the standard normal density curve falls between $-z^{\ast}$ and $z^{\ast}$, then an ** $\alpha$ % confidence interval** for $X$ is 
+
+$$\mu \pm z^{\ast} \sigma$$
+
+- We call $z^{\ast} \sigma$ the **margin of error**
+
+- For example, suppose we know that $X\sim N(0.887,0.01)$. Let's construct a 90% CI for $X$. To get $z^{\ast}$, we do
+```{r}
+(z_ast <- qnorm(0.05))
+```
+
+Then the confidence interval is
+```{r}
+(CI <- 0.887 + c(1,-1)*z_ast*0.01)
+```
+
 ---
 
 # Break for Examples
@@ -375,13 +396,83 @@ CI_df %>%
 
 --
 
-- Failing to reject the null hypothesis only means that the evidence we have collected just not provide sufficient support for rejecting the null hypothesis. 
+- Failing to reject the null hypothesis only means that the evidence we have collected does not provide sufficient support for rejecting the null hypothesis. 
 
 --
 
 - We also do not accept an alternative hypothesis although some people do use that phrase in hypothesis testing. 
 
+--
+
+- How do we decide, based on our data whether to reject or fail to reject the null hypothesis? 
+
+--
+
+  - We use an appropriate probability distribution that corresponds to the null hypothesis (that is, a **null distribution**) and use it to compute the probability of observing a **test statistic** value that is as or more extreme that the value of our test statistics obtained from the data. 
+  
+--
+
+  - If we obtain from the last step a probability value that is sufficiently small then we reject the null hypothesis, otherwise, we fail to reject the null hypothesis. 
+
 ---
 
-# 
+# Example
+
+- Suppose we toss a coin 100 times and get $54$ heads. We want to test the hypothesis 
+
+  - $H_{0}:$ the coin is fair ( $p= \frac{1}{2}$ ), versus
+  
+  - $H_{A}:$ the coin is not fair ( $p\neq \frac{1}{2}$ ).
+  
+--
+
+- An appropriate probability distribution corresponding to the null hypothesis is a binomial distribution with size $n=100$ and probability of success $p=\frac{1}{2}$.  
+
+--
+
+- Now we compute the probability for getting 54 or more heads, or 54 or more tails (which is 46 or fewer heads):
+
+```{r}
+pbinom(46,100,0.5) + (1-pbinom(53,100,0.5))
+```
+
+--
+
+- This tells us that under the null hypothesis (that is, the assumption that the coin is fair) we expect to observe an outcome that is as or more extreme than getting 54 heads about 48% of the time. 
+
+---
+
+# Rejecting the Null Hypothesis
+
+- In the example on the last slide, a result that we expect to occur about 48% of the time when assuming the null hypothesis is not a rare event. So in that example we would fail to reject the null hypothesis. 
+
+--
+
+- We only reject the null hypothesis when assuming the null hypothesis results in a very small probability of observing an outcome such as what is observed in our data. 
+
+--
+
+- How small of a probability is small enough, or how rare of an event should lead us to reject the null hypothesis?  
+
+--
+
+- Since we are dealing with inherently random processes, it is possible to make a an incorrect decision in a statistical hypothesis test, that is, an error. There are two particular types or error. The question we need to ask ourselves when setting a decision criteria for hypothesis testing is, what kind of error are we most concerned with avoiding?  
+
+---
+
+# Decision Errors
+
+- Here is an analogy to think about. After a criminal trial sometimes an innocent person is convicted and sometimes an guilty person walks free. If we are more strict about how strong evidence must be for a conviction, then more guilty persons will go free. On the other hand, if we are more lax regarding how strong evidence must be for a conviction, then more innocent persons will be convicted. 
+
+--
+
+- When conducting a hypothesis test, there are four possible scenarios to consider:
+
+
+.center[
+```{r test_errors, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://www.dropbox.com/s/p2xl0gksodav0oy/TestingErrorsTable.png?raw=1")
+```
+]
+
 
