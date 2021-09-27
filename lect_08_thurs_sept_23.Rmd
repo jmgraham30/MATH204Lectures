@@ -604,7 +604,23 @@ pnorm(-0.179) + (1-pnorm(0.179))
 
 # Summary
 
+- When the central limit theorem applies, it provides us with a very accurate estimate for the sampling distribution of a test statistic such as the sample proportion or the sample mean. 
 
+--
+
+- In such cases, we know, or can easily estimate via the plug-in principle, values for the mean and standard error of the sampling distribution in order to obtain point estimates and confidence intervals.
+
+--
+
+- A hypothesis test states a null ( $H_{0}$ ) and alternative hypothesis ( $H_{A}$ ), and then collects evidence in the form of sample data in order to decide whether to reject or fail to reject $H_{0}$.
+
+--
+
+- One sets a confidence level $\alpha$, then computes a p-value and compares it  with $\alpha$. One rejects the null hypothesis at confidence level $\alpha$ only if  the p-value is less than $\alpha$.  
+
+--
+
+- Over the next few lectures, we will see the methods of inferential statistics summarized here in a variety of different but commonly occurring situations. 
 
 ---
 
