@@ -183,7 +183,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 # Going Back to Data
 
-- Recall that to obtain our data, we drew 15 samples from a binomial distribution with $n=25$ and $p=0.5$, took the sample mean, and repeated this many times. The following plot shows the histogram of our data (with density instead of count on the $y$-axis) and overlays a particular normal density curve. 
+- Recall that to obtain our data, we drew 15 **independent** samples from a binomial distribution with $n=25$ and $p=0.5$, took the sample mean, and repeated this many times. The following plot shows the histogram of our data (with density instead of count on the $y$-axis) and overlays a particular normal density curve. 
 
 ```{r norm_fit,echo=FALSE,fig.height=5,fig.width=8,warning=FALSE}
 n <- 25
@@ -216,7 +216,7 @@ sample data of a fixed size from a population and returns the mean of the data.
 
 --
 
-- In general, we call the distribution of the sample mean (viewed as a random variable), the **sampling distribution of the mean**.  It is a general fact that the sampling distribution of the mean is always very close to a normal distribution, regardless of the type of distribution used to sample the data for which the sample mean is computed. 
+- In general, we call the distribution of the sample mean (viewed as a random variable), the **sampling distribution of the mean**.  It is a general fact that the sampling distribution of the mean (for independent samples) is always very close to a normal distribution, regardless of the type of distribution used to sample the data for which the sample mean is computed. 
 
 --
 
@@ -265,7 +265,7 @@ $$\text{Var}\left(Z\right)=\text{Var}\left(\frac{X - \mu}{\sigma}\right)=\frac{1
 
 --
 
-- This is all a little abstract, so let't think about standarding from a different perspective. 
+- This is all a little abstract, so let's think about standardizing from a different perspective. 
 
 ---
 
