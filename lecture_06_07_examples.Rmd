@@ -63,7 +63,7 @@ Note that this is the same as
 choose(12,3)*(1-0.4)^(12-3)*(0.4)^3
 ```
 
-2) Let $X$ be a binomial random variable with size $n=12$ and probability of success $p=0.4$. Then the probability of getting at least 5 successes is
+2) Let $X$ be a binomial random variable with size $n=12$ and probability of success $p=0.4$. Then the probability of getting at most 5 successes is
 ```{r}
 pbinom(5,12,0.4)
 ```
