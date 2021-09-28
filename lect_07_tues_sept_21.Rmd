@@ -298,7 +298,7 @@ $$\text{person 1 Z-score}=\frac{1300-1100}{200}=1,\ \ \text{person 2 Z-score}=\f
 
 # Probability for Normal R.V.'s
 
-- The first think to know is that the total area under a normal density function is equal to 1. This is true regardless of the values for $\mu$ and $\sigma$. Thus, the shaded area shown below is 1:
+- The first thing to know is that the total area under a normal density function is equal to 1. This is true regardless of the values for $\mu$ and $\sigma$. Thus, the shaded area shown below is 1:
 
 ```{r unit_area,echo=FALSE,fig.height=5}
 ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
