@@ -139,3 +139,70 @@ Thus, about 99% of the time, a normal random variable will fall within 2.58 stan
 How could we reduce the Type 2 Error rate in US courts? What influence would this have on the Type 1 Error rate? 
 
 To lower the Type 2 Error rate we need to convict more guilty people. This will result in more wrongful convictions, raising the Type 1 Error rate. 
+
+### Example 5.28
+
+Let $p$ be the proportion of Americans that support the increased usage of coal. Then, 
+
+$H_{0}$: $p=0.5$, 
+
+$H_{A}$: $p\neq 0.5$
+
+This is a two-sided hypothesis test. 
+
+A slightly different test would be a one-sided test. For example, we could test the hypothesis
+
+$H_{0}$: $p=0.5$, 
+
+$H_{A}$: $p < 0.5$
+
+This would correspond to 
+
+null hypothesis: neutral support of increased coal usage, versus
+
+alternative hypothesis: only a minority of the population supports increased coal usage 
+
+### Exercise 5.17
+
+Statistical inference is concerned with inferring information about a population parameter from data. Thus, you can not conduct a hypothesis test about a sample statistic value. 
+
+### Exercise 5.21
+
+Our hypothesis test should be
+
+$H_{0}$: $p=0.5$, versus
+
+$H_{A}$: $p\neq 0.5$
+
+where $p$ is the unknown true proportion of the population that beleives raising the minimum wage will help the economy.
+
+We have the observed test statistic value $\hat{p}=0.42$. This leads to a $Z$-score value
+
+```{r}
+(z_val <- (0.42 - 0.5)/sqrt((0.5*(1-0.5))/1000)) 
+```
+
+Therefore, a p-value is
+
+```{r}
+pnorm(-5.06) + (1 - pnorm(5.06))
+```
+
+This is much smaller than 0.05 so we will reject the null hypothesis at the $\alph=0.05$ level of significance. 
+
+Note that a relevant CI is
+
+```{r}
+0.42 + z_val*c(1,-1)*sqrt((0.42*(1-0.42))/1000)
+```
+
+Since this CI does not contain 0.5 we decide to reject the null hypothesis. 
+
+Of course, we should confirm that the CLT applies:
+
+```{r}
+(0.42*1000)
+((1-0.42)*1000)
+```
+
+
