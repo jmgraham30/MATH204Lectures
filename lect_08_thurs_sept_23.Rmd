@@ -118,7 +118,7 @@ vembedr::embed_url("https://youtu.be/NVbPE1_Cbx8") %>%
 
 --
 
-- However, each time we repeat our estimation procedure we are likely to obtain a different estimate $\hat{p}$ due to natural variability. Thus our estimate $\hat{p}$ is really a random variable called the **sample proportion**. 
+- However, each time we repeat our estimation procedure we are likely to obtain a different estimate $\hat{p}$ due to natural variability. Thus, our estimate $\hat{p}$ is really a random variable called the **sample proportion**. 
 
 --
 
@@ -214,7 +214,7 @@ p_df %>% gf_histogram(~p_estimate,color="black",binwidth=0.025)
 
 --
 
-- In lecture 7, we saw that the sampling distribution of the sample mean is also very close to normal. Thus, there is also a central limit theorem for the sample mean and we will discuss this more later in the course. 
+- In lecture 7, we saw that the sampling distribution of the sample mean is also very close to normal. Thus, there is also a central limit theorem for the sample mean. 
 
 --
 
@@ -340,7 +340,7 @@ CI_df %>%
 
 # Confidence Intervals for a Normal r.v.
 
-- If $X\sim N(\mu,\sigma)$ is a normal random variable, and if $z^{\ast}$ is the $Z$-score value for $X$ such that $\theta$ % of the area under the standard normal density curve falls between $-z^{\ast}$ and $z^{\ast}$, then an ** $\theta$ % confidence interval** for $X$ is 
+- If $X\sim N(\mu,\sigma)$ is a normal random variable, and if $z^{\ast}$ is the $Z$-score value for $X$ such that $\theta$ % of the area under the standard normal density curve falls between $-z^{\ast}$ and $z^{\ast}$, then a ** $\theta$ % confidence interval** for $X$ is 
 
 $$\mu \pm z^{\ast} \sigma$$
 
@@ -408,7 +408,7 @@ Then the confidence interval is
 
 --
 
-  - We use an appropriate probability distribution that corresponds to the null hypothesis (that is, a **null distribution**) and use it to compute the probability of observing a **test statistic** value that is as or more extreme that the value of our test statistics obtained from the data. 
+  - We use an appropriate probability distribution that corresponds to the null hypothesis (that is, a **null distribution**) and use it to compute the probability of observing a **test statistic** value that is as or more extreme that the value of our test statistic obtained from the data. 
   
 --
 
@@ -456,7 +456,7 @@ pbinom(46,100,0.5) + (1-pbinom(53,100,0.5))
 
 --
 
-- Since we are dealing with inherently random processes, it is possible to make a an incorrect decision in a statistical hypothesis test, that is, an error. There are two particular types or error. The question we need to ask ourselves when setting a decision criteria for hypothesis testing is, what kind of error are we most concerned with avoiding?  
+- Since we are dealing with inherently random processes, it is possible to make  an incorrect decision in a statistical hypothesis test, that is, an error. There are two particular types of error. The question we need to ask ourselves when setting a decision criteria for hypothesis testing is, what kind of error are we most concerned with avoiding?  
 
 ---
 
@@ -481,7 +481,7 @@ knitr::include_graphics("https://www.dropbox.com/s/p2xl0gksodav0oy/TestingErrors
 
 ---
 
-# Signigicance Level
+# Significance Level
 
 - As a principle, we do not reject $H_{0}$ unless we have strong evidence. 
 
@@ -521,14 +521,14 @@ pbinom(35,100,0.5) + (1-pbinom(64,100,0.5))
 
 --
 
-- This tells us that under the null hypothesis (that is, the assumption that the coin is fair) we expect to observe an outcome that is as or more extreme than getting 65 heads about 3.5% of the time. If $\alpha=0.05$, then we would reject the null hypothesis at the 0.05 significance level.  
+- This tells us that under the null hypothesis (that is, the assumption that the coin is fair) we expect to observe an outcome that is as or more extreme than getting 65 heads about 0.35% of the time. If $\alpha=0.05$, then we would reject the null hypothesis at the 0.05 significance level.  
 
 
 ---
 
 # Another Approach
 
-- Reconsider the question of whether we have a fair coin. Instead of counting the number $k$ of heads out of $n$ tosses, we could compute the proportion $\hat{p} = \frac{k}{n}$. The point here is that if the sample size $n$ is large enough, then the test statistic $\hat{p}$, which is the sample proportion (very nearly) has a $N\left(p,\sqrt{\frac{p(1-p)}{n}}\right)$ distribution by the CLT. 
+- Reconsider the question of whether we have a fair coin. Instead of counting the number $k$ of heads out of $n$ tosses, we could compute the proportion $\hat{p} = \frac{k}{n}$. The point here is that if the sample size $n$ is large enough, then the test statistic $\hat{p}$, which is the sample proportion has (very nearly) a $N\left(p,\sqrt{\frac{p(1-p)}{n}}\right)$ distribution by the CLT. 
 
 --
 
@@ -561,7 +561,7 @@ so the CLT applies.
 
 --
 
-- Next, we use the null distribution to compute the probability of observing at value that is as or more extreme than $\hat{p}=0.54$ under the assumption that the null hypothesis is true. In order to do this, we first need to obtain a $Z$-score:
+- Next, we use the null distribution to compute the probability of observing a value that is as or more extreme than $\hat{p}=0.54$ under the assumption that the null hypothesis is true. In order to do this, we first need to obtain a $Z$-score:
 
 $$z = \frac{0.54 - 0.5}{\sqrt{\frac{0.5(1-0.5)}{100}}} \approx 0.179$$
 
