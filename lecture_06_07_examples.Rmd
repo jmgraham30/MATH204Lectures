@@ -95,9 +95,9 @@ gf_dist("norm",mean=12,sd=1.5,fill = ~(x<=10),geom="area")
 Compute the left tail area that we just plotted.
 
 ```{r}
-z <- (10-12)/1.5
+(z <- (10-12)/1.5)
 
-pnorm(z)
+(pnorm(z))
 
 ```
 
@@ -109,9 +109,9 @@ gf_dist("norm",mean=12,sd=1.5,fill = ~(x>=14),geom="area")
 Compute the right tail area that we just plotted.
 
 ```{r}
-z <- (14-12)/1.5
+(z <- (14-12)/1.5)
 
-1 - pnorm(z)
+(1 - pnorm(z))
 
 ```
 
@@ -123,10 +123,10 @@ gf_dist("norm",mean=12,sd=1.5,fill = ~(x >= 10 & x<= 13),geom="area")
 Compute the mid-area that we just plotted.
 
 ```{r}
-z_a <- (10-12)/1.5
-z_b <- (13-12)/1.5
+(z_a <- (10-12)/1.5)
+(z_b <- (13-12)/1.5)
 
-pnorm(z_b) - pnorm(z_a)
+(pnorm(z_b) - pnorm(z_a))
 
 ```
 
