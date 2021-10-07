@@ -3,7 +3,6 @@ title: "Lecture 2"
 subtitle: "An Introduction to R and RStudio"
 author: "JMG"
 institute: "MATH 204"
-date: "Thursday, September 2"
 output:
   xaringan::moon_reader:
     css: [rladies, rladies-fonts]

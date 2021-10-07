@@ -3,7 +3,6 @@ title: "Lecture 4"
 subtitle: "Data Summaries for Categorical Data "
 author: "JMG"
 institute: "MATH 204"
-date: "Thursday, September 9"
 output:
   xaringan::moon_reader:
     css: [default, rladies, rladies-fonts]

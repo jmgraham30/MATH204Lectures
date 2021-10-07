@@ -3,7 +3,6 @@ title: "Lecture 7"
 subtitle: "The Normal Distribution"
 author: "JMG"
 institute: "MATH 204"
-date: "Tuesday, September 21"
 output:
   xaringan::moon_reader:
     css: [rladies, rladies-fonts]

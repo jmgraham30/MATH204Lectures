@@ -3,7 +3,6 @@ title: "Lecture 1"
 subtitle: "Logistics and Introduction to Data"
 author: "JMG"
 institute: "MATH 204"
-date: "Tuesday, August 31"
 output:
   xaringan::moon_reader:
     css: [default, rladies, rladies-fonts]

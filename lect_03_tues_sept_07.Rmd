@@ -3,7 +3,6 @@ title: "Lecture 3"
 subtitle: "Intro to Data Summaries"
 author: "JMG"
 institute: "MATH 204"
-date: "Tuesday, September 7"
 output:
   xaringan::moon_reader:
     css: [rladies, rladies-fonts]
