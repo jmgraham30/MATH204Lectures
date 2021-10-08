@@ -252,7 +252,7 @@ Mean is 1650 and 75-th is 1800
 (std_dev <- (1800-1650)/ 0.67) 
 ```
 
-### Exercise 448
+### Exercise 4.48
 
 (a)
 
