@@ -19,6 +19,7 @@ options(htmltools.dir.version = FALSE)
 library(openintro)
 library(tidyverse)
 library(ggformula)
+library(ggmosaic)
 library(patchwork)
 library(latex2exp)
 library(kableExtra)
@@ -26,7 +27,7 @@ library(kableExtra)
 
 # Further Inference
 
-- Now that we have introduced the foundations of statistical inference, we study in detail some of the most common basic inference for 
+- Now that we have introduced the foundations of statistical inference, we study in detail some of the most common basic inferences for 
 
 --
 
@@ -50,14 +51,31 @@ library(kableExtra)
   
 --
 
-- After we discuss these topics along with power calculations and simple ordinary least squares regress (7.4 and Chapter 8), we will return to discuss goodness (6.3) of fit and testing for independence (6.4).
+- After we discuss these topics along with power calculations and simple ordinary least squares regress (7.4 and Chapter 8), we will return to discuss goodness of fit (6.3) and testing for independence (6.4).
 
 
 ---
 
 # Learning Objectives
 
+- After this lecture, you should be able to conduct and apply point estimates, interval estimates, and hypothesis tests for
+  
+--
 
+  - proportions, difference of proportions, one sample means, paired data, and difference of two means.
+  
+--
+
+- This includes knowing when to use which type of hypothesis test, and
+
+--
+
+- what is the appropriate R command(s) to use.  
+
+--
+
+- Many of our intervals estimates and hypothesis tests will rely on a central limit theorem. We quickly review these.  
+  
 
 ---
 
@@ -65,13 +83,13 @@ library(kableExtra)
 
 - Recall our CLT for sample proportion:
 
-> When observations are independent and sample size is sufficiently large, then then the sampling distribution for the sample proportion $\hat{p}$ is approximately normal with mean $\mu_{\hat{p}}=p$ and standard error $SE_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}$.
+> When observations are independent and sample size is sufficiently large, then the sampling distribution for the sample proportion $\hat{p}$ is approximately normal with mean $\mu_{\hat{p}}=p$ and standard error $SE_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}$.
 
 --
 
 - We also have a CLT for the sample mean:
 
-> When we collect samples of sufficiently large size $n$ from a population with mean $\mu$ and standard deviation $\sigma$, then the sampling distribution for the sample mean $\bar{x}$ is approximately normal with mean $\mu$ and standard error $SE = \frac{\sigma}{\sqrt{n}}$. 
+> When we collect samples of sufficiently large size $n$ from a population with mean $\mu$ and standard deviation $\sigma$, then the sampling distribution for the sample mean $\bar{x}$ is approximately normal with mean $\mu_{\bar{x}} = \mu$ and standard error $SE_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$. 
 
 --
 
@@ -84,23 +102,213 @@ library(kableExtra)
 
 ---
 
+# Videos for CLT
+
+- Central limit theorems are reviewed in the videos included on the next few slides.
+
+---
+
+# CLT Video 1
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/oLW_uzkPZGA") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# CLT Video 2
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# CLT Video 3
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/uVEj2uBJfq0") %>%
+  vembedr::use_align("center")
+```
+
+---
+
 # CI for a Proportion
 
+- Once you've determined a one-proportion CI would be helpful for an application, there are four steps to constructing the interval:
+
+--
+
+  - Identify the point estimate $\hat{p}$ and the sample size $n$, and determine what confidence level you want.
+  
+--
+
+  - Verify the conditions to ensure $\hat{p}$ is nearly normal, that is, check that $n\hat{p} \geq 10$ and $n(1-\hat{p}) \geq 10$. 
+  
+--
+
+  - If the conditions hold, estimate the standard error $SE$ using $\hat{p}$, find the appropriate $z^{\ast}$, and compute $\hat{p} \pm z^{\ast} \times SE$ . 
+  
+--
+
+ - Interpret the CI in the context of the problem. 
+
+
+---
+
+# Proportion CI Example
+
+- Consider the following problem:
+
+--
+
+> Is parking a problem on campus? A randomly selected group of 89 faculty and staff are asked whether they are satisfied with campus parking or not. Of the 89 individuals surveyed, 23 indicated that they are satisfied. What is the proportion $p$ of faculty and staff that are satisfied with campus parking? 
+
+--
+
+- Explain why this problem is suitable for a one-proportion CI. Is this CLT applicable? If so, obtain a 95% CI for a point estimate.
+
+---
+
+# Proportion CI Video
+
+- Confidence intervals for a proportion are reviewed in this video:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
+  vembedr::use_align("center")
+```
 
 ---
 
 # Hypothesis Test for a Proportion
 
+- Once you've determined a one-proportion hypothesis test is the correct test for a problem, there are four steps to completing the test:
 
+--
+
+  - Identify the parameter of interest, lost hypotheses, identify the significance level, and identify $\hat{p}$ and $n$. 
+  
+--
+
+  - Verify conditions to ensure $\hat{p}$ is nearly normal under $H_{0}$. For one-proportion hypothesis tests, use the null value $p_{0}$ to check the conditions $np_{0} \geq 10$ and $n(1-p_{0}) \geq 10$. 
+  
+--
+
+ - If the conditions hold, compute the standard error, again using $p_{0}$, compute the $Z$-score, and identify the p-value. 
+ 
+--
+
+  - Evaluate the hypothesis test by comparing the p-value to the significance level $\alpha$, and provide a conclusion in the context of the problem.  
+  
+---
+
+# Proportion Hypothesis Test Example
+
+> Is parking a problem on campus? A randomly selected group of 89 faculty and staff are asked whether they are satisfied with campus parking or not. Of the 89 individuals surveyed, 23 indicated that they are satisfied. 
+
+--
+
+- Let's study this problem using a hypothesis testing framework.  
 
 ---
 
-# R Commands for Proportion Test
+# R Command(s) for Proportion Hypothesis Test
 
+- In cases where the CLT applies, we can use a normal distribution to directly compute p-values with the `pnorm` function. 
+
+--
+
+- Alternatively, R has a built-in function `prop.test` that automates one-proportion hypothesis testing. 
+
+--
+
+- Let's look at some examples of using this command together. 
+
+---
+
+# Problems to Practice
+
+- Let's take a minute to do some practice problems. 
+
+--
+
+- Try problems 6.7 and 6.13 from the textbook. 
+
+---
+
+# Problems Involving Difference of Proportions
+
+- Consider the following problem:
+
+> An online poll on January 10, 2017 reported that 97 out of 120 people in Virginia between the ages of 18 and 29 believe that marijuana should be legal, while 84 out of 111 who are 30 and over held this belief. Is there a difference between the proportion of young people who favor marijuana leagalization as compared to people who are older?
+
+--
+
+- Think about how this problem is different than problems for a single proportion. The basic point here is that there are two groups, and we want to compare proportions across the two groups.
+
+--
+
+-  Data for the problem stated above might look as follows (only the first few rows are shown).
+
+```{r _weed_data,echo=FALSE}
+support_legalize <- c(rep("Yes",97),rep("No",23),rep("Yes",84),rep("No",27))
+age_group <- c(rep("18-29",120),rep(">30",111))
+age_group <- factor(age_group,levels=c("18-29",">30"))
+my_df <- tibble(support_legalize=support_legalize,age_group=age_group)
+my_df %>% slice_sample(n=6)
+```
+
+---
+
+# Plotting Grouped Proportion Data
+
+- We can used grouped bar plots or a mosaic plot to visualize data related to grouped proportions:
+
+```{r grouped_prop_plot,fig.height=5,fig.width=11,echo=FALSE}
+p1 <- my_df %>% ggplot(aes(x=age_group,fill=support_legalize)) + geom_bar()
+p2 <- my_df %>% ggplot() + geom_mosaic(aes(x = product(support_legalize,age_group), fill=support_legalize))
+
+p1 + p2
+```
 
 ---
 
 # Sampling Distribution for Difference of Proportions
+
+The difference $\hat{p}_{1}-\hat{p}_{2}$ can be modeled using a normal distribution when
+
+  - The data are independent within and between the two groups. Generally this is satisfied if the data come from two independent random samples of if the data come from a randominzed experiment. 
+  
+  - The success-failure condition holds for both groups, where we check successes adn failures in each group separately. 
+  
+--
+
+- When these conditions are satisfied, the standard error of $\hat{p}_{1}-\hat{p}_{2}$ is
+
+$$SE = \sqrt{\frac{p_{1}(1-p_{1})}{n_{1}} + \frac{p_{2}(1-p_{2})}{n_{2}}},$$
+where $p_{1}$ and $p_{2}$ represent the population proportions, and $n_{1}$ and $n_{2}$ represent the sample sizes. 
+
+---
+
+# CI for Difference of Proportions
+
+- To construct a CI for a difference of proportion, we can apply the formulas
+
+$$SE = \sqrt{\frac{p_{1}(1-p_{1})}{n_{1}} + \frac{p_{2}(1-p_{2})}{n_{2}}},\ \ CI = \text{point estimate} \pm z^{\ast} \times SE$$
+
+--
+
+- If necessary, we can use the plug-in principle to estimate the standard error. 
+
+
+---
+
+# CI for Difference of Proportions Examples
+
+
 
 ---
 
