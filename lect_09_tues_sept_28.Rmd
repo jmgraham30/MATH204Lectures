@@ -205,6 +205,28 @@ vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
   
 ---
 
+# Hypotheses for One Proportion Tests
+
+- The null hypothesis for a one-proportion test is typically stated as $H_{0}: p = p_{0}$ where $p_{0}$ is a hypothetical value for $p$. 
+
+--
+
+- The corresponding alternative hypothesis is then one of 
+
+--
+
+  - $H_{A}: p \neq p_{0}$ (two-sided), 
+  
+--
+
+  - $H_{A}: p < p_{0}$ (one-sided less than), or
+  
+--
+
+  - $H_{A}: p > p_{0}$ (one-sided greater than)  
+  
+---
+
 # Proportion Hypothesis Test Example
 
 > Is parking a problem on campus? A randomly selected group of 89 faculty and staff are asked whether they are satisfied with campus parking or not. Of the 89 individuals surveyed, 23 indicated that they are satisfied. 
@@ -310,15 +332,62 @@ $$SE = \sqrt{\frac{p_{1}(1-p_{1})}{n_{1}} + \frac{p_{2}(1-p_{2})}{n_{2}}},\ \ CI
 
 
 
+
+---
+
+# Hypotheses for Difference of Proportion Tests
+
+- The null hypothesis for a difference of proportions test is typically stated as $H_{0}: p_{1} - p_{2} = p_{0}$ where $p_{0}$ is a hypothetical value for $p$. 
+
+--
+
+- The corresponding alternative hypothesis is then one of 
+
+--
+
+  - $H_{A}: p_{1} - p_{2} \neq p_{0}$ (two-sided), 
+  
+--
+
+  - $H_{A}: p_{1} - p_{2} < p_{0}$ (one-sided less than), or
+  
+--
+
+  - $H_{A}: p_{1} - p_{2} > p_{0}$ (one-sided greater than)  
+  
+--
+
+- When $p_{0} = 0$ we need to use the **pooled proportion**.
+
+---
+
+# Pooled Proportion
+
+- When the null hypothesis is that the proportions are equal, use the pooled proportion  $\hat{p}_{\text{pooled}}$, where
+
+$$\hat{p}_{\text{pooled}} = \frac{\text{number of "successes"}}{\text{number of cases}}=\frac{\hat{p}_{1}n_{1} + \hat{p}_{2}n_{2}}{n_{1} + n_{2}}$$
+
+--
+
+- The pooled proportion  $\hat{p}_{\text{pooled}}$ is used to check the success-failure condition and to estimate the standard error. 
+
 ---
 
 # Hypothesis Test for Difference of Proportions
 
+- Let's apply the hypothesis testing framework to this problem:
+
+> An online poll on January 10, 2017 reported that 97 out of 120 people in Virginia between the ages of 18 and 29 believe that marijuana should be legal, while 84 out of 111 who are 30 and over held this belief. Is there a difference between the proportion of young people who favor marijuana leagalization as compared to people who are older?
 
 ---
 
 # R Commands for Difference of Proportion Test
 
+- The R command `prop.test` also works for testing a difference of proportions. 
+
+---
+
+# Hypothesis Test for Difference of Proportions Examples
 
 ---
 

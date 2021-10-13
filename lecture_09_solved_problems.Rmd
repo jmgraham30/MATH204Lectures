@@ -1,0 +1,110 @@
+---
+title: "Lecture 9 Solved Problems"
+author: "JMG"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(openintro)
+library(tidyverse)
+library(ggformula)
+library(ggmosaic)
+```
+
+
+### Parking Problem CI
+
+> Is parking a problem on campus? A randomly selected group of 89 faculty and staff are asked whether they are satisfied with campus parking or not. Of the 89 individuals surveyed, 23 indicated that they are satisfied. What is the proportion $p$ of faculty and staff that are satisfied with campus parking?
+
+The data corresponds to a sample proportion. Let's check the success-failure condition. Our point estimate $\hat{p}$ is
+```{r}
+(p_hat <- 23 / 89)
+```
+
+Then, 
+```{r}
+n <- 89 # sample size
+(n*p_hat)
+(n*(1-p_hat))
+```
+
+We see that the success-failure condition is met. 
+
+The plug-in principle gives the following estimate for standard error:
+```{r}
+(SE <- sqrt((p_hat*(1-p_hat))/n))
+```
+
+Then a 95% confidence interval (CI) is
+```{r}
+p_hat + 1.96 * c(-1,1) * SE
+```
+
+Thus, around 95% of the time we expect that our estimate will be between 0.167 and 0.349. 
+
+### Exercise 6.7
+
+Our sample size and point estimate is
+```{r}
+(n <- 600)
+(p_hat <- 0.56)
+```
+
+We check the success-failure condition
+```{r}
+(n*p_hat)
+(n*(1-p_hat))
+```
+
+and see that it is met. Then, the margin of error for a 95% CI is
+```{r}
+(SE <- sqrt((p_hat*(1-p_hat))/n))
+(marg_err <- 1.96*SE)
+```
+
+So a 95% CI is
+```{r}
+p_hat + c(-1,1)*marg_err
+```
+
+### Exercise 6.13
+
+Our sample size and point estimate is
+```{r}
+(n <- 80)
+(p_hat <- 53 / n)
+```
+
+Our null hypothesis is 
+
+$H_{0}: p = 0.5$ That is, people can  not tell the difference between diet and regular soda. 
+
+and our alternative hypothesis is
+
+$H_{A}: p\neq 0.5$ That is, people can tell the difference between diet and regular soda
+
+We check the success-failure condition with the $p_{0}=0.5$
+```{r}
+p0 <- 0.5
+(n*p0)
+(n*(1-p0))
+```
+
+We conclude that the success-failure condition is met. Now we obtain our standard error and z-score
+```{r}
+SE <- sqrt((p0*(1-p0))/n)
+(z_score <- (p_hat - p0)/SE)
+```
+
+Then, our p-value will be the probability of obtaining a value that is as or more extreme than our observation. This is computed as
+```{r}
+2*(1 - pnorm(z_score))
+```
+
+Since this is less than $\alpha = 0.05$ we will reject the null hypothesis at the 0.05 significance level. Alternatively, we can use `prop.test`
+```{r}
+prop.test(53,80,p=0.5,correct = FALSE)
+```
+
+If it is true that people can not tell the difference between diet and regular soda, then we expect to obtain a result that is as or more extreme than 53 people correctly identifying the soda less than 0.4% of the time.  
