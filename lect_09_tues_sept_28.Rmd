@@ -466,6 +466,26 @@ prop.test(c(97,84),c(120,111),correct = FALSE)
 
 - One question is, what are the appropriate conditions to check to make sure the CLT holds for the sample mean? 
 
+--
+
+- When the conditions for the CLT for the sample mean hold, the expression for the standard error involves the population standard deviation which we rarely know if practice. So, how do we estimate the standard error for the sample mean? 
+
+--
+
+- We address these questions in the next few slides. 
+
+---
+
+# Inference for a Mean Video
+
+
+- You are encouraged to watch this video on inference for a mean.
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/RYVIGj1l4xs") %>%
+  vembedr::use_align("center")
+```
+
 ---
 
 # Practical Check for Normality 
