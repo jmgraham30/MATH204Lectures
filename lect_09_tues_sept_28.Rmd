@@ -446,6 +446,28 @@ prop.test(c(97,84),c(120,111),correct = FALSE)
 
 ---
 
+# Inference for a Sample Mean
+
+- A potato chip manufacturer claims that there is on average 32 chips per bag for their brand. How can we tell if this is an accurate claim? 
+
+--
+
+- One approach is to take a sample of, say 25 bags of chips for the particular band and compute the sample mean number of chips per bag. 
+
+--
+
+- This type of problem is inference for a sample mean. 
+
+--
+
+- In principle, we know the sampling distribution for the sample mean is very nearly normal, provided the conditions for the CLT holds.
+
+--
+
+- One question is, what are the appropriate conditions to check to make sure the CLT holds for the sample mean? 
+
+---
+
 # Practical Check for Normality 
 
 
