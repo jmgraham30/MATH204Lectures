@@ -51,7 +51,7 @@ library(kableExtra)
   
 --
 
-- After we discuss these topics along with power calculations and simple ordinary least squares regress (7.4 and Chapter 8), we will return to discuss goodness of fit (6.3) and testing for independence (6.4).
+- After we discuss these topics along with power calculations and simple ordinary least squares regression (7.4 and Chapter 8), we will return to discuss goodness of fit (6.3) and testing for independence (6.4).
 
 
 ---
@@ -74,14 +74,14 @@ library(kableExtra)
 
 --
 
-- Many of our intervals estimates and hypothesis tests will rely on a central limit theorem. We quickly review these.  
+- Many of our interval estimates and hypothesis tests will rely on a central limit theorem. We quickly review these.  
   
 
 ---
 
 # Central Limit Theorems
 
-- Recall our CLT for sample proportion:
+- Recall our CLT for sample proportions:
 
 > When observations are independent and sample size is sufficiently large, then the sampling distribution for the sample proportion $\hat{p}$ is approximately normal with mean $\mu_{\hat{p}}=p$ and standard error $SE_{\hat{p}}=\sqrt{\frac{p(1-p)}{n}}$.
 
@@ -189,7 +189,7 @@ vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
 
 --
 
-  - Identify the parameter of interest, lost hypotheses, identify the significance level, and identify $\hat{p}$ and $n$. 
+  - Identify the parameter of interest, list hypotheses, identify the significance level, and identify $\hat{p}$ and $n$. 
   
 --
 
@@ -235,6 +235,20 @@ vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
 
 - Let's study this problem using a hypothesis testing framework.  
 
+--
+
+- Here is relevant R code:
+
+```{r}
+p_hat <- 23/89
+n <- 89
+p0 <- 0.5
+(c(n*p0,n*(1-p0))) # success-failure condition
+SE <- sqrt((p0*(1-p0))/n)
+(z_val <- (p_hat - p0)/SE)
+(p_value <- 2*(pnorm(z_val)))
+```
+
 ---
 
 # R Command(s) for Proportion Hypothesis Test
@@ -247,7 +261,11 @@ vembedr::embed_url("https://youtu.be/_iFAZgpWsx0") %>%
 
 --
 
-- Let's look at some examples of using this command together. 
+- So, in our parking problem example we would use 
+```{r}
+prop.test(23,89,p=0.5,correct = FALSE)
+```
+
 
 ---
 
@@ -302,9 +320,9 @@ p1 + p2
 
 The difference $\hat{p}_{1}-\hat{p}_{2}$ can be modeled using a normal distribution when
 
-  - The data are independent within and between the two groups. Generally this is satisfied if the data come from two independent random samples of if the data come from a randominzed experiment. 
+  - The data are independent within and between the two groups. Generally this is satisfied if the data come from two independent random samples or if the data come from a randomized experiment. 
   
-  - The success-failure condition holds for both groups, where we check successes adn failures in each group separately. 
+  - The success-failure condition holds for both groups, where we check successes and failures in each group separately. 
   
 --
 
@@ -325,13 +343,28 @@ $$SE = \sqrt{\frac{p_{1}(1-p_{1})}{n_{1}} + \frac{p_{2}(1-p_{2})}{n_{2}}},\ \ CI
 
 - If necessary, we can use the plug-in principle to estimate the standard error. 
 
+$$SE \approx \sqrt{\frac{\hat{p}_{1}(1-\hat{p}_{1})}{n_{1}} + \frac{\hat{p}_{2}(1-\hat{p}_{2})}{n_{2}}}$$
 
 ---
 
 # CI for Difference of Proportions Examples
 
+- Let's obtain a **90%** CI for the difference of proportions in the marijuana legalization question. Here is the relevant R code:
+```{r}
+n1 <- 120
+n2 <- 111
+p1 <- 97/n1
+p2 <- 30/n2
+p_diff <- p1 - p2
+(c(n1*p1,n1*(1-p1),n2*p2,n2*(1-p2))) # success-failure conditions
+SE <- sqrt(((p1*(1-p1))/n1) + ((p2*(1-p2))/n2))
+z_90 <- -qnorm(0.05) # find the appropriate z-value for 90% CI
+(CI <- p_diff + z_90 * c(-1,1) * SE) # 90% CI
+```
 
+--
 
+- Let's try some more examples together. 
 
 ---
 
@@ -379,15 +412,37 @@ $$\hat{p}_{\text{pooled}} = \frac{\text{number of "successes"}}{\text{number of 
 
 > An online poll on January 10, 2017 reported that 97 out of 120 people in Virginia between the ages of 18 and 29 believe that marijuana should be legal, while 84 out of 111 who are 30 and over held this belief. Is there a difference between the proportion of young people who favor marijuana leagalization as compared to people who are older?
 
+--
+
+```{r}
+n1 <- 120; n2 <- 111
+p1 <- 97/120; p2 <- 84/111; p_diff <- p1 - p2
+p_pooled <- (p1*n1+p2*n2)/(n1+n2)
+(c(n*p_pooled,n*(1-p_pooled)))
+SE <- sqrt((p_pooled*(1-p_pooled))/n1 + (p_pooled*(1-p_pooled))/n2)
+(z_val <- (p_diff - 0.0)/SE)
+(p_value <- 2*(1-pnorm(z_val)))
+```
+
+
 ---
 
 # R Commands for Difference of Proportion Test
 
 - The R command `prop.test` also works for testing a difference of proportions. 
 
+--
+
+- For example, we could solve the marijuana legalization problem with the following:
+```{r}
+prop.test(c(97,84),c(120,111),correct = FALSE)
+```
+
 ---
 
 # Hypothesis Test for Difference of Proportions Examples
+
+- Let's work some more problems together. 
 
 ---
 

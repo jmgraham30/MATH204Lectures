@@ -107,4 +107,7 @@ Since this is less than $\alpha = 0.05$ we will reject the null hypothesis at th
 prop.test(53,80,p=0.5,correct = FALSE)
 ```
 
-If it is true that people can not tell the difference between diet and regular soda, then we expect to obtain a result that is as or more extreme than 53 people correctly identifying the soda less than 0.4% of the time.  
+If it is true that people can not tell the difference between diet and regular soda, then we expect to obtain a result that is as or more extreme than 53 people correctly identifying the soda less than 0.4% of the time. 
+
+
+
