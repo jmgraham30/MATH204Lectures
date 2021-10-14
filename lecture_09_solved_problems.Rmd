@@ -13,6 +13,8 @@ library(ggmosaic)
 ```
 
 
+## Single Proportion Problems
+
 ### Parking Problem CI
 
 > Is parking a problem on campus? A randomly selected group of 89 faculty and staff are asked whether they are satisfied with campus parking or not. Of the 89 individuals surveyed, 23 indicated that they are satisfied. What is the proportion $p$ of faculty and staff that are satisfied with campus parking?
@@ -110,4 +112,71 @@ prop.test(53,80,p=0.5,correct = FALSE)
 If it is true that people can not tell the difference between diet and regular soda, then we expect to obtain a result that is as or more extreme than 53 people correctly identifying the soda less than 0.4% of the time. 
 
 
+## Difference of Proportion Problems
 
+### 6.19
+
+(a) False. Since $(p_{\text{male}} - p_{\text{female}}) > 0$, the proportion of males whose favorite color is black is higher than the proportion of females. 
+
+(b) True. 
+
+(c) True.
+
+(d) True. 
+
+(e) False. All you have to do is change signs. 
+
+### 6.23
+
+Here's what our data looks like:
+```{r}
+support_drilling <- c(rep("Yes",154),rep("No",180),rep("Do not know",104),rep("Yes",132),rep("No",126),rep("Do not know",131))
+college_grad <- c(rep("Yes",438),rep("No",389))
+college_grad <- factor(college_grad,levels=c("Yes","No"))
+my_df <- tibble(support_drilling=support_drilling,college_grad=college_grad)
+my_df %>% slice_sample(n=6)
+```
+
+A visualization:
+
+```{r}
+my_df %>% 
+  ggplot() + 
+  geom_mosaic(aes(x = product(support_drilling,college_grad), fill=support_drilling))
+```
+
+(a) 
+```{r}
+(p1 <- 104/438)
+(p2 <- 131/389)
+```
+
+
+
+(b) First, we will conduct a hypothesis test using the `prop.test` command:
+```{r}
+prop.test(c(104,131),c(438,389),correct = FALSE)
+```
+
+In this case, we will reject the null hypothesis at the $\alpha = 0.05$ significance level since out p-value is 0.001573 which is less than 0.05. 
+
+Now, the long way:
+```{r}
+n1 <- 438
+n2 <- 389
+p_diff <- p1 - p2
+p_pooled <- (p1*n1 + p2*n2)/(n1 + n2)
+(c(n1*p1,n1*(1-p1),n2*p2,n2*(1-p2)))
+SE <- sqrt((p_pooled*(1-p_pooled))/n1 + (p_pooled*(1-p_pooled))/n2)
+(z_val <- (p_diff - 0.0)/SE)
+```
+
+Compute the p-value
+```{r}
+(p_value <- 2*pnorm(-3.1608))
+```
+
+In this case, we will reject the null hypothesis at the $\alpha = 0.05$ significance level since out p-value is 0.001573 which is less than 0.05.
+
+
+## One-Sample Means Problems 
