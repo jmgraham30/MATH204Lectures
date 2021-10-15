@@ -649,6 +649,13 @@ is computed by
 pt(-1.0,df=5)
 ```
 
+
+---
+
+# Middle 95% Under a t Density
+
+- 
+
 ---
 
 # One-Sample t CI
