@@ -180,3 +180,92 @@ In this case, we will reject the null hypothesis at the $\alpha = 0.05$ signific
 
 
 ## One-Sample Means Problems 
+
+### 7.1
+
+(a)
+
+```{r}
+n <- 6
+confidence_level <- 0.9
+(t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+(b)
+
+```{r}
+n <- 21
+confidence_level <- 0.98
+(t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+(c)
+
+```{r}
+n <- 29
+confidence_level <- 0.95
+(t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+(d)
+
+```{r}
+n <- 12
+confidence_level <- 0.99
+(t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+### 7.4
+
+(a)
+
+```{r}
+2*(1-pt(2.485,25))
+```
+
+Do not reject.
+
+(b)
+
+```{r}
+2*(1-pt(0.5,17))
+```
+
+Do not reject. 
+
+### 7.5
+
+What we know is that $n=36$, so $\sqrt{n} = 6$, $t^{\ast}_{\text{df}}$ is given by
+
+```{r}
+(t_ast <- -qt((1-0.95)/2,35))
+```
+
+and that 
+
+$$
+\begin{align}
+\bar{x} - 2.03 \frac{s}{6} = 18.985, \\
+\bar{x} + 2.03 \frac{s}{6} = 21.015
+\end{align}
+$$
+
+This is a system of two equations in two unknowns, that is, $\bar{x}$ and $s$.  An easy way to solve this in R is as follows:
+
+```{r}
+A <- matrix(c(1,-2.03/6,1,2.03/6),2,2,byrow = TRUE)
+b <- c(18.985,21.015)
+solve(A,b)
+```
+
+We can check this:
+
+```{r}
+x_bar <- 20
+s <- 3
+(x_bar - 2.03 * (s/6))
+(x_bar + 2.03 * (s/6))
+```
+
+
+

@@ -654,22 +654,182 @@ pt(-1.0,df=5)
 
 # Middle 95% Under a t Density
 
-- 
+- How do we find the middle 95% of area under a t-distribution? This is an important question because it relates to construting a 95% confidence interval for the sample mean. 
+
+--
+
+- Suppose we have a t-distribution with degrees of freedom $\text{df}=10$, then to find the value $t^{\ast}$ so that 95% of the area under the density curve lies between $-t^{\ast}$ and $t^{\ast}$, we use the `qt` command, for example, 
+
+```{r}
+(t_ast <- -qt(0.05/2,df=10)) 
+```
+
+--
+
+- We can check our answer:
+
+```{r}
+pt(t_ast,df=10) - pt(-t_ast,df=10)
+```
+
+--
+
+- Note that you always have to specify the appropriate value for the degrees of freedom df. The appropriate degrees of freedom is given by $\text{df}=n-1$, where $n$ is the sample size. 
 
 ---
 
 # One-Sample t CI
 
+> Based on a sample of $n$ independent and nearly normal observations, a confidence interval for the population mean is
+
+$$\bar{x} \pm t^{\ast}_{\text{df}} \times \frac{s}{\sqrt{n}},$$
+
+where $n$ is the sample size, $\bar{x}$ is the sample mean, $s$ is the sample standard deviation. 
+
+--
+
+- We determine the appropriate value for $t^{\ast}_{\text{df}}$ with the R command 
+
+`qt((1.0-confidence_level)/2,df=n-1)`.
+
+
 
 ---
 
-# One-Sample t-test
+# One-Sample Mean CI Example
+
+- Suppose we take a random sample of 13 observations from a normally distributed population and determine the sample mean is 8 with a sample standard deviation of 2.5. Then to find a 90% confidence interval, we would do the following:
+
+```{r}
+n <- 13
+x_bar <- 8
+s <- 2.5
+SE <- s/sqrt(n)
+t_ast <- -qt((1.0-0.9)/2,df=n-1)
+(CI <- x_bar + t_ast * c(-1,1)*SE)
+```
+
+A 95% CI would be
+
+```{r}
+t_ast <- -qt((1.0-0.95)/2,df=n-1)
+(CI <- x_bar + t_ast * c(-1,1)*SE)
+```
+
+---
+
+# CI for Single Mean Summary
+
+> Once you have determined a one-mean confidence interval would be helpful for an application, there are four steps to constructing the interval:
+
+--
+
+  - Identify $n$, $\bar{x}$, and $s$, and determine what confidence level you wish to use.
+  
+--
+
+  - Verify the conditions to ensure $\bar{x}$ is nearly normal. 
+  
+--
+
+  - If the conditions hold, approximate $SE$ by $\frac{s}{\sqrt{n}}$, find $t^{\ast}_{\text{df}}$, and construct the interval. 
+  
+--
+
+  - Interpret the confidence interval in the context of the problem. 
+  
+--
+
+- Let's work some examples together. 
+
+---
+
+# One-Mean Hypothesis Testing
+
+- The null hypothesis for a one-proportion test is typically stated as $H_{0}: \mu = \mu_{0}$ where $\mu_{0}$ is the null value for the population mean. 
+
+--
+
+- The corresponding alternative hypothesis is then one of 
+
+--
+
+  - $H_{A}: \mu \neq \mu_{0}$ (two-sided), 
+  
+--
+
+  - $H_{A}: \mu < \mu_{0}$ (one-sided less than), or
+  
+--
+
+  - $H_{A}: \mu > \mu_{0}$ (one-sided greater than)  
+
+
+---
+
+# One-Mean Hypothesis Test Procedure
+
+- Once you have determined a one-mean hypothesis test is the correct procedure, there are four steps to completing the test:
+
+--
+
+ - Identify the parameter of interest, list out hypotheses, identify the significance level, and identify $n$, $\bar{x}$, and $s$. 
+ 
+--
+
+ - Verify conditions to ensure $\bar{x}$ is nearly normal. 
+ 
+--
+
+ - If the conditions hold, approximate $SE$ by $\frac{s}{\sqrt{n}}$, compute the T-score using
+ 
+ $$T = \frac{\bar{x} - \mu_{0}}{\frac{s}{\sqrt{n}}},$$
+and compute the p-value. 
+
+--
+
+  - Evaluate the hypothesis test by comparing the p-value to the significance level $\alpha$, and provide a conclusion in the context of the problem. 
+  
+---
+
+# A Simple Example
+
+- We want to know if the following data comes from a normal distribution with mean 0:
+
+```{r,echo=FALSE}
+set.seed(123)
+(x <- rnorm(10,0.2,1.0))
+```
+
+- We can apply a hypothesis test corresponding to $H_{0}: \mu = 0.0$, versus $H_{A}: \mu \neq 0$ as follows
+
+```{r}
+n <- length(x); x_bar <- mean(x); s <- sd(x)
+alpha <- 0.05
+SE <- s/sqrt(n)
+mu_0 <- 0.0
+(T <- (x_bar - mu_0)/SE)
+(p_value <- 2*(1-pt(T,df=n-1))) 
+```
 
 
 ---
 
 # R Command for One-Sample t-test
 
+- There is a built-in R command, `t.test` that will conduct a hypothesis test for a sinlg emean for us. 
+
+--
+
+- For example, we can solve our previous problem using
+
+```{r}
+t.test(x,mu=0.0)
+```
+
+--
+
+- Let's work some examples together. 
 
 ---
 
