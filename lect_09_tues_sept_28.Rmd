@@ -468,7 +468,7 @@ prop.test(c(97,84),c(120,111),correct = FALSE)
 
 --
 
-- When the conditions for the CLT for the sample mean hold, the expression for the standard error involves the population standard deviation which we rarely know if practice. So, how do we estimate the standard error for the sample mean? 
+- When the conditions for the CLT for the sample mean hold, the expression for the standard error involves the population standard deviation ($\sigma$) which we rarely know if practice. So, how do we estimate the standard error for the sample mean? 
 
 --
 
@@ -486,15 +486,168 @@ vembedr::embed_url("https://youtu.be/RYVIGj1l4xs") %>%
   vembedr::use_align("center")
 ```
 
+
+---
+
+# Conditions for CLT for Sample Mean
+
+- Two conditions are required to apply the CLT for a sample mean $\bar{x}$:
+
+--
+
+> **Independence:** The sample observations must be independent. Simple random samples from a population are independent, as are data from a random process like rolling a die or tossing a coin. 
+
+--
+
+> **Normality:** When a sample is small, we also require that the sample observations come from a normally distributed population. This condition can be relaxed for larger sample sizes. 
+
+--
+
+- The normality condition is vague but there are some approximate rules that work well in practice. 
+
+
 ---
 
 # Practical Check for Normality 
+
+- ** $n < 30$:** If the sample size $n$ is less than 30 and there are no clear outliers, then we can assume the data come from a nearly normal distribution. 
+
+--
+
+- ** $n \geq 30$:** If the sample size $n$ is at least 30 and there are no particularly exterme outliers, then we can assume the sampling distribution of $\bar{x}$ is nearly normal, even if the underlying distribution of individual observations is not. 
+
+--
+
+- Let's consider example 7.1 from the textbook to illustrate these practical rules. 
+
+---
+
+# Estimating Standard Error
+
+- When samples are independent and the normality condition is met, then the sampling distribution for the sample mean $\bar{x}$ is (very nearly) normal with mean $\mu_{\bar{x}} = \mu$ and standard error $SE_{\bar{x}} = \frac{\sigma}{\sqrt{n}}$, where $\mu$ is the true population mean of the distribution from which the samples are taken and $\sigma$ is the true population from which the samples are taken. 
+
+--
+
+- In practice we do not know the true values of the population parameters  $\mu$ and $\sigma$. But we can use the plug-in principle to obtain estimates:
+
+$$\mu_{\bar{x}} \approx \bar{x}, \ \ \text{and} \ \ SE_{\bar{x}} \approx \frac{s}{\sqrt{n}},$$
+
+where $s$ is the **sample standard deviation**. 
+
+---
+
+# T-score
+
+- If we take $n$ samples from a normal distribution $N(\mu,\sigma)$, then the quantity
+
+$$z = \frac{\bar{x} - \mu}{\frac{\sigma}{\sqrt{n}}}$$
+will follow a standard normal distribution $N(0,1)$.
+
+--
+
+- On the other hand, the quantity
+
+$$t = \frac{\bar{x} - \mu}{\frac{s}{\sqrt{n}}}$$
+will not quite be $N(0,1)$, especially if $n$ is small. 
+
+--
+
+- We call the quantity in the last formula a T-score.  
+
+---
+
+# T-Score Video
+
+- Let's watch this video on T-scores. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/k5Ets4QJYmY") %>%
+  vembedr::use_align("center")
+```
 
 
 ---
 
 # t-distribution
 
+- T-scores follow a t-distribution with degrees of freedom $\text{df}=n-1$, where $n$ is the sample size. 
+
+--
+
+- We will use a t-distributions for inference, that is, for obtaining confidence intervals, and hypothesis testing. 
+
+--
+
+- Let's get a feel for t-distributions. 
+
+---
+
+# Plotting t-Distributions
+
+- We can easily plot density curves for t-distributions.
+
+```{r,fig.height=5}
+gf_dist("t",df=19)
+```
+
+---
+
+# Degrees of Freedom Parameter
+
+- This plot shows three different t density functions for three different degrees of freedom:
+
+```{r,fig.height=6,fig.width=10,echo=FALSE}
+ggplot(data.frame(x = c(-4, 4)), aes(x)) + 
+  stat_function(fun = dt, args = list(df=2), aes(color='df=2'),lwd=1) +
+  stat_function(fun = dt, args = list(df=5), aes(color='df=5'),lwd=1) + 
+  stat_function(fun = dt, args = list(df=10), aes(color='df=10'),lwd=1) + 
+  scale_color_manual(name="Degrees of Freedom",
+                     values=c("df=2"="#88CCEE","df=5"="#CC6677","df=10"="#117733"))
+```
+
+---
+
+# A Computational Experiment
+
+- This plot shows a histogram of T-score values obtained by computing the sample mean with $n=8$ from $N(0,1)$. We overlay a density curve for both $N(0,1)$ and a t-distribution with $\text{df}=7$:
+
+```{r,fig.height=5,echo=FALSE}
+get_data <- function(n){
+  x <- rnorm(8)
+  x_bar <- mean(x)
+  x_sd <- sd(x)
+  t_score <- x_bar/(x_sd/sqrt(length(x)))
+}
+
+t_scores <- map_dbl(1:2500,get_data)
+
+t_scores_df <- tibble(t_scores=t_scores)
+
+t_scores_df %>% 
+  ggplot(aes(x=t_scores)) + 
+  geom_histogram(aes(y=..density..),color="black") + 
+  stat_function(fun=dnorm,aes(color="Normal"),lwd=1) + 
+  stat_function(fun=dt,args = list(df=7),aes(color="t"),lwd=1) + 
+  scale_color_manual(name="Distribution",
+                     values=c("Normal"="#88CCEE","t"="#CC6677"))
+```
+
+---
+
+# Area Under a t-Distribution
+
+- We can compute areas under t-distribution density curves in the same way we did for areas under normal distribution density curves. For example, the area
+
+```{r,fig.height=3}
+gf_dist("t",df=5,fill = ~(x<=-1.0),geom="area")
+```
+
+
+is computed by
+
+```{r}
+pt(-1.0,df=5)
+```
 
 ---
 
