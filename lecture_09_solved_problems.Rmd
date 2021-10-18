@@ -45,6 +45,50 @@ p_hat + 1.96 * c(-1,1) * SE
 
 Thus, around 95% of the time we expect that our estimate will be between 0.167 and 0.349. 
 
+### Football Example
+
+In a survey of 1011 adults, 293 said that their favorite sport to watch is football. Find a point estimate for the population proportion of U.S. adults who say their favorite sport to watch is football. Provide a 93% confidence interval for the estimate. 
+
+Our point estimate is
+
+```{r}
+(p_hat <- 293 / 1011) 
+```
+
+Before obtaining a confidence interval, we should check the success-failure condition:
+
+```{r}
+n <- 1011
+(n*p_hat)
+(n*(1-p_hat))
+```
+
+The success-failure condition is met. Now we need to estimate the standard error:
+
+```{r}
+(SE <- sqrt((p_hat*(1-p_hat))/n))
+```
+
+Now for a 93% CI, we need to know the appropriate $z^{\ast}$ value. This is the value such that 93% of the total area under the standard normal curve falls between $-z^{\ast}$ and $-z^{\ast}$. We can find this as follows:
+
+```{r}
+(z_ast <- -qnorm((1.0-0.93)/2))
+```
+
+Let's confirm that this is correct:
+
+```{r}
+pnorm(1.8119) - pnorm(-1.8119)
+```
+
+Finally, we obtain our 93% CI:
+
+```{r}
+(CI <- p_hat + z_ast*c(-1,1)*SE)
+```
+
+Thus, we can be 93% confident that between 26% and 32% of adults in the U.S. say that football is their favorite sport. 
+
 ### Exercise 6.7
 
 Our sample size and point estimate is
@@ -126,6 +170,42 @@ If it is true that people can not tell the difference between diet and regular s
 
 (e) False. All you have to do is change signs. 
 
+
+### Antismoking Example
+
+During the 1990's intensive antismoking campaigns were sponsored by both federal and private agencies. Suppose the American Cancer Society randomly sampled 1500 adults in in 1992 and then sampled 1750 adults in 2002 to determine whether there was evidence that the percentage of smokers had decreased. The results of the two sample surveys are: in 1992, 555 out of 1500 adults indicate that they smoke, while in 2002, 578 out of 1750 indicate that they smoke. Estimate the difference in proportions of adult smokers between 1992 and 2002.  Obtain a 95% confidence interval for the estimate. 
+
+Our estimate is
+
+```{r}
+n1 <- 1500
+n2 <- 1750
+p1 <- 555/n1
+p2 <- 578/n2
+(p_diff <- p1 - p2)
+```
+
+Next, we check the success-failure conditions
+
+```{r}
+c(n1*p1,n1*(1-p1),n2*p2,n2*(1-p2))
+```
+
+
+Since the conditions are met, we obtain our standard error:
+
+```{r}
+(SE <- sqrt(((p1*(1-p1))/n1) + ((p2*(1-p2))/n2)))
+```
+
+Finally, a 95% CI is
+
+```{r}
+(p_diff + 1.96*c(-1,1)*SE)
+```
+
+We can be 95% confident that the difference in the proportion of smokers from 1992 to 2002 is between 0.007 and 0.07. 
+
 ### 6.23
 
 Here's what our data looks like:
@@ -178,6 +258,61 @@ Compute the p-value
 
 In this case, we will reject the null hypothesis at the $\alpha = 0.05$ significance level since out p-value is 0.001573 which is less than 0.05.
 
+### Antismoking Example 
+
+
+During the 1990's intensive antismoking campaigns were sponsored by both federal and private agencies. Suppose the American Cancer Society randomly sampled 1500 adults in in 1992 and then sampled 1750 adults in 2002 to determine whether there was evidence that the percentage of smokers had decreased. The results of the two sample surveys are: in 1992, 555 out of 1500 adults indicate that they smoke, while in 2002, 578 out of 1750 indicate that they smoke. Do these data indicate that the fraction of smokers decreased over this 10-year period?
+
+To answer this question, we test the hypothesis
+
+$$H_{0}: p_{1}-p_{2} = 0$$, that is, the proportion of smokers did not decrease.
+
+versus
+
+$$H_{A}: p_{1} - p_{2} > 0$$, that is, the proportion of smokers did decrease. 
+
+Note that this is an example of a one-sided hypothesis test. 
+
+This is easy to do with the `prop.test` command:
+
+```{r}
+prop.test(c(555,578),c(1500,1750),alternative = "greater",correct = FALSE)
+```
+
+Let's conduct the test "by-hand". That is, let's compute all of the necessary quantities. Since the null hypothesis value is $0$, we have to use the pooled proportion.
+
+```{r}
+n1 <- 1500
+n2 <- 1750
+p1 <- 555/n1
+p2 <- 578/n2
+p_diff <- p1 - p2
+(p_pooled <- (p1*n1 + p2*n2)/(n1 + n2))
+```
+
+
+Then the standard error is
+
+```{r}
+(SE <- sqrt((p_pooled*(1-p_pooled)/n1) + ((p_pooled*(1-p_pooled))/n2))) 
+```
+
+The Z-score is then
+
+```{r}
+(z_val <- p_diff/SE)
+```
+
+Now we compute the p-value. This is where we use the fact that this is a one-sided test. Since it is one-sided greater than, we just want to know what is the probability of getting a value that is **greater** than what we have observed in the data under the assumption that the null hypothesis holds. 
+
+```{r}
+(p_val <- 1 - pnorm(z_val))
+```
+
+
+Not that this is the same p-value returned by our use of the `prop.test` command. 
+
+Finally, we will reject the null hypothesis at the $\alpha = 0.05$ significance level since our p-value is less than $\alpha$. That is, we conclude that the data provides sufficient evidence to reject the null hypothesis that the proportion of smokers did not decrease. 
 
 ## One-Sample Means Problems 
 

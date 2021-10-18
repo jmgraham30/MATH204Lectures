@@ -835,3 +835,113 @@ t.test(x,mu=0.0)
 
 # Paired Data
 
+> Two sets of observations are *paired* if each observation in one set has a special correspondence or connection with exactly one observation in the other data set. 
+
+--
+
+- Common examples of paired data correspond to "before" and "after" trials. 
+
+--
+
+  - For example, does a particular study technique work well for increasing one's exam score? To test this, we can ask 25 people to take an exam and record their scores, then we can ask those same people to try the study technique before taking another similar exam. 
+  
+--
+
+- As another example, suppose it is claimed that among the general population of adults in the US, the average length of the left foot is longer than the average length of the right foot. To test this, we can select 32 people, record the measurement of the left foot of everyone in one column, then record the measurement of the right foot of everyone in a second column. We must make sure that each row of the resulting data frame corresponds with only one person. 
+
+---
+
+# Paired Data Example
+
+- Perhaps the data from our last example looks as follows:
+
+```{r,echo=FALSE}
+set.seed(123)
+foot_df <- tibble(left_foot=rnorm(32,8,0.3),right_foot=rnorm(32,8,0.3)) %>% mutate(foot_diff=left_foot-right_foot)
+foot_df %>% head()
+```
+
+--
+
+- Notice that we have added a column that is the difference of the left foot measurement minus the right foot measurement. 
+
+---
+
+# Hypothesis Test for Paired Data
+
+- How can we set up a hypothesis testing framework for the foot measurement question? 
+
+--
+
+- Basically, we can apply statistical inference to the difference column in the data. 
+
+--
+
+- The typical null hypothesis for paired data is that the average difference between the measurements is 0. We write this as
+
+$$H_{0}: \mu_{d} = 0$$
+
+---
+
+# Paired Hypothesis Test Procedure
+
+- Once you have determined a paired hypothesis test is the correct procedure, there are four steps to completing the test:
+
+--
+
+  - Determine the significance level, the sample size $n$, the mean of the differences $\bar{d}$, and the corresponding standard deviation $s_{d}$. 
+ 
+--
+
+  - Verify the conditions to ensure that $\bar{d}$ is nearly normal. 
+  
+--
+
+  - If the conditions hold, approximate $SE$ by $\frac{s_{d}}{\sqrt{n}}$, compute the T-score using
+  
+  $$T = \frac{\bar{d}}{\frac{s_{d}}{\sqrt{n}}}$$
+and compute the p-value. 
+
+--
+
+  - Evaluate the hypothesis test by comparing the p-value to the significance level $\alpha$, and provide a conclusion in the context of the problem. 
+  
+---
+
+# First Example
+
+- Consider our foot measurement data.The sample size is $n=32$ and a boxplot shows that there are no extreme outliers. Now we compute the necessary quantities:
+
+```{r}
+n <- 32
+d_bar <- mean(foot_df$foot_diff)
+s_d <- sd(foot_df$foot_diff)
+(t_val <- d_bar/(s_d/sqrt(n)))
+(p_val <- 2*pt(t_val,df=n-1))
+```
+
+
+--
+
+- Here we fail to reject the null hypothesis at the 0.05 significance level. That is, the data does not provide sufficient evidence for rejecting the null hypothesis that there is no significant difference in the length of the left foot versus the right foot.
+
+
+---
+
+# R Command for Paired Hypothesis Test
+
+- Again, we can use the `t.test` function. However, now we must use two sets of data and add the `paired=TRUE` argument. 
+
+--
+
+- For example, to test the hypothesis for the foot data, one would use
+
+```{r}
+t.test(foot_df$left_foot,foot_df$right_foot,paired = TRUE)
+```
+
+--
+
+- Let's work some more examples together. 
+
+
