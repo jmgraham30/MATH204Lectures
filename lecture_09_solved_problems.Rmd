@@ -156,6 +156,73 @@ prop.test(53,80,p=0.5,correct = FALSE)
 If it is true that people can not tell the difference between diet and regular soda, then we expect to obtain a result that is as or more extreme than 53 people correctly identifying the soda less than 0.4% of the time. 
 
 
+### A One-Sided Test
+
+A random sample of 100 observations is selected from a binomial population with unknown probability of success $p$. The point estimate value from the data is $\hat{p}=0.74$. 
+
+(a) Test the hypothesis $H_{0}: = 0.65$ versus $H_{A}: p > 0.65$ with significance level $\alpha=0.01$.
+
+We begin by using the null hypothesis value $p_{0}=0.65$ to check the success-failure condition.
+
+```{r}
+n <- 100
+p_hat <- 0.74
+p_null <- 0.65
+c(n*p_null,n*(1-p_null))
+```
+
+The conditions are met. Next, we obtain the estimate for the standard error and the appropriate Z-score:
+
+```{r}
+(SE <- sqrt((p_null*(1-p_null))/n))
+(z_val <- (p_hat - p_null)/SE)
+```
+
+Now we compute a p-value. Since the alternative hypothesis is **one-sided greater than**, we compute the probability of observing a $z$ value that is greater our equal to `r z_val`:
+
+```{r}
+(p_val <- 1 - pnorm(z_val))
+```
+
+Thus, we fail to reject the null hypothesis at the $\alpha = 0.01$ significance level. 
+
+Let's check our work using the `prop.test` command in R:
+
+```{r}
+prop.test(74,100,p=0.65,alternative = "greater",correct = FALSE,conf.level = 0.99)
+```
+
+The results confirm our previous calculation. 
+
+(b) Form a 99% confidence interval for $p$. 
+
+Now we use $\hat{p}$ to check the success-failure condition and estimate standard error:
+
+```{r}
+(success_failure <- c(n*p_hat,n*(1-p_hat)))
+(SE <- sqrt((p_hat*(1-p_hat))/n))
+```
+
+The success-failure condition holds. Now we need the appropriate $z^{\ast}$ value for a 99% confidence interval:
+
+```{r}
+(z_ast <- -qnorm((1-0.99)/2))
+```
+
+Let's check this:
+
+```{r}
+pnorm(2.576) - pnorm(-2.576)
+```
+
+So a 99% CI is
+
+```{r}
+p_hat + z_ast * c(-1,1) * SE
+```
+
+Thus, we can be 99% confident that the population proportion $p$ is between 0.63 and 0.85.
+
 ## Difference of Proportion Problems
 
 ### 6.19
