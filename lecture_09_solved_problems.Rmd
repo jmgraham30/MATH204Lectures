@@ -160,7 +160,7 @@ If it is true that people can not tell the difference between diet and regular s
 
 A random sample of 100 observations is selected from a binomial population with unknown probability of success $p$. The point estimate value from the data is $\hat{p}=0.74$. 
 
-(a) Test the hypothesis $H_{0}: = 0.65$ versus $H_{A}: p > 0.65$ with significance level $\alpha=0.01$.
+(a) Test the hypothesis $H_{0}: p = 0.65$ versus $H_{A}: p > 0.65$ with significance level $\alpha=0.01$.
 
 We begin by using the null hypothesis value $p_{0}=0.65$ to check the success-failure condition.
 
