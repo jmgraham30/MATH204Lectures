@@ -945,3 +945,89 @@ t.test(foot_df$left_foot,foot_df$right_foot,paired = TRUE)
 - Let's work some more examples together. 
 
 
+---
+
+# Difference of Two Means
+
+- Inference for paired data compares two different (but related) measurements on the same population. For example, we might want to study the difference in how individuals sleep before and after consuming a large amount of caffeine. 
+
+--
+
+- On the other hand, inference for a difference of two means compares the same measurement on two difference populations. For example, we may want to study any difference between how caffeine affects the sleep of individuals with high blood pressure compared to those that do not have high blood pressure.   
+
+--
+
+- We can still use a t-distribution for inference for a difference of two means but we must compute the two-sample means and standard deviations separately for estimating standard error. 
+
+--
+
+
+We proceed with the details. 
+
+---
+
+# Confidence Intervals for a Difference in Means
+
+- The t-distribution can be used for inference when working with the standardized difference of two means if
+
+--
+
+  - The data are independent within and between the two groups, *e.g.*, the data come from independent random samples or from a randomized experiment. 
+  
+--
+
+  - We check the outliers rules of thumb for each group separately. 
+  
+--
+
+- The standard error may be computed as
+
+$$SE = \sqrt{\frac{\sigma_{1}^{2}}{n_{1}} + \frac{\sigma_{2}^{2}}{n_{2}}}$$
+
+---
+
+# Hypothesis Tests for Difference of Means
+
+- Hypothesis tests for a difference of two means works in a very similar fashion to what we have seen before. 
+
+--
+
+- To conduct a test for a difference of two means "by hand", use the smaller of the two degrees of freedom.
+
+--
+
+- Use the `t.test` function without the `paired = TRUE` argument. 
+
+---
+
+# Examples of Inference for Difference of Means
+
+- Let's look at some examples and work some problems together. 
+
+---
+
+# Power Calculations
+
+- Often times in experiment planning, there are two competing considerations:
+
+--
+
+  - We want to collect enough data that we can detect important effects. 
+  
+--
+
+  - Collecting data can be expensive, and in experiments involving people or animals, there may be some risk involved to the subjects.  
+
+--
+
+- The point is, from the beginning, we need to analyze what is an appropriate sample size for an experiment design and statistical tests. Power calculations is a methodology for doing so. 
+
+---
+
+# The Notion of Power
+
+- **Power** is the probability that we reject a null hypothesis when the corresponding alternative hypothesis is true. 
+
+--
+
+- In general, power is 1 minus the probability of making a Type 2 Error. 
