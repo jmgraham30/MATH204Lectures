@@ -470,4 +470,55 @@ s <- 3
 ```
 
 
+## Paired Data
+
+### Golf Example
+
+A golf club manufacturer claims that golfers can lower their scores by using the manufacturer's newly designed golf clubs. Eight golfers are randomly selected and each is asked to give their most recent score. After using the new clubs for one month, the golfers are again asked to give their most recent score. The scores for each golfer are shown below:
+
+```{r}
+(golf_df <- tibble(old=c(89,84,96,82,74,92,85,91),new=c(83,83,92,84,76,91,80,91)) %>% mutate(old_new_diff=old-new))
+```
+
+Assuming the golf scores are normally distributed, is there enough evidence to support the manufacturer's claim at a significance level of $\alpha = 0.1$?
+
+We are testing the hypothesis 
+
+$$H_{0}: \mu_{d} = 0$$
+versus 
+
+$$H_{A}: \mu_{d} > 0 $$
+First, we let R do all of the work for us:
+
+```{r}
+t.test(golf_df$old,golf_df$new,paired = TRUE,conf.level = 0.90,alternative = "greater")
+```
+
+Let's do the work by hand. First we obtain the mean, standard deviation, and standard error for the difference:
+
+```{r}
+n <- 8
+(d_hat <- mean(golf_df$old_new_diff))
+(s_d <- sd(golf_df$old_new_diff))
+(SE_d <- s_d/sqrt(n))
+```
+
+Now we get our t-value
+
+```{r}
+(t_val <- d_hat / SE_d)
+```
+
+Now we compute our p-value
+
+```{r}
+(p_val <- 1 - pt(t_val,df=n-1))
+```
+Thus, we will reject the null hypothesis at the $\alpha = 0.1$ significance level. We conclude that there is enough evidence to support the manufacturer's claim at the $\alpha = 0.1$ significance level.
+
+## Difference of Two Means
+
+
+
+
 
