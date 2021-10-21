@@ -354,7 +354,7 @@ $$SE \approx \sqrt{\frac{\hat{p}_{1}(1-\hat{p}_{1})}{n_{1}} + \frac{\hat{p}_{2}(
 n1 <- 120
 n2 <- 111
 p1 <- 97/n1
-p2 <- 30/n2
+p2 <- 84/n2
 p_diff <- p1 - p2
 (c(n1*p1,n1*(1-p1),n2*p2,n2*(1-p2))) # success-failure conditions
 SE <- sqrt(((p1*(1-p1))/n1) + ((p2*(1-p2))/n2))
