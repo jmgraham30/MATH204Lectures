@@ -562,7 +562,17 @@ d_bar <- mean(ceo_df$inc_diff)
 sd_d <- sd(ceo_df$inc_diff)
 SE <- sd_d / sqrt(n)
 
+(t_val <- (d_bar)/SE)
+
 ```
+
+Compute p-value
+
+```{r}
+(p_val <- 2*(pt(t_val,df=n-1)))
+```
+
+
 
 ## Difference of Two Means
 
