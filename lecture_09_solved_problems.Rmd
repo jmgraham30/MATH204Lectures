@@ -393,12 +393,41 @@ confidence_level <- 0.9
 (t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
 ```
 
+
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=n-1)
+    y[x >= -t_ast & x <= t_ast] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-6, 6)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=n-1)) + geom_vline(xintercept = t_ast,linetype="dashed")
+  
+```
+
+
 (b)
 
 ```{r}
 n <- 21
 confidence_level <- 0.98
 (t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=n-1)
+    y[x >= -t_ast & x <= t_ast] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-4, 4)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=n-1)) + geom_vline(xintercept = t_ast,linetype="dashed")
+  
 ```
 
 (c)
@@ -409,12 +438,38 @@ confidence_level <- 0.95
 (t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
 ```
 
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=n-1)
+    y[x >= -t_ast & x <= t_ast] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-4, 4)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=n-1)) + geom_vline(xintercept = t_ast,linetype="dashed")
+  
+```
+
 (d)
 
 ```{r}
 n <- 12
 confidence_level <- 0.99
 (t_ast <- -qt((1.0 - confidence_level)/2,df=n-1))
+```
+
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=n-1)
+    y[x >= -t_ast & x <= t_ast] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-6, 6)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=n-1)) + geom_vline(xintercept = t_ast,linetype="dashed")
+  
 ```
 
 ### 7.4
@@ -483,6 +538,58 @@ a) We have two samples, one of SAT scores for 35 high school students who did no
 b) We have two samples, the weights of 51 adults, and the weights of the same 51 adults after after participating in a diet and exercise program for one month. 
 
 **Ans.:** This problem does concern paired data.
+
+### Paired Difference Rejection Regions
+
+(a) Suppose that a paired difference experiment yields $n=20$ observations. If we want to test $H_{0}: \mu_{d}=2$ versus $H_{A}: \mu_{d} > 2$, what is the critical t-value and rejection region is the significance level is $\alpha = 0.1$?
+
+**Ans.:**
+
+We will reject the stated null hypothesis at the $\alpha = 0.1$ significance level for any t-value such that `1 - pt(t,df=19) < 0.1`. That is, whenever the t-value falls in the right tail area that makes up 10% of the total area under a t-distribution with 19 degrees of freedom. That is, if the t-value is greater or equal to
+
+```{r}
+(t_crit <- -qt(0.1,df=19)) 
+```
+
+The reject region is shown below:
+
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=19)
+    y[x <= t_crit] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=19)) + geom_vline(xintercept = t_crit,linetype="dashed")
+  
+```
+
+(b) Suppose that a paired difference experiment yields $n=9$ observations. If we want to test $H_{0}: \mu_{d}=2$ versus $H_{A}: \mu_{d} > 2$, what is the critical t-value and rejection region is the significance level is $\alpha = 0.01$?
+
+**Ans.:**
+
+We will reject the stated null hypothesis at the $\alpha = 0.01$ significance level for any t-value such that `1 - pt(t,df=8) < 0.01`. That is, whenever the t-value falls in the right tail area that makes up 1% of the total area under a t-distribution with 8 degrees of freedom. That is, if the t-value is greater or equal to
+
+```{r}
+(t_crit <- -qt(0.01,df=8)) 
+```
+
+The reject region is shown below:
+
+```{r,echo=FALSE}
+dt_tails <- function(x){
+  y <- dt(x,df=8)
+    y[x <= t_crit] <- NA
+    return(y)
+}
+  
+ggplot(data.frame(x = c(-5, 5)), aes(x = x)) +
+  stat_function(fun = dt_tails, geom = "area", fill = "blue", alpha = 0.2) +
+  stat_function(fun = dt,args = list(df=8)) + geom_vline(xintercept = t_crit,linetype="dashed")
+  
+```
 
 ### Golf Example
 
