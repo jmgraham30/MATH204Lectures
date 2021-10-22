@@ -472,6 +472,18 @@ s <- 3
 
 ## Paired Data
 
+### Thinking ABout Paired Data
+
+For each of the following scenarios, decide if the problem concerns paired data or not. 
+
+a) We have two samples, one of SAT scores for 35 high school students who did not take an SAT preparation course, and another of AT scores for 40 high school students who did take an SAT preparation course. We would like to know if there is any significant difference in the average SAT score between the two groups. 
+
+**Ans.:** This problem does not concern paired data. 
+
+b) We have two samples, the weights of 51 adults, and the weights of the same 51 adults after after participating in a diet and exercise program for one month. 
+
+**Ans.:** This problem does concern paired data.
+
 ### Golf Example
 
 A golf club manufacturer claims that golfers can lower their scores by using the manufacturer's newly designed golf clubs. Eight golfers are randomly selected and each is asked to give their most recent score. After using the new clubs for one month, the golfers are again asked to give their most recent score. The scores for each golfer are shown below:
@@ -515,6 +527,42 @@ Now we compute our p-value
 (p_val <- 1 - pt(t_val,df=n-1))
 ```
 Thus, we will reject the null hypothesis at the $\alpha = 0.1$ significance level. We conclude that there is enough evidence to support the manufacturer's claim at the $\alpha = 0.1$ significance level.
+
+### Business CEO Problem
+
+Are America's top CEOs really worth their very high paid salary? One way to answer this question is to look at the following data:
+
+```{r}
+(ceo_df <- tibble(increase_ceo=c(21,25,20,14,-4,19,15,30),increase_company=c(24,23,25,18,6,4,21,37)) %>% mutate(inc_diff=increase_ceo-increase_company))
+```
+
+This data shows the CEO's annual percentage salary increase, the company's annual percentage increase in revenue, and the difference between the percentage increases. Do these data indicate that the population mean percentage increase in corporate revenue is different from the population mean percentage increase in CEO salary? Use a 5% level of significance? 
+
+(a) State an appropriate null and alternative hypothesis. 
+
+$$H_{0}: \mu_{d} = 0$$
+
+vs.
+
+$$H_A: \mu_{d} \neq 0$$
+
+We can conduct the hypothesis test with R as follows:
+
+```{r}
+t.test(ceo_df$increase_ceo,ceo_df$increase_company,paired = TRUE)
+```
+
+Thus, we fail to reject the null hypothesis. 
+
+Now let's conduct the test by hand:
+
+```{r}
+n <- nrow(ceo_df)
+d_bar <- mean(ceo_df$inc_diff)
+sd_d <- sd(ceo_df$inc_diff)
+SE <- sd_d / sqrt(n)
+
+```
 
 ## Difference of Two Means
 
