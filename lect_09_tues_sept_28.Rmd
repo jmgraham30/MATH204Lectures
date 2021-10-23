@@ -1026,8 +1026,123 @@ $$SE = \sqrt{\frac{\sigma_{1}^{2}}{n_{1}} + \frac{\sigma_{2}^{2}}{n_{2}}}$$
 
 # The Notion of Power
 
+- Recall that a Type 1 Error occurs when we reject the null hypothesis when it is true. The significance level $\alpha$ is the probability of making a Type 1 Error. Thus, setting the significance level allows us to control the probability of making a Type 1 Error.
+
+--
+
+- Recall that a Type 2 Error occurs when we fail to reject the null hypothesis when the alternative hypothesis is true. How can we control Type 2 Error? 
+
+--
+
 - **Power** is the probability that we reject a null hypothesis when the corresponding alternative hypothesis is true. 
 
 --
 
-- In general, power is 1 minus the probability of making a Type 2 Error. 
+- In general, power is 1 minus the probability of making a Type 2 Error. Therefore, the larger the power of a test, the smaller the probability of making a Type 2 Error.
+
+--
+
+- Let's look at an example. 
+
+---
+
+# Power Example
+
+- Suppose the heights of 2-year-old girls are normally distributed with a mean of 30 in. and a standard deviation of 6 in. Let $\mu$ denote the true mean heights of these girls. A researcher wishes to test $H_{0}:\mu=30$ vs. $H_{A}: \mu < 30$. 
+--
+
+- To test the hypothesis, the researcher plans to obtain a random sample of 30 2-year-old girls, measure their heights, and test with $\alpha = 0.05$. What is the probability of correctly rejecting the null hypothesis if the true mean is $\mu = 27$?
+
+--
+
+- First note that we will reject the null hypothesis if we obtain a Z-score that is less than or equal to 
+
+```{r}
+(z_crit <- qnorm(0.05)) 
+```
+
+--
+
+- So, to compute the probability of correctly rejecting the null hypothesis to that is, the power, we need to compute the probability of getting a Z-score less than or equal to -1.645 whenever $\mu = 27$.
+
+---
+
+# Power Example Continued
+
+- In our example we have 
+
+```{r}
+n <- 30
+SE <- 6/sqrt(n)
+mu_true <- 27
+```
+
+--
+
+- Now note that the critical Z-score corresponds to an average height of
+
+```{r}
+(height_crit <- 30 + z_crit*SE)
+```
+
+--
+
+- Thus, the power is the probability of observing an average height less than or equal to 28.198 whenever $\mu=27$. This is obtained as follows:
+
+```{r}
+z_for_pwr <- (height_crit - mu_true)/SE
+(test_power <- pnorm(z_for_pwr))
+```
+
+Thus, we have about an 86% chance of correctly rejecting the null hypothesis if $\mu = 27$.
+
+
+---
+
+# Power and Sample or Effect Size
+
+- In practice, we are often interested in computing the power for either different sample sizes, or different effect sizes. 
+
+--
+
+- The difference between the hypothesized mean $\mu_{0}$ and the true mean $\mu_{1}$ is an example of the notion of effect size. The larger the effect size, the more likely we would detect the difference. 
+
+--
+
+- If time permits, we will return later to a further discussion of power. The video included on the next slide is recommended for more on power. 
+
+---
+
+# Power Video
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/vnjjhQDedvs") %>%
+  vembedr::use_align("center")
+```
+
+
+
+---
+
+# Linear Regression
+
+- Our next topic in the course is [linear regression](https://en.wikipedia.org/wiki/Linear_regression).
+
+--
+
+- Linear regression is one a fundamental method for statistical modeling. Much of advanced statistics builds on linear regression. So, it is important to become proficient in the practice of linear regression. 
+
+--
+
+- It is also important to have some understanding of what is going on "under the hood" in the construction and analysis of linear models. This is taken up in Chapter 8 of the textbook. To get started, please view the video on the next slide. 
+
+
+---
+
+# Intro to Regression Video 
+
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/mPvtZhdPBhQ") %>%
+  vembedr::use_align("center")
+```
