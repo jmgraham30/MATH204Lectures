@@ -683,7 +683,77 @@ Compute p-value
 
 ## Difference of Two Means
 
+### 7.27
 
+Here are the first few rows of the data:
+
+```{r}
+head(chickwts)
+```
+
+Which we can plot as
+
+```{r}
+chickwts %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
+```
+
+More specifically, 
+
+```{r}
+chickwts_examp <- chickwts %>% filter(feed %in% c("horsebean","linseed"))
+chickwts_examp %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
+  
+```
+
+(a) It appears that chickens fed with horsebean have a smaller mean and standard deviation compared with those fed with linseed. Both distributions appear to be symmetric with no outliers. 
+
+(b) We can test the hypothesis 
+
+$$H_{0}: \mu_{\text{horsebean}}-\mu_{\text{linseed}} = 0$$
+
+vs.
+
+$$H_{0}: \mu_{\text{horsebean}}-\mu_{\text{linseed}} \neq 0$$
+
+Conducting the test by hand, we compute
+
+```{r}
+horsebean <- chickwts_examp %>% filter(feed=="horsebean") %>% select(weight) %>% unlist
+
+linseed <- chickwts_examp %>% filter(feed=="linseed") %>% select(weight) %>% unlist
+
+n1 <- length(horsebean)
+n2 <- length(linseed)
+
+(mean_diff <- mean(horsebean) - mean(linseed))
+```
+
+The standard error is
+
+```{r}
+sd_hb <- sd(horsebean)
+sd_ls <- sd(linseed)
+(SE <- sqrt(sd_hb^2/n1 + sd_ls^2/n2))
+```
+
+Thus, our T-score is
+
+```{r}
+(t_val <- (mean_diff - 0.0)/SE)
+
+```
+
+So now, we compute a p-value
+
+```{r}
+(p_val <- 2*(pt(t_val,df=min(n1-1,n2-1))))
+```
+
+We decide to reject the null hypothesis at the $\alpha=0.05$ significance level.
+
+(c) We may have committed a Type 1 Error since the decision is to reject the null hypothesis. 
+
+(d) We would fail to reject at the $\alpha=0.01$ significance level.
 
 
 
