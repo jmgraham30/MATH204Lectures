@@ -574,7 +574,7 @@ vembedr::embed_url("https://youtu.be/k5Ets4QJYmY") %>%
 
 --
 
-- We will use a t-distributions for inference, that is, for obtaining confidence intervals, and hypothesis testing. 
+- We will use t-distributions for inference, that is, for obtaining confidence intervals and hypothesis testing. 
 
 --
 
@@ -611,7 +611,7 @@ ggplot(data.frame(x = c(-4, 4)), aes(x)) +
 
 - This plot shows a histogram of T-score values obtained by computing the sample mean with $n=8$ from $N(0,1)$. We overlay a density curve for both $N(0,1)$ and a t-distribution with $\text{df}=7$:
 
-```{r,fig.height=5,echo=FALSE}
+```{r,fig.height=5,echo=FALSE,warning=FALSE,message=FALSE}
 get_data <- function(n){
   x <- rnorm(8)
   x_bar <- mean(x)
@@ -738,9 +738,6 @@ t_ast <- -qt((1.0-0.95)/2,df=n-1)
 
   - Interpret the confidence interval in the context of the problem. 
   
---
-
-- Let's work some examples together. 
 
 ---
 
