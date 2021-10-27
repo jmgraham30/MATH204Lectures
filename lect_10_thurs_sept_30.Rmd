@@ -30,13 +30,33 @@ library(broom)
 
 # Linear Regression: Introduction 
 
+- Linear regression is the statistical method for fitting a line to data. 
 
+--
 
----
+- Recall that a (non-vertical) line in the $x,y$-plane is determined by 
 
-# Learning Objectives
+$$y = \text{slope} \times x + \text{intercept}$$
 
+--
 
+- There are two aspects to fitting a line to data;
+
+--
+
+  - Estimating the slope and intercept values, and
+  
+--
+
+  - Assessing the uncertainty of our estimates for the slope and intercept values.
+ 
+--
+
+- In this lecture, we cover all of the concepts necessary to understand how to carry out and interpret linear regression. 
+  
+--
+
+- We encourage you to watch the video on the next slide to help in getting introduced to linear regression. 
 
 ---
 
@@ -46,6 +66,28 @@ library(broom)
 vembedr::embed_url("https://youtu.be/mPvtZhdPBhQ") %>%
   vembedr::use_align("center")
 ```
+
+---
+
+# Learning Objectives
+
+- After this lecture, you should
+
+--
+
+  - Understand the basic principles of simple linear regression: parameter estimates, residuals, and correlation.
+  
+--
+
+  - Know the conditions for least squares regression: linearity, normality, constant variance, and independence.
+  
+--
+
+  - Know how to obtain a linear fit using  R with the `lm` function. 
+  
+--
+
+  - Be able to assess and interpret the results of a linear fit using  R with the `lm` function.
 
 
 
