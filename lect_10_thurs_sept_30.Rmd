@@ -88,8 +88,35 @@ vembedr::embed_url("https://youtu.be/mPvtZhdPBhQ") %>%
 --
 
   - Be able to assess and interpret the results of a linear fit using  R with the `lm` function.
+  
+---
 
+# Simple Regression Model
 
+- Simple linear regression models the relationship between two (numerical) variables $x$ and $y$ by the formula
+
+$$y = \beta_{0} + \beta_{1} x + \epsilon$$
+where
+
+--
+
+  - $\beta_{0}$ (intercept) and $\beta_{1}$ (slope) are the model **parameters**
+
+--
+
+  - $\epsilon$ is the **error** 
+  
+--
+
+- The parameters are estimated using data and their point estimates are denoted by $b_{0}$ (intercept estimate) and $b_{1}$ (slope estimate). 
+
+--
+
+- In linear regression, $x$ is called the explanatory or predictor variable while $y$ is called the response variable. 
+
+--
+
+- Let's look at an example data set for which linear regression is a potentially useful model. 
 
 ---
 
@@ -97,11 +124,24 @@ vembedr::embed_url("https://youtu.be/mPvtZhdPBhQ") %>%
 
 
 .center[
-```{r possum, echo=FALSE, out.width="70%"}
+```{r possum, echo=FALSE, out.width="50%"}
 knitr::include_graphics("https://www.dropbox.com/s/5hxo31udpanhnle/opossum.jpg?raw=1")
 ```
 ]
 
+--
+
+- Consider the `possum` data set, the first few rows of which are shown below
+
+```{r}
+head(possum,5)
+```
+
+---
+
+# Possum Data Example
+
+- Suppose that we as researchers are interested to study the relationship between the head length (`head_l`) and total length (`total_l`) of the brushtail possum of Australia. 
 
 ---
 
