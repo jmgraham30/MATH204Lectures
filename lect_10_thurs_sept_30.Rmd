@@ -105,6 +105,46 @@ knitr::include_graphics("https://www.dropbox.com/s/5hxo31udpanhnle/opossum.jpg?r
 
 ---
 
+# Possum Regression 1
+
+```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
+reg_dat <- possum
+reg_dat %>% ggplot(aes(x=total_l,y=head_l)) + 
+  geom_point() + 
+  geom_smooth(method="lm",se = FALSE) + 
+  geom_point(data=NULL,aes(x=92.0,y=89.5),color="red",size=3) +
+  geom_segment(aes(x = 92.0, y = 89.5, xend = 92.0, yend = (42.7098+0.5729*92.0)), 
+               data = NULL,
+               color="purple",linetype="dashed") + 
+  annotate("text", x = 94, y = 91.8, label = "A residual",size=5,color="purple")
+```
+
+---
+
+# Possum Regression 2
+
+```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
+lm_fit <- lm(head_l~total_l,data=reg_dat)
+
+reg_dat_lm <- augment(lm_fit,reg_dat)
+reg_dat_lm %>% ggplot(aes(x=total_l,y=head_l)) + 
+  geom_point() + 
+  geom_smooth(method="lm",se = FALSE) + 
+  geom_segment(aes(x=total_l,y=head_l,xend=total_l,yend=.fitted),color="purple",linetype="dashed")
+
+```
+
+---
+
+# Possum Regression 3
+
+```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
+reg_dat_lm %>% ggplot(aes(x=total_l,y=.resid)) + geom_point() + 
+  geom_hline(yintercept=0.0,linetype="dashed",color="blue")
+```
+
+---
+
 # Fits and Residual Plots
 
 .center[
@@ -123,6 +163,19 @@ knitr::include_graphics("https://www.dropbox.com/s/1q360mf7pgyn7t7/sampleLinesAn
 .center[
 ```{r corrs, echo=FALSE, out.width="100%"}
 knitr::include_graphics("https://www.dropbox.com/s/jbgilwujdebjwwf/posNegCorPlots.png?raw=1")
+```
+]
+
+
+
+---
+
+# Regression Assumption Failures
+
+
+.center[
+```{r reg_assumps, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://www.dropbox.com/s/hu01jaaqx2ohbgq/whatCanGoWrongWithLinearModel.png?raw=1")
 ```
 ]
 
