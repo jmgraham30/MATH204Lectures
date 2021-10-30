@@ -30,7 +30,7 @@ library(broom)
 
 # Linear Regression: Introduction 
 
-- Linear regression is the statistical method for fitting a line to data. 
+- Linear regression is a statistical method for fitting a line to data. 
 
 --
 
@@ -40,7 +40,7 @@ $$y = \text{slope} \times x + \text{intercept}$$
 
 --
 
-- There are two aspects to fitting a line to data;
+- There are two aspects to fitting a line to data that we will study:
 
 --
 
@@ -122,78 +122,146 @@ where
 
 # Australian Brushtail Possum 
 
-
 .center[
-```{r possum, echo=FALSE, out.width="50%"}
+```{r possum, echo=FALSE, out.width="45%"}
 knitr::include_graphics("https://www.dropbox.com/s/5hxo31udpanhnle/opossum.jpg?raw=1")
 ```
 ]
 
 --
 
-- Consider the `possum` data set, the first few rows of which are shown below
+- The `possum` data set records measurements of 104 brushtail possums from Australia and New Guinea, the first few rows of the data are shown below
 
 ```{r}
-head(possum,5)
+head(possum,4)
 ```
 
 ---
 
 # Possum Data Example
 
-- Suppose that we as researchers are interested to study the relationship between the head length (`head_l`) and total length (`total_l`) of the brushtail possum of Australia. 
+- Suppose that we as researchers are interested to study the relationship between the head length (`head_l`) and total length (`total_l`) measurements of the brushtail possum of Australia. 
+
+--
+
+- Note that head length (`head_l`) and total length (`total_l`)  are both (continuous) numerical variables.  
+
+--
+
+- The next slide displays a scatterplot for `head_l` versus `total_l`.
 
 ---
 
-# Possum Regression 1
+# Possum Data Scatterplot
 
-```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
+```{r ,echo=FALSE,fig.height=5,fig.width=10,warning=FALSE,message=FALSE}
 reg_dat <- possum
 reg_dat %>% ggplot(aes(x=total_l,y=head_l)) + 
-  geom_point() + 
-  geom_smooth(method="lm",se = FALSE) + 
-  geom_point(data=NULL,aes(x=92.0,y=89.5),color="red",size=3) +
-  geom_segment(aes(x = 92.0, y = 89.5, xend = 92.0, yend = (42.7098+0.5729*92.0)), 
-               data = NULL,
-               color="purple",linetype="dashed") + 
-  annotate("text", x = 94, y = 91.8, label = "A residual",size=5,color="purple")
+  geom_point(size=3) + theme(axis.text= element_text(face="bold", 
+                           size=14),
+  axis.title=element_text(size=18,face="bold"))
 ```
+
+--
+
+- Describe the features of any association that there appears to be between the two variables in the plot. 
 
 ---
 
-# Possum Regression 2
+# Possum Data Regression Line
 
-```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
+- We have added the "best fit" line to the scatter plot of `head_l` versus `total_l`. Later we discuss how this line is obtained. 
+
+```{r ,echo=FALSE,fig.height=5,fig.width=10,warning=FALSE,message=FALSE}
+reg_dat %>% ggplot(aes(x=total_l,y=head_l)) + 
+  geom_point(size=3) + 
+  geom_smooth(method="lm",se = FALSE) + 
+  geom_point(data=NULL,aes(x=92.0,y=89.5),color="red",size=5) +
+  geom_segment(aes(x = 92.0, y = 89.5, xend = 92.0, yend = (42.7098+0.5729*92.0)), 
+               data = NULL,
+               color="purple",linetype="dashed",lwd=1) + 
+  annotate("text", x = 94, y = 91.8, label = "A residual",size=7,color="purple") + theme(axis.text= element_text(face="bold", 
+                           size=14),
+  axis.title=element_text(size=18,face="bold"))
+```
+
+--
+
+- A **residual** is the vertical distance between a data point and the best fit line.  The next slide shows all of the residuals for the data. 
+
+---
+
+# Possum Regression Residuals
+
+```{r ,echo=FALSE,fig.height=5,fig.width=10,warning=FALSE,message=FALSE}
 lm_fit <- lm(head_l~total_l,data=reg_dat)
 
 reg_dat_lm <- augment(lm_fit,reg_dat)
 reg_dat_lm %>% ggplot(aes(x=total_l,y=head_l)) + 
-  geom_point() + 
+  geom_point(size=3) + 
   geom_smooth(method="lm",se = FALSE) + 
-  geom_segment(aes(x=total_l,y=head_l,xend=total_l,yend=.fitted),color="purple",linetype="dashed")
+  geom_segment(aes(x=total_l,y=head_l,xend=total_l,yend=.fitted),color="purple",linetype="dashed") + theme(axis.text= element_text(face="bold", 
+                           size=14),
+  axis.title=element_text(size=18,face="bold"))
 
 ```
+
+--
+
+- The best fit or regression line is the line that minimizes all of the residuals simultaneously.  
 
 ---
 
-# Possum Regression 3
+# Possum Regression Residual Plot
 
-```{r ,echo=FALSE,fig.height=6,warning=FALSE,message=FALSE}
-reg_dat_lm %>% ggplot(aes(x=total_l,y=.resid)) + geom_point() + 
-  geom_hline(yintercept=0.0,linetype="dashed",color="blue")
+- A residual plot displays the residual values versus the $x$ values from the data.
+
+```{r ,echo=FALSE,fig.height=5,fig.width=10,warning=FALSE,message=FALSE}
+reg_dat_lm %>% ggplot(aes(x=total_l,y=.resid)) + geom_point(size=3) + 
+  geom_hline(yintercept=0.0,linetype="dashed",color="blue",lwd=1) + theme(axis.text= element_text(face="bold", 
+                           size=14),
+  axis.title=element_text(size=18,face="bold"))
 ```
+
+--
+
+- As we will see, residual plots play an important role in assessing the results of a regression model. 
 
 ---
 
 # Fits and Residual Plots
 
+- Let's look some linear fits and their corresponding residual plots. 
+
+--
+
 .center[
-```{r fits_resids, echo=FALSE, out.width="100%"}
+```{r fits_resids, echo=FALSE, out.width="80%"}
 knitr::include_graphics("https://www.dropbox.com/s/1q360mf7pgyn7t7/sampleLinesAndResPlots.png?raw=1")
 ```
 ]
 
+--
 
+- In the first column, the residuals show no obvious pattern, this is desirable. In the second column, the residuals show a pattern that suggests a linear model is inappropriate. In the third column, it's not clear if the linear fit is statistically significant. 
+
+---
+
+# Correlation
+
+- **Correlation**, which always takes values between -1 and 1 is a statistic that describes the strength of the linear relationship between two variables. Correlation is denoted by $R$. 
+
+--
+
+- In R, correlation is computed with the `cor` command. For example, the correlation between the `head_l` and `total_l` variables in the `possum` data set is computed as
+
+```{r}
+cor(possum$head_l,possum$total_l)
+```
+
+--
+
+- The plot in the next slide shows several scatter plots together with the corresponding correlation value.  
 
 ---
 
@@ -206,7 +274,64 @@ knitr::include_graphics("https://www.dropbox.com/s/jbgilwujdebjwwf/posNegCorPlot
 ```
 ]
 
+---
 
+# Strongly Related Variables with Weak Correlations
+
+- It is important to note that two variables may have a strong association even if their correlation is relatively weak. This is because correlation measures **linear** association and variables may be a strong **nonlinear** association. 
+
+--
+
+.center[
+```{r nonlin_cor, echo=FALSE, out.width="100%"}
+knitr::include_graphics("https://www.dropbox.com/s/rmujuxuoihdg5xb/corForNonLinearPlots.png?raw=1")
+```
+]
+
+
+---
+
+# Least Squares Regression
+
+- We now begin to discuss the details of how to fit a simple linear regression model to data. 
+
+--
+
+- The approach we take is called *least squares regression*. 
+
+--
+
+- The idea is to chose parameter estimates that minimize all of the residuals simultaneously. That is, for each observed data point $(x_{i},y_{i})$, we find $b_{0}$ and $b_{1}$ such that if $\hat{y}_{i} = b_{0} + b_{1}x_{i}$, then
+
+$$RSS = \sum_{i=1}^{n}(\hat{y}_{i} - y_{i})^2$$
+
+is as small as possible. 
+
+--
+
+- For this to work out well, several conditions need to be met. This are spelled out on the next slide. 
+
+---
+
+# Conditions for Least Squares
+
+- **Linearity.** The data should show a linear trend. 
+
+--
+
+- **Normality.** Generally, the distribution of the residuals should be close to normal. 
+
+--
+
+- **Constant Variance.** The variability of points around the least squares line remains roughly constant. Residual plots are a good way to check this condition. 
+
+--
+
+- **Independence.** We want to avoid fitting a line to data via least squares whenever there is dependence between consecutive data points. 
+
+--
+
+- The next slide shows plot of data where at least one of the conditions for least squares regression fails to hold. 
 
 ---
 
@@ -218,4 +343,105 @@ knitr::include_graphics("https://www.dropbox.com/s/jbgilwujdebjwwf/posNegCorPlot
 knitr::include_graphics("https://www.dropbox.com/s/hu01jaaqx2ohbgq/whatCanGoWrongWithLinearModel.png?raw=1")
 ```
 ]
+
+--
+
+- In the first column, the linearity condition fails. In the second column, the normality condition fails. 
+
+--
+
+- In the third column, the constant variance condition fails. In the fourth column, the independence condition fails. 
+
+--
+
+- Notice how in each case, the residual plot can be used to diagnose problems with a least squares linear regression fit. 
+
+
+---
+
+# Fitting a Linear Model
+
+- For simple least squares linear regression with one predictor variable ( $x$ ), one can fit the model to data "by hand". The mathematical formula is
+
+$$b_{1} = \frac{s_{y}}{s_{x}} R,$$
+
+$$b_{0} = \bar{y} - b_{1} \bar{x},$$
+
+where
+
+  - $R$ is the correlation between $x$ and $y$,
+
+--
+  
+  - $s_{y}$ and $s_{x}$ are the sample standard deviations for $y$ and $x$, and 
+  
+--
+
+  - $\bar{y}$ and $\bar{x}$ are the sample means for $y$ and $x$. 
+  
+--
+
+- Let's apply these formulas to the `possum` data set with $x$ the `total_l` variable and $y$ the `head_l` variable. 
+
+---
+
+# Applying the Regression Formulas
+
+- We need to compute the correlation, sample means, and sample standard deviations:
+
+```{r}
+x <- possum$total_l; y <- possum$head_l
+x_bar <- mean(x); y_bar <- mean(y)
+s_x <- sd(x); s_y <- sd(y)
+R <- cor(x,y)
+```
+
+--
+
+- Now we can compute our estimates $b_{0}$ and $b_{1}$:
+
+```{r}
+(b_1 <- (s_y/s_x)*R)
+(b_0 <- y_bar - b_1*x_bar)
+```
+
+--
+
+- There is an R command, `lm` (linear model) that will compute these values and much more for us. 
+
+---
+
+# The lm Command
+
+- Let's see an example of how the `lm` command is used:
+
+```{r}
+lm(head_l ~ total_l, data=possum)
+```
+
+--
+
+- Notice that this returns the point estimate values for $b_{0}$ (Intercept) and the slope $b_{1}$, and that these values are the same as what we obtained using the mathematical formulas on the last slide. 
+
+---
+
+# Interpreting Model Parameters
+
+
+
+---
+
+# Outlier Issues
+
+
+---
+
+# Inference for Regression
+
+
+---
+
+# More R For Linear Models
+
+
 
