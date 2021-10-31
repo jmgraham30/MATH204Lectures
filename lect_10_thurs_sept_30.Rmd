@@ -18,6 +18,7 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 library(openintro)
+library(faraway)
 library(tidyverse)
 library(ggformula)
 library(ggmosaic)
@@ -309,7 +310,7 @@ is as small as possible.
 
 --
 
-- For this to work out well, several conditions need to be met. This are spelled out on the next slide. 
+- For this to work out well, several conditions need to be met. These conditions are spelled out on the next slide. 
 
 ---
 
@@ -427,7 +428,46 @@ lm(head_l ~ total_l, data=possum)
 
 # Interpreting Model Parameters
 
+- For a linear model,
 
+--
+
+  - The slope describes the estimate difference in the $y$ variable if the explanatory variable $x$ for a case happened to be one unit larger. 
+  
+--
+
+ - The intercept describes the average outcome of $y$ if $x=0$ **and** the linear model is valid all the way to $x=0$, which in many applications is not the case.
+ 
+--
+
+- To evaluate the strength of a linear fit, we compute $R^{2}$ (R-squared). The value of $R^{2}$ tells us the percent of variation in the response that is explained by the explanatory variable.  
+
+--
+
+- There are some pitfalls in interpreting the results of a linear model. In particular, 
+
+--
+
+  - Applying a model to estimate values outside of the realm of the original data is called **extrapolation**. Generally, extrapolation is unreliable. 
+  
+--
+
+  - In many cases, even when there is a real association between variables, we cannot interpret a causal connection between the variables. 
+  
+---
+
+# Example
+
+- Before we discuss further details of regression, let's look at a detailed example of fitting and interpreting a linear model.  
+
+--
+
+- We will look at a linear model for the data set, `cheddar` from the `faraway` package.
+
+--
+
+- Let's do this example together in RStudio. 
+  
 
 ---
 

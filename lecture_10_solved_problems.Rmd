@@ -1,0 +1,109 @@
+---
+title: "Lecture 10 Solved Problems"
+author: "JMG"
+date: "10/31/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(openintro)
+library(faraway)
+library(tidyverse)
+library(ggformula)
+library(broom)
+```
+
+
+### The Cheddar Data
+
+Let's begin by examining the help file for the `cheddar` data from the `faraway` package. 
+
+Suppose we want to use a linear model to explore the relationship between the `Lactic` variable and the `taste` variable. Specifically, we are interested to know how the concentration of lactic acids influences the subjective taste score.
+
+We should begin with a scatter plot.
+
+```{r}
+gf_point(taste~Lactic,data=cheddar)
+```
+
+
+**Question:** What does the scatter plot suggest about any association between the two variable? Based on the scatter plot, what do you think will be the value for the correlation between $x$ and $y$? 
+
+Let's compute the correlation:
+
+```{r}
+(R_cheddar <- cor(cheddar$Lactic,cheddar$taste))
+```
+
+**Question:** What do you conclude based on the value of the correlation? How does the value correspond with what you guessed based on looking at the scatter plot? 
+
+Let's fit a linear regression model with $x$=`Lactic` and $y$=`taste`. We will do this both by hand and using the `lm` command. First, by hand:
+
+```{r}
+x_bar <- mean(cheddar$Lactic)
+y_bar <- mean(cheddar$taste)
+s_x <- sd(cheddar$Lactic)
+s_y <- sd(cheddar$taste)
+
+(b_1 <- (s_y/s_x)*R_cheddar)
+(b_0 <- y_bar - b_1*x_bar)
+
+```
+
+We interpret these results as saying that, if the model is reasonable, then for each unit increase in lactic acid concentration, there is an increase of 37.7 in the subjective taste score. 
+
+Let's check our parameter estimates with the `lm` command. 
+
+```{r}
+(lm_fit <- lm(taste~Lactic,data=cheddar))
+```
+
+We do indeed obtain the same estimates. 
+
+It is prudent to examine the residual plot for our fit in order to diagnose any potential failures for the basic assumptions required for a linear model to be reasonable. In order to obtain a residual plot, we need the residuals. The residuals can be obtained easily using the `augment` command from the `broom` package. Let's see what `augment` does. First, here is the first few rows for the oringal data:
+
+```{r}
+head(cheddar)
+```
+
+Now's let's see the effect of `augment`:
+
+```{r}
+augment(lm_fit) %>% head()
+```
+Note that, among other things, `augment` adds a column for the residuals that is named `.resid`. We can use this to plot the residuals as follows:
+
+```{r}
+augment(lm_fit) %>% gf_point(.resid~Lactic)
+```
+
+It's useful to add a horizontal line at $y=0$ in order to show where a residual value of 0 falls. This is done as follows:
+
+```{r}
+augment(lm_fit) %>% gf_point(.resid~Lactic) %>% gf_hline(yintercept=0,lwd=1,linetype="dashed")
+```
+
+**Question:** Does the residual plot suggest any particular concerns regarding the quality of the linear fit? 
+
+Finally, we can also use the results from the `augment` command to plot our regression line:
+
+```{r}
+augment(lm_fit) %>% gf_point(taste~Lactic) %>% gf_line(.fitted~Lactic,lwd=1,color="blue")
+```
+
+Finally, let's look at the $R^2$ value for this model:
+
+```{r}
+R_cheddar^2
+```
+
+We would say that about 50% of the variation in the taste of cheddar cheese is explained by a linear model with the concentration of lactic acid as the response variable. 
+
+Interestingly, the $R^2$ value is actually returned as part of the linear fit when using `lm`. The value can be access as follows:
+
+```{r}
+summary(lm_fit)$r.squared
+```
+
+
