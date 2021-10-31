@@ -106,4 +106,9 @@ Interestingly, the $R^2$ value is actually returned as part of the linear fit wh
 summary(lm_fit)$r.squared
 ```
 
+### Exercise for You
+
+Repeat the analysis from the previous example but use the `Acetic` variable for the concentration of acetic acid (log scale) instead of the concentration of acetic acid (log scale). 
+
+
 
