@@ -278,11 +278,40 @@ Do the data meet the conditions required for fitting a least squares line? Expla
 
 ### Exercise 8.25 and 8.35 Plus
 
+Scatterplot and linear fit:
+
+```{r}
+murders %>% gf_point(annual_murders_per_mil~perc_pov) %>%
+  gf_lm(annual_murders_per_mil~perc_pov)
+```
+
+Here is the result of the linear fit:
+
+```{r}
+lm_fit_murders <- lm(annual_murders_per_mil~perc_pov,data=murders)
+(lm_fit_murders %>% tidy(conf.int=TRUE))
+(lm_fit_murders %>% glance())
+```
+
+
+(a) Interpret the intercept and the $R^2$ value. 
+
+(b) What are the hypotheses for evaluating whether poverty percentage is a significant predictor of murder rate? 
+
+(c) State the conclusion of the hypothesis test from part (b). 
+
+(d) What is a 95% confidence interval for the slope parameter? 
+
+(e) Do the results from the hypothesis test and the confidence interval agree? 
+
+
 
 
 ### Exercise 8.29 Plus
 
+(a) There is a negative, moderate-to-strong, somewhat linear relationship between percent of families who own their home and percent of the population living in urban areas in 2021. 
 
+(b) There is one outlier. Since it is located in the bottom right corner, horizontally far from the center of the other points it is considered a point with high leverage. The outlier is an influential point since excluding this point from the analysis would greatly affect the slope of the regression line. 
 
 
 
