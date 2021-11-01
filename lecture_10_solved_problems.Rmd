@@ -260,7 +260,20 @@ tidy(lm_fit_bdims,conf.int = TRUE)
 
 ### Exercise 8.21 Plus
 
+The Association of Turkish Travel Agencies reports the number of foreign tourists visiting Turkey and tourist spending by year. We present three plots corresponding to this data:
 
+```{r}
+tp1 <- tourism %>% gf_point(tourist_spending~visitor_count_tho) %>% 
+  gf_lm(tourist_spending~visitor_count_tho)
+tp2 <- augment(lm(tourist_spending~visitor_count_tho,data=tourism)) %>% gf_point(.resid~visitor_count_tho) %>% 
+  gf_hline(yintercept=0,lwd=1,linetype="dashed")
+tp3 <- augment(lm(tourist_spending~visitor_count_tho,data=tourism)) %>% gf_histogram(~.resid,binwidth = 600,color="black")
+
+tp1 + tp2 + tp3
+```
+
+
+Do the data meet the conditions required for fitting a least squares line? Explain your answer.  
 
 ### Exercise 8.25 and 8.35 Plus
 
