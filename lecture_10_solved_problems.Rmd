@@ -15,6 +15,7 @@ library(broom)
 library(patchwork)
 ```
 
+## Linear Regression Examples and Problems
 
 ### The Cheddar Data
 
@@ -285,7 +286,89 @@ Do the data meet the conditions required for fitting a least squares line? Expla
 
 
 
+## ANOVA Examples and Problems
+
+
+### Exercise 7.37
+
+Recall our chicken weights data:
+
+```{r}
+head(chickwts)
+```
 
 
 
- 
+Let's look at the grouped box plot again:
+
+```{r}
+chickwts %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
+```
+
+
+We will use ANOVA to conduct a hypothesis test to determine if these data provide convincing evidence that the average weight of chicks varies across some (or all) groups. 
+
+We first need to check all of the relevant conditions. 
+
+1) Independence. The chickens are randomly assigned to groups, therefore independence is reasonable 
+
+2) The boxplots indicate that the distributions of weights within each feed group are approximately normal. 
+
+3) The boxplots indicate that the variances of weights across feed groups is roughly constant.
+
+
+We test the hypothesis that 
+
+$$H_{0}: \mu_{1}=\mu_{2}=\cdots = \mu_{6}$$
+
+versus
+
+$$H_{A}: \text{ There is at least one difference in the mean weights across the groups.}$$
+
+We can conduct an ANOVA in R using the `aov` command, the `summary` function outputs all of the necessary information for testing the hypothesis.
+
+```{r}
+summary(aov(weight~feed,data=chickwts))
+```
+
+Since the conditions for an ANOVA are met and the p-value is smaller than 0.05, we decide to reject the null hypothesis at the 0.05 significance level. 
+
+
+### Exercise 7.41
+
+
+Undergraduate students taking an introductory statistics course at Duke University conducted a survey about GPA and major. The first few rows of the data are shown below:
+
+```{r}
+major_survey <- na.omit(major_survey)
+head(major_survey)
+```
+
+We also display a side-by-side boxplot for the data
+
+```{r}
+major_survey %>% gf_boxplot(gpa~major)
+```
+
+
+Does there appear to be a difference in the mean gpa across the three groups of majors? 
+
+Test the following hypothesis using ANOVA:
+
+$$H_{0}:\mu_{1}=\mu_{2}=\mu_{3}$$
+
+versus
+
+$$H_{A}:\text{ At least one pair of means is different.}$$
+
+Here is the relevant R command for conducting the ANOVA:
+
+```{r}
+summary(aov(gpa~major,data=major_survey))
+```
+
+
+
+
+
+
