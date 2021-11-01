@@ -76,11 +76,19 @@ vembedr::embed_url("https://youtu.be/mPvtZhdPBhQ") %>%
 
 --
 
-  - Understand the basic principles of simple linear regression: parameter estimates, residuals, and correlation.
+  - Understand the basic principles of simple linear regression: parameter estimates, residuals, and correlation. (8.1, 8.2)
   
 --
 
-  - Know the conditions for least squares regression: linearity, normality, constant variance, and independence.
+  - Know the conditions for least squares regression: linearity, normality, constant variance, and independence. (8.2)
+  
+--
+
+  - Know how to diagnose problems with a linear fit by least squares regression. (8.3)
+  
+--
+
+  - Understand the methods of inference of least squares regression. (8.4)
   
 --
 
@@ -662,7 +670,7 @@ tidy(lm_fit)
 
 # Comparing Many Means
 
-- In previous lectures, we studied inference for a difference of means. There are also statistical methods for comparing more than two means. The primary method is called **analysis of variance** (ANOVA). 
+- In previous lectures, we studied inference for a difference of means. There are also statistical methods for comparing more than two means. The primary method is called **analysis of variance** (ANOVA), see 7.5. 
 
 --
 
