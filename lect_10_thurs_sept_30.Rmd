@@ -473,15 +473,295 @@ lm(head_l ~ total_l, data=possum)
 
 # Outlier Issues
 
+- Outliers in regression are observations that fall far from the cloud of points.  
+--
+
+- Outliers can have a strong influence on the least squares line. 
+
+--
+
+- Points that fall horizontally away from the center of the cloud tend to pull harder on the line, so we call them points with **high leverage**.
+
+--
+
+- A  data point is called an **influential point** if, had we fitted the line without it, the influential point would have been unusually far from the least squares line. 
+
+--
+
+- The next slide shows data with outliers together with the corresponding regression line and residual plot. 
+
+---
+
+# Regression Outliers
+
+.center[
+```{r reg_outliers, echo=FALSE, out.width="70%"}
+knitr::include_graphics("https://www.dropbox.com/s/7t2qjdtwz7rkuok/outlierPlots.png?raw=1")
+```
+]
+
+
 
 ---
 
 # Inference for Regression
 
+- Recall that a simple linear model has the form 
+
+$$y = \beta_{0} + \beta_{1} x + \epsilon$$
+
+--
+
+- Least squares is a method for obtaining point estimates $b_{0}$ and $b_{1}$ for the parameters $\beta_{0}$ and $\beta_{1}$. Thus, $\beta_{0}$ and $\beta_{1}$ are unknowns that correspond to population values that we want to infer information about. 
+
+--
+
+- A somewhat subtle point is that we also do not know the population standard deviation $\sigma$ for the error $\epsilon$. This is an additional model parameter.  
+
+--
+
+- We would like answers to the following questions:
+
+--
+
+  - How do we obtain confidence intervals for $\beta_{0}$ and $\beta_{1}$, specifically how to we get the standard error?
+  
+--
+
+  - How do we conduct hypothesis tests related to the parameters $\beta_{0}$ and $\beta_{1}$?
+  
+---
+
+# Confidence Intervals for Model Coefficients
+
+- **Fact:** The sampling distribution for estimates for  $\beta_{0}$ and $\beta_{1}$ is a t-distribution. So we can obtain confidence intervals with 
+
+$$b_{i} \pm t^{\ast}_{\text{df}} \times SE_{b_{i}}$$
+
+--
+
+- All the numerical information you need to obtain confidence intervals for $\beta_{0}$ and $\beta_{1}$ is provided in the output of the `summary` command for a linear model fit with `lm`. 
+
+--
+
+- Suppose we fit a linear model for the `possum` data again:
+
+```{r}
+(lm_fit <- lm(head_l ~ total_l, data=possum))
+```
+
+--
+
+- On the next slide, we print the output of `summary(lm_fit)`
+
+---
+
+# lm summary output
+
+```{r}
+summary(lm_fit)
+```
+
+--
+
+- For obtaining a confidence interval, the relevant information is provided by `Estimate`, `Std. Error`, and the reported degrees of freedom. 
+
+---
+
+# Regression CI Example
+
+- Based on the information provided in the `summary` command output, we can construct confidence intervals for $\beta_{0}$ and $\beta_{1}$. First we observe that the degrees of freedom is 102, then the $t^{\ast}_{102}$ value for a 95% CI is
+
+```{r}
+(t_ast <- -qt((1.0-0.95)/2,df=102))
+```
+
+--
+
+- Now we can obtain our confidence intervals for $\beta_{0}$ and $\beta_{1}$:
+
+```{r}
+(beta_0_CI <- 42.71 + 1.98*c(-1,1)*5.17)
+(beta_1_CI <- 0.57 + 1.98*c(-1,1)*0.06)
+```
+
+---
+
+# Hypothesis Testing for Linear Regression
+
+- There are actually several types of hypothesis tests one can conduct relating to  linear regression models. 
+
+--
+
+- The most common test is of the form
+
+  - $H_{0}: \beta_{1} = 0$. The true linear model has slope zero. Versus
+
+--
+
+  - $H_{A}: \beta_{0} \neq 0$. The true linear model has a slope different than zero. 
+
+--
+
+- The `summary` command output includes a p-value for testing such a hypothesis. However, be aware that the `lm` command does not check whether the conditions for a linear model are met and the results for inference on model parameters is only valid if   the conditions for a linear model are met. 
+
+---
+
+# Hypothesis Test for possum Data
+
+- Again, the output for `summary(lm_fit)` is
+
+```{r}
+summary(lm_fit)
+```
+
+--
+
+- The p-value corresponding to the slope estimate $b_{1}$ is much smaller than 0.05 so we will decide to reject the null hypothesis $H_{0}: \beta_{1} = 0$ at the $\alpha = 0.05$ significance level.   
+
+---
+
+# Inference for Regression Video
+
+- Please watch this video to gain further perspective on inference for linear regression:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/depiT-hTaGA") %>%
+  vembedr::use_align("center")
+```
 
 ---
 
 # More R For Linear Models
 
+- To fit a linear model in R we use the `lm` command. The necessary input is a formula of the form `y ~ x` and the data. The `summary` command outputs all of the information relevant for inferential purposes.
 
+--
+
+- However, the output from `summary` is not necessarily formatted in the most convenient way. 
+
+--
+
+- Another approach to working with regression model output is provided by functions in the `broom` package. For example, the `tidy` function from `broom` displays the results of the model fit:
+
+```{r}
+tidy(lm_fit)
+```
+
+--
+
+- Let's go to R together, work some more examples,  and learn to work with the `broom` functions. 
+
+---
+
+# Worked Examples
+
+- Let's work some more examples relating to linear regression.
+
+---
+
+# Comparing Many Means
+
+- In previous lectures, we studied inference for a difference of means. There are also statistical methods for comparing more than two means. The primary method is called **analysis of variance** (ANOVA). 
+
+--
+
+- ANOVA uses a single hypothesis to check whether the means across many groups are equal:
+
+--
+
+  - $H_{0}: \mu_{1}=\mu_{2}=\cdots = \mu_{k}$. The mean outcome is hte same across all groups. Versus
+  
+  - $H_{A}:$ At least one mean is different. 
+  
+--
+
+- We must check three conditions for ANOVA:
+
+--
+
+- (1) Observations are independent across groups. (2) The data within each group are nearly normal. (3) The variability across each gorup is about equal. 
+
+---
+
+# Example Data Motivating ANOVA
+
+- Let's consider our chicken feed data again. The first few rows are shown below:
+
+```{r}
+head(chickwts)
+```
+
+--
+
+- The next slide show a plot of this data.
+
+---
+
+# Plot of Data
+
+```{r,fig.height=5}
+chickwts %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
+```
+
+--
+
+- It appeats that the mean weight is not the same for all groups of chickens. The question we would like to have an answer to is, is the observed difference significant? 
+
+---
+
+# The F Statistics and the F-Test
+
+- Analysis of variance (ANOVA) is used to test whether the mean outcome differs across 2 or more groups. 
+
+--
+
+- ANOVA uses a test statistic denoted by $F$, which represents a standardized ratio of variability in the sample means relative to the variability within groups. 
+
+--
+
+- ANOVA uses an $F$ distribution to compute a p-value that corresponds to the probability of observing an $F$ statistic value that is as or more extreme than the sample $F$ statistic value under the assumption that the null hypothesis is true. 
+
+--
+
+- We will see how to conduct ANOVA and an $F$-test using R. 
+
+--
+
+- Before conducting ANOVA, we should discuss the necessary conditions for an ANOVA analysis. 
+
+---
+
+# Conditions for ANOVA
+
+- There are three conditions we must check for an ANOVA:
+
+--
+
+  - Independence. If the data are a simple random sample, this condition is satisfied. 
+  
+--
+
+  - Normality. As with one- and two-sample testing for means, the normality assumption is especially important when the sample size is small. Grouped histograms are a good way to diagnose potential problems with the normality assumption for ANOVA. 
+  
+--
+
+  - Constant variance. The variance in the groups should be close to equal.  This assumption can be checked with side-by-side box plots. 
+  
+---
+
+# ANOVA Examples
+
+- Let's see some examples of conducting ANOVA. We will do this together in R. 
+
+---
+
+# Next Time: Inference for Categorical Data
+
+- Now that we have explored a lot about inference for numerical data, our next topic is some methods of inference for categorical data. The included video is a good place to start:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Uk36WGxujkc") %>%
+  vembedr::use_align("center")
+```
 
