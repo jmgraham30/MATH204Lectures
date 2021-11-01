@@ -12,6 +12,7 @@ library(faraway)
 library(tidyverse)
 library(ggformula)
 library(broom)
+library(patchwork)
 ```
 
 
@@ -111,4 +112,167 @@ summary(lm_fit)$r.squared
 Repeat the analysis from the previous example but use the `Acetic` variable for the concentration of acetic acid (log scale) instead of the concentration of acetic acid (log scale). 
 
 
+### Exercise 8.1
 
+**Ans.:** (a) The residual plot will show residuals that are randomly distributed around 0. The variance will appear approximately constant. (b) The residuals will decrease from left to right and therefore not be randomly distributed around 0. The variance will also decrease from left to right. 
+
+
+### Exercise 8.19
+
+Suppose we fit a regression line to predict the shelf life of an apple based on its weight. For a particular apple, we predict the shelf life to be 4.6 days. The apple's residual is -0.6 days. Did we over or under estimate the shelf-life of the apple? 
+
+### Exercise 8.5 Plus
+
+The two scatterplots show the relationship between mid-semester exam grades and final course grade recorded during several years for a stats course. 
+
+```{r,message=FALSE,warning=FALSE}
+exam_grades <- na.omit(exam_grades)
+p1 <- exam_grades %>% ggplot(aes(x=exam1,y=course_grade)) + geom_point() + 
+  geom_smooth(method = "lm",se=FALSE)
+p2 <- exam_grades %>% ggplot(aes(x=exam2,y=course_grade)) + geom_point() + 
+  geom_smooth(method = "lm",se=FALSE)
+
+p1 + p2
+
+```
+ 
+ 
+ 
+(a) Based on these graphs, which of the two exams has the strongest correlation with the final exam grade? 
+
+
+
+Let's compute these correlations using R:
+
+```{r}
+(R_exam1 <- cor(exam_grades$exam1,exam_grades$course_grade))
+(R_exam2 <- cor(exam_grades$exam2,exam_grades$course_grade))
+```
+
+Do the computed correlation values agree with your answer to the question? 
+
+
+(b) Can you think of a reason why the correlation between the exam you chose in 
+part (a) and the final course grade is higher? 
+
+Let's look at the residual plots for the two linear fits:
+
+```{r}
+pr1 <- augment(lm(course_grade~exam1,data=exam_grades)) %>% gf_point(.resid~exam1) %>% gf_hline(yintercept=0,lwd=1,linetype="dashed")
+
+pr2 <- augment(lm(course_grade~exam2,data=exam_grades)) %>% gf_point(.resid~exam2) %>% gf_hline(yintercept=0,lwd=1,linetype="dashed")
+
+pr1 + pr2
+
+```
+
+
+Do the residual plots indicate any problems with the linear fits to the data? 
+
+Let's compute the linear fits and examine the results.
+
+```{r}
+(lm_fit_exam1 <- lm(course_grade~exam1,data=exam_grades))
+(lm_fit_exam2 <- lm(course_grade~exam2,data=exam_grades))
+```
+
+
+How should we interpret the results? 
+
+
+### Exercise 8.13 and 8.31 Plus
+
+Consider the following data collected by researchers studying [anthropometry](https://en.wikipedia.org/wiki/Anthropometry):
+
+```{r}
+head(bdims)
+```
+
+We will plot the height of individuals versus their shoulder girth:
+
+```{r}
+bdims %>% gf_point(hgt~sho_gi)
+```
+
+Describe the relationship between shoulder girth and height. How would the relationship change if shoulder girth was measured in inches while the units of height remained in centimeters? 
+
+Now, let's look at the weight of individuals versus their height.
+
+```{r}
+bdims %>% gf_point(wgt~hgt)
+```
+
+(a) Describe the relationship between height and weight. What is the value of the correlation? 
+
+```{r}
+# compute correlation
+
+```
+
+
+
+(b) Here is the results of a linear fit using least squares:
+
+```{r}
+lm_fit_bdims <- lm(wgt~hgt,data=bdims)
+tidy(lm_fit_bdims)
+```
+
+Write an equation for the regression line. Interpret the slope and intercept in context. 
+
+
+Here is a plot of the regression line:
+
+```{r}
+bdims %>% gf_point(wgt~hgt) %>% gf_lm(wgt~hgt)
+```
+
+Let's look at the corresponding residual plot:
+
+```{r}
+augment(lm_fit_bdims) %>% gf_point(.resid~hgt) %>% gf_hline(yintercept=0,lwd=1,linetype="dashed")
+```
+
+Are there any potential issues with the residuals that suggest a linear model may not be appropriate? 
+
+
+What percent of the variability in weight can be explained by height? 
+
+
+Conduct a test of the hypothesis $H_{0}:\beta_{1}=0$ versus $H_{A}:\beta_{1} \neq 0$. 
+
+
+Compute a 95% confidence interval for the slope parameter. 
+
+```{r}
+# code for computing CI
+
+
+
+```
+
+We can ask R to return the confidence intervals for us in order to check our answer:
+
+```{r}
+tidy(lm_fit_bdims,conf.int = TRUE)
+```
+
+
+### Exercise 8.21 Plus
+
+
+
+### Exercise 8.25 and 8.35 Plus
+
+
+
+### Exercise 8.29 Plus
+
+
+
+
+
+
+
+
+ 
