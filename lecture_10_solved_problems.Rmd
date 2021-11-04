@@ -122,6 +122,8 @@ Repeat the analysis from the previous example but use the `Acetic` variable for 
 
 Suppose we fit a regression line to predict the shelf life of an apple based on its weight. For a particular apple, we predict the shelf life to be 4.6 days. The apple's residual is -0.6 days. Did we over or under estimate the shelf-life of the apple? 
 
+It is an overestimate!
+
 ### Exercise 8.5 Plus
 
 The two scatterplots show the relationship between mid-semester exam grades and final course grade recorded during several years for a stats course. 
@@ -207,7 +209,7 @@ bdims %>% gf_point(wgt~hgt)
 
 ```{r}
 # compute correlation
-
+cor(bdims$hgt,bdims$wgt)
 ```
 
 
@@ -247,9 +249,9 @@ Compute a 95% confidence interval for the slope parameter.
 
 ```{r}
 # code for computing CI
+t_ast <- -qt((1-0.95)/2,505)
 
-
-
+1.02 + t_ast*c(-1,1)*0.044
 ```
 
 We can ask R to return the confidence intervals for us in order to check our answer:
