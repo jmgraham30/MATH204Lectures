@@ -81,4 +81,117 @@ race_counts %>% mutate(p = n/sum(n))
 
 - We would like to know if the jury is representative of the population.
 
+--
+
+- This problem illustrates "Given a sample of cases that can be classified into several groups, determine if the sample is representative of the general population."
+
+---
+
+# One-Way Tables
+
+- If we were to take the bottom row of the table on the last slide as the assumed true proportions, then we would expect to get the following so-called **one-way table**:
+
+```{r,echo=FALSE}
+jury_owtb <- tibble(race=c("Observed count","Expected count"),black=c(26,19.25),hispanic=c(25,33),white=c(205,198),other=c(19,24.75)) %>% mutate(total=black+hispanic+white+other)
+jury_owtb %>% kbl() %>% kable_styling()
+```
+
+--
+
+- From a one-way table we can produce a test statistic that follows a well-known distribution. Specifically, we compute
+
+$$\frac{(26-19.25)^2}{19.25} + \frac{(25-33)^2}{33} + \frac{(205-198)^2}{198} + \frac{(19-24.75)^2}{24.75}$$
+
+--
+
+- This value is
+
+```{r}
+(26-19.25)^2/19.25 + (25-33)^2/33 + (205-198)^2/198 + (19-24.75)^2/24.75
+```
+
+---
+
+# chi-Square Distributions
+
+- In order to conduct inferences on data corresponding to one-way tables, we need to use a new distribution function called a **chi-square distribution**. Such distributions are characterized by a parameter called degrees of freedom. Below we plot a chi-square distribution function with 3 degrees of freedom:
+
+```{r,fig.height=5}
+gf_dist("chisq",df=3)
+```
+
+
+---
+
+# chi-Square Test Conditions
+
+- In order to use a chi-square distribution to compute a p-value, we need to check two conditions:
+
+--
+
+  - Independence. Each case that contributes a count to the table must be independent of all the other cases in the table. 
+  
+--
+
+  - Sample size / distribution. Each particular scenario must have at least 5 epxected cases. 
+
+
+---
+
+# chi-Square Test for One-Way Table
+
+Suppose we are to evaluate whether there is convincing evidence that a set of observed counts $O_{1}$, $O_{2}$, $\ldots$, $O_{k}$ in $k$ categories are unusually different from what we might expect under a null hypothesis. Call the *expected counts* that are based on the null hypothesis $E_{1}$, $E_{2}$, $\ldots$, $E_{k}$. If each expected count is at least 5 and the null hypothesis is true, then the test statistic
+
+$$X^{2} = \frac{(O_{1}-E_{1})^2}{E_{1}} + \frac{(O_{2}-E_{2})^2}{E_{2}} + \cdots + \frac{(O_{k}-E_{k})^2}{E_{k}}$$
+follows a chi-square distribution with $k-1$ degrees of freedom. 
+
+--
+
+The p-value for this test statistic is found by looking at the upper tail of htis chi-square distribution. We consider the upper tail becuase larger values of $X^2$ would provide greater evidence against the null hypothesis. 
+
+
+---
+
+# Example chi-Square Test
+
+- We expect the statistic for the one-way table for the jury data to follow a chi-square distribution with 3 degrees of freedom (since there are $k=4$) categories. 
+
+--
+
+- Then the probability of observing a value that is as or more extreme that the value obtained from the sample data is
+
+```{r}
+1 - pchisq(5.89,3)
+```
+
+--
+
+- We just computed a p-value, but to what null hypothesis does this p-value provide an appropriate means of testing? 
+
+---
+
+# Null Hypothesis for One-Way Tables
+
+- In our example, we would want to test:
+
+--
+
+  - $H_{0}:$ The jurors are a random sample, that is, there is no racial bias in who serves on a jury, and the observed counts reflect natural sampling fluctuation. 
+  
+--
+
+  - $H_{A}:$ The jurors are not randomly sampled, that is, there is racial bias in juror selection. 
+  
+--
+
+- Using the data, we can conduct the chi-square test as follows:
+
+```{r}
+chisq.test(c(26,25,205,19),p=c(0.07,0.12,0.72,0.09))
+```
+
+---
+
+# Another Motivating Example
+
 
