@@ -19,9 +19,9 @@ library(patchwork)
 
 ### The Cheddar Data
 
-Let's begin by examining the help file for the `cheddar` data from the `faraway` package. 
+Let's begin by examining the help file for the `cheddar` data from the `faraway` package. Do so by running `?cheddar` in the Console. 
 
-Suppose we want to use a linear model to explore the relationship between the `Lactic` variable and the `taste` variable. Specifically, we are interested to know how the concentration of lactic acids influences the subjective taste score.
+Suppose we want to use a linear model to explore the relationship between the `Lactic` variable and the `taste` variable. Specifically, we are interested to know how the concentration of lactic acid influences the subjective taste score.
 
 We should begin with a scatter plot.
 
@@ -32,6 +32,8 @@ gf_point(taste~Lactic,data=cheddar)
 
 **Question:** What does the scatter plot suggest about any association between the two variable? Based on the scatter plot, what do you think will be the value for the correlation between $x$ and $y$? 
 
+The scatter plot appears to show a positive association between the two variables. The correlation value will likely be between 0.5 and 1.0. 
+
 Let's compute the correlation:
 
 ```{r}
@@ -39,6 +41,8 @@ Let's compute the correlation:
 ```
 
 **Question:** What do you conclude based on the value of the correlation? How does the value correspond with what you guessed based on looking at the scatter plot? 
+
+We conclude that there is a relatively strong linear correlation between the two variables. 
 
 Let's fit a linear regression model with $x$=`Lactic` and $y$=`taste`. We will do this both by hand and using the `lm` command. First, by hand:
 
@@ -63,7 +67,7 @@ Let's check our parameter estimates with the `lm` command.
 
 We do indeed obtain the same estimates. 
 
-It is prudent to examine the residual plot for our fit in order to diagnose any potential failures for the basic assumptions required for a linear model to be reasonable. In order to obtain a residual plot, we need the residuals. The residuals can be obtained easily using the `augment` command from the `broom` package. Let's see what `augment` does. First, here is the first few rows for the oringal data:
+It is prudent to examine the residual plot for our fit in order to diagnose any potential failures for the basic assumptions required for a linear model to be reasonable. In order to obtain a residual plot, we need the residuals. The residuals can be obtained easily using the `augment` command from the `broom` package. Let's see what `augment` does. First, here is the first few rows for the original data:
 
 ```{r}
 head(cheddar)
@@ -82,11 +86,13 @@ augment(lm_fit) %>% gf_point(.resid~Lactic)
 
 It's useful to add a horizontal line at $y=0$ in order to show where a residual value of 0 falls. This is done as follows:
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 augment(lm_fit) %>% gf_point(.resid~Lactic) %>% gf_hline(yintercept=0,lwd=1,linetype="dashed")
 ```
 
 **Question:** Does the residual plot suggest any particular concerns regarding the quality of the linear fit? 
+
+The residual fit does not show any specific patterns of concern. 
 
 Finally, we can also use the results from the `augment` command to plot our regression line:
 
@@ -122,7 +128,7 @@ Repeat the analysis from the previous example but use the `Acetic` variable for 
 
 Suppose we fit a regression line to predict the shelf life of an apple based on its weight. For a particular apple, we predict the shelf life to be 4.6 days. The apple's residual is -0.6 days. Did we over or under estimate the shelf-life of the apple? 
 
-It is an overestimate!
+It is an overestimate! Recall that the residual is the vertical distance between a data point and the regression line. If the vertical distance is negative, this tells us that the data point falls below the regression line which corresponds to an overestimate. 
 
 ### Exercise 8.5 Plus
 
@@ -143,6 +149,7 @@ p1 + p2
  
 (a) Based on these graphs, which of the two exams has the strongest correlation with the final exam grade? 
 
+The second exam shows a stronger correlation since the regression line forms a much closer fit to the data.  
 
 
 Let's compute these correlations using R:
@@ -154,9 +161,13 @@ Let's compute these correlations using R:
 
 Do the computed correlation values agree with your answer to the question? 
 
+Yes they do. 
+
 
 (b) Can you think of a reason why the correlation between the exam you chose in 
 part (a) and the final course grade is higher? 
+
+There are many possible reasons. Maybe exam 2 is weighted more, or perhaps it is a cumulative exam. 
 
 Let's look at the residual plots for the two linear fits:
 
@@ -172,6 +183,8 @@ pr1 + pr2
 
 Do the residual plots indicate any problems with the linear fits to the data? 
 
+The residual plots look reasonable. 
+
 Let's compute the linear fits and examine the results.
 
 ```{r}
@@ -181,6 +194,10 @@ Let's compute the linear fits and examine the results.
 
 
 How should we interpret the results? 
+
+For exam 1, a one-point increase in the score corresponds to about a 0.46 point increase in the final grade. 
+
+For exam 2, a one-point increase in the score corresponds to about a 0.53 point increase in the final grade.
 
 
 ### Exercise 8.13 and 8.31 Plus
@@ -199,6 +216,8 @@ bdims %>% gf_point(hgt~sho_gi)
 
 Describe the relationship between shoulder girth and height. How would the relationship change if shoulder girth was measured in inches while the units of height remained in centimeters? 
 
+It appears that as shoulder girth increases so does height. Changing the units to inches will have no affect on the relationship between the two variables. 
+
 Now, let's look at the weight of individuals versus their height.
 
 ```{r}
@@ -207,12 +226,14 @@ bdims %>% gf_point(wgt~hgt)
 
 (a) Describe the relationship between height and weight. What is the value of the correlation? 
 
+Weight seems to increase with height. We can compute the correlation as:
+
 ```{r}
 # compute correlation
 cor(bdims$hgt,bdims$wgt)
 ```
 
-
+There seems to be a relatively strong positive linear correlation. 
 
 (b) Here is the results of a linear fit using least squares:
 
@@ -223,6 +244,11 @@ tidy(lm_fit_bdims)
 
 Write an equation for the regression line. Interpret the slope and intercept in context. 
 
+An equation for the line is
+
+$$y = -105 + 1.02 x$$
+
+We interpret this to say that for each unit increase of one centimeter in height, there is an increase in weight by about 1.02 kilograms. 
 
 Here is a plot of the regression line:
 
@@ -238,11 +264,21 @@ augment(lm_fit_bdims) %>% gf_point(.resid~hgt) %>% gf_hline(yintercept=0,lwd=1,l
 
 Are there any potential issues with the residuals that suggest a linear model may not be appropriate? 
 
+Perhaps a minor concern regarding the assumption of constant variance but the fit does not seem too unreasonable. 
+
 
 What percent of the variability in weight can be explained by height? 
 
+We compute $R^2$ by squaring the previous value we obtained for the correlation coefficient as
+
+```{r}
+0.72^2
+```
+So we see that height explains about 52% of the variance observed in the weight variable. 
 
 Conduct a test of the hypothesis $H_{0}:\beta_{1}=0$ versus $H_{A}:\beta_{1} \neq 0$. 
+
+Examining the output from our regression model summary, we see that the p-value corresponding to the slope parameter is very very small. Thus, we will reject the null hypothesis at the $\alpha=0.05$ significance level. 
 
 
 Compute a 95% confidence interval for the slope parameter. 
@@ -278,6 +314,11 @@ tp1 + tp2 + tp3
 
 Do the data meet the conditions required for fitting a least squares line? Explain your answer.  
 
+
+The regression line suggests that there is a positive, very strong, linear association between the number of tourists and spending. 
+
+However, the residual plot and the histogram of the residuals makes us question the assumption that the residuals are normally distributed with constant variance. Thus, a linear model is not really appropriate for this problem. 
+
 ### Exercise 8.25 and 8.35 Plus
 
 Scatterplot and linear fit:
@@ -298,15 +339,39 @@ lm_fit_murders <- lm(annual_murders_per_mil~perc_pov,data=murders)
 
 (a) Interpret the intercept and the $R^2$ value. 
 
+The $R^2$ value tells us that about 70% of the variance in the annual murders is explained by poverty percentage. Note that the correlation coefficient is about
+
+```{r}
+sqrt(0.705)
+```
+We know it's positive because of the slope of the regression line. 
+
+
 (b) What are the hypotheses for evaluating whether poverty percentage is a significant predictor of murder rate? 
+
+$H_{0}: \beta_{1} = 0$ versus $H_{A}: \beta_{1} \neq 0$
 
 (c) State the conclusion of the hypothesis test from part (b). 
 
+Since the p-value is very small we will reject the null hypothesis. 
+
 (d) What is a 95% confidence interval for the slope parameter? 
+
+Note that the appropriate degrees of freedom is 18, therefore
+
+```{r}
+t_ast <- -qt((1-0.95)/2,18)
+
+2.56 + t_ast*c(-1,1)*0.39
+
+```
+We can also check our answer with out from the call to `glance`. This confirms our calculation. 
+
+
 
 (e) Do the results from the hypothesis test and the confidence interval agree? 
 
-
+Yes they do. 
 
 
 ### Exercise 8.29 Plus
