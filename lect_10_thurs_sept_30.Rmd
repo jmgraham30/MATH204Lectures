@@ -606,7 +606,7 @@ summary(lm_fit)
 
 --
 
-  - $H_{A}: \beta_{0} \neq 0$. The true linear model has a slope different than zero. 
+  - $H_{A}: \beta_{1} \neq 0$. The true linear model has a slope different than zero. 
 
 --
 
