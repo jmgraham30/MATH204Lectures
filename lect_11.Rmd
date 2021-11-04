@@ -1,0 +1,72 @@
+---
+title: "Lecture 11"
+subtitle: " "
+author: "JMG"
+institute: "MATH 204"
+output:
+  xaringan::moon_reader:
+    css: [rladies, rladies-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(openintro)
+library(faraway)
+library(tidyverse)
+library(ggformula)
+library(ggmosaic)
+library(patchwork)
+library(latex2exp)
+library(kableExtra)
+library(broom)
+```
+
+
+# Inference for Categorical Data
+
+In this lecture, we will examine two new inferential techniques:
+
+--
+
+- Testing for goodness of fit using chi-square, which is commonly used in two circumstances:
+
+--
+
+  - Given a sample of cases that can be classified into several groups, determine if the sample is representative of the general population. 
+  
+--
+
+  - Evaluate whether data resemble a particular distribution, such as a normal distribution or a geometric distribution. 
+  
+--
+
+- Testing for independence in two-way tables. 
+
+---
+
+# Learning Objectives
+
+
+
+
+---
+
+# Testing for goodness of fit: Motivating Example
+
+```{r,echo=FALSE}
+race_counts <- jury %>% group_by(race) %>% summarise(n=n())
+jury_tb <- tibble(race=c("Representation in juries","Registered voters"),black=c(26,0.07),hispanic=c(25,0.12),white=c(205,0.72),other=c(19,0.09)) %>% mutate(total=black+hispanic+white+other)
+jury_tb %>% kbl() %>% kable_styling()
+```
+
+We can compute the proportions for the data:
+
+```{r,echo=FALSE}
+race_counts %>% mutate(p = n/sum(n))
+```
