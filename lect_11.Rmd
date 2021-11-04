@@ -57,7 +57,11 @@ In this lecture, we will examine two new inferential techniques:
 
 ---
 
-# Testing for goodness of fit: Motivating Example
+# Motivating Example
+
+Consider the following data:
+
+--
 
 ```{r,echo=FALSE}
 race_counts <- jury %>% group_by(race) %>% summarise(n=n())
@@ -65,8 +69,16 @@ jury_tb <- tibble(race=c("Representation in juries","Registered voters"),black=c
 jury_tb %>% kbl() %>% kable_styling()
 ```
 
+--
+
 We can compute the proportions for the data:
 
 ```{r,echo=FALSE}
 race_counts %>% mutate(p = n/sum(n))
 ```
+
+--
+
+- We would like to know if the jury is representative of the population.
+
+
