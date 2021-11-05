@@ -248,8 +248,55 @@ chisq.test(c(26,25,205,19),p=c(0.07,0.12,0.72,0.09))
 
 # More Examples
 
-- Let's work some more examples together.
+- Let's see some more examples.
 
+--
+
+- Let's look at exercise 6.33 frmo the textbook on page 239. The table for the data will look as follows:
+
+```{r,echo=FALSE}
+open_tb <- tibble(textbook=c("Method","Expected percent"),purchased=c(71,0.6),printed=c(30,0.25),online=c(25,0.15)) %>% mutate(total=purchased+printed+online)
+open_tb %>% kbl() %>% kable_styling()
+```
+
+--
+
+- The expected counts will be
+
+```{r,echo=FALSE}
+c(purchased=0.6*126,printed=0.25*126,online=0.15*126)
+```
+
+--
+
+- Thus, our $X^2$ statistic is
+
+```{r}
+(X2 <- (71-75.6)^2/75.6  + (30-31.5)^2/31.5  + (25-18.9)^2/18.9)
+```
+
+
+---
+
+# Example Continued
+
+- The appropriate degrees of freedom is 2. Therefore, the tail area is
+
+```{r}
+pchisq(X2,2,lower.tail = FALSE)
+```
+
+--
+
+- If our hypothesis is: $H_{0}:$ the distribution of the format of the book used follows the expected distribution, vs. $H_{A}:$ the distribution of the format of the book used does not follow the expected distribution, then we will fail to reject the null hypothesis at the $\alpha = 0.05$ level of significance. 
+
+--
+
+- We can confirm our result using R:
+
+```{r}
+chisq.test(c(71,30,25),p=c(0.6,0.25,0.15))
+```
 
 ---
 
