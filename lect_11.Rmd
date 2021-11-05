@@ -266,3 +266,18 @@ chisq.test(c(26,25,205,19),p=c(0.07,0.12,0.72,0.09))
 - When we consider a two-way table, we often would like to know, are these variables related in any way? That is, are they dependent versus independent? 
 
 
+---
+
+# Null Hypothesis for Two-Way Tables
+
+- For a two-way table problem, the typical hypotheses are of the form
+
+--
+
+  - $H_{0}:$ The two variables are independent. 
+  
+--
+
+  - $H_{A}:$ The two variables are dependent. 
+
+
