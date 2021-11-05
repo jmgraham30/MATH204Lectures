@@ -259,7 +259,7 @@ chisq.test(c(26,25,205,19),p=c(0.07,0.12,0.72,0.09))
 
 --
 
-- A two-way table descrives counts for combinations of two categorical variables. 
+- A two-way table describes counts for combinations of two categorical variables where at least one of the two ha smore than 2 levels.  
 
 --
 
