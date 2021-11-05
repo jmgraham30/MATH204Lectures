@@ -189,7 +189,7 @@ ggplot(data.frame(x = c(0, 25)), aes(x)) +
 Suppose we are to evaluate whether there is convincing evidence that a set of observed counts $O_{1}$, $O_{2}$, $\ldots$, $O_{k}$ in $k$ categories are unusually different from what we might expect under a null hypothesis. Call the *expected counts* that are based on the null hypothesis $E_{1}$, $E_{2}$, $\ldots$, $E_{k}$. If each expected count is at least 5 and the null hypothesis is true, then the test statistic
 
 $$X^{2} = \frac{(O_{1}-E_{1})^2}{E_{1}} + \frac{(O_{2}-E_{2})^2}{E_{2}} + \cdots + \frac{(O_{k}-E_{k})^2}{E_{k}}$$
-follows a chi-square distribution with $k-1$ degrees of freedom. 
+follows a chi-square distribution with $k-1$ degrees of freedom. Note that this test statistic is always positive. 
 
 --
 
@@ -208,6 +208,14 @@ The p-value for this test statistic is found by looking at the upper tail of hti
 
 ```{r}
 1 - pchisq(5.89,3)
+```
+
+--
+
+- Alternatively:
+
+```{r}
+pchisq(5.89,3,lower.tail = FALSE)
 ```
 
 --
