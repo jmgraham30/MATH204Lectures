@@ -34,7 +34,7 @@ In this lecture, we will examine two new inferential techniques:
 
 --
 
-- Testing for goodness of fit using chi-square, which is commonly used in two circumstances:
+- Testing for goodness of fit using chi-square, which is applied to a categorical variable with more than two levels. This is commonly used in two circumstances:
 
 --
 
@@ -52,8 +52,37 @@ In this lecture, we will examine two new inferential techniques:
 
 # Learning Objectives
 
+- In this lecture, we cover some inferential techniques for categorical data. After this lecture you should be able to
+
+--
+
+  - Identify one-way and two-way table problems.
+  
+--
+
+  - Work with a chi-square statistic and distribution.
+  
+--
+
+  - Use the `aov` function in R to conduct hypothesis tests. 
+---
+
+# Video on Goodness of Fit
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/Uk36WGxujkc") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# Video on Two-Way Tables
 
 
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/yjrsfNdja0U") %>%
+  vembedr::use_align("center")
+```
 
 ---
 
@@ -120,6 +149,23 @@ $$\frac{(26-19.25)^2}{19.25} + \frac{(25-33)^2}{33} + \frac{(205-198)^2}{198} + 
 gf_dist("chisq",df=3)
 ```
 
+
+---
+
+# chi-Square for Different df's
+
+```{r,echo=FALSE,fig.height=6,fig.width=10,warning=FALSE,message=FALSE}
+lab1 <- TeX("$df = 2$")
+lab2 <- TeX("$df = 4$")
+lab3 <- TeX("$df = 9$")
+
+ggplot(data.frame(x = c(0, 25)), aes(x)) + 
+  stat_function(fun = dchisq, args = list(df = 2), col='#88CCEE',lwd=1) +
+  stat_function(fun = dchisq, args = list(df=4), col='#CC6677',lwd=1) + stat_function(fun = dchisq, args = list(df=9), col='#DDCC77',lwd=1) +
+  annotate(geom="text",x=2.5,y=0.3,label=lab1,col="#88CCEE",size=6) + 
+  annotate(geom="text",x=4,y=0.18,label=lab2,col="#CC6677",size=6) + 
+  annotate(geom="text",x=12,y=0.1,label=lab3,col="#DDCC77",size=6)
+```
 
 ---
 
@@ -193,5 +239,20 @@ chisq.test(c(26,25,205,19),p=c(0.07,0.12,0.72,0.09))
 ---
 
 # Another Motivating Example
+
+
+---
+
+# Two-Way Tables
+
+- A one-way table describes counts for each outcome in a single categorical variable. 
+
+--
+
+- A two-way table descrives counts for combinations of two categorical variables. 
+
+--
+
+- When we consider a two-way table, we often would like to know, are these variables related in any way? That is, are they dependent versus independent? 
 
 
