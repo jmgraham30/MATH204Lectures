@@ -327,4 +327,97 @@ chisq.test(c(71,30,25),p=c(0.6,0.25,0.15))
 
   - $H_{A}:$ The two variables are dependent. 
 
+--
+
+- Let's look at an example. 
+
+---
+
+# Offshore Drilling Example
+
+- Consider the data with first few rows shown below:
+
+```{r,echo=FALSE}
+offshore_drilling_c <- offshore_drilling[2:nrow(offshore_drilling), ]
+pos <- as.character(offshore_drilling_c$v1)
+college <- as.character(offshore_drilling_c$v2)
+my_offshore_drilling <- tibble(position=factor(pos),college_grad=factor(college))
+head(my_offshore_drilling)
+```
+
+--
+
+- Let's look at the corresponding two-way table:
+
+```{r}
+addmargins(table(my_offshore_drilling$position,my_offshore_drilling$college_grad))
+```
+
+---
+
+# Hypothesis Test for Offshore Drilling
+
+- We would like to test the hypothesis:
+
+--
+
+  - $H_{0}:$ College graduate status and support for offshore drilling are independent. 
+  
+--
+
+  - $H_{A}:$ College graduate status and support for offshore drilling are not independent. 
+  
+--
+
+- This is easily done with
+
+```{r}
+chisq.test(my_offshore_drilling$position,my_offshore_drilling$college_grad)
+```
+
+
+--
+
+- Thus, we will reject the null hypothesis at the $\alpha=0.05$ significance level.
+
+---
+
+# Tests By Hand
+
+- Let's see how to conduct the previous test by hand. 
+
+--
+
+- The two things we need to know are the value of the $X^2$ statistic and the appropriate number of degrees of freedom to use. 
+
+--
+
+- When applying the chi-square test to a two-way table, we use
+
+$$df = (R-1) \times (C-1)$$
+
+where $R$ is the number of rows in the table and $C$ is the number of columns. 
+
+--
+
+- Thus, in our example, $df = (3-1)\times (2-1) = 2$.
+
+---
+
+# Computing $X^2$
+
+- As before
+
+$$X^2 = \sum \frac{(O-E)^2}{E}$$
+
+--
+
+- The question is, how do we compute the expected counts ( $E_{ij}$ ) for a two-way table? The answer is
+
+$$\text{Expected Count}_{\text{row }i \text{ col }j} = E_{ij} = \frac{\text{row }i \text{ total} \times \text{column }j \text{ total}}{\text{table total}}$$
+
+--
+
+- Let's work this out on the board for our example. 
+
 
