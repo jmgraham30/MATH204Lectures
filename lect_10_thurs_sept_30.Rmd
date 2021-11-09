@@ -677,7 +677,7 @@ tidy(lm_fit)
 
 --
 
-  - $H_{0}: \mu_{1}=\mu_{2}=\cdots = \mu_{k}$. The mean outcome is hte same across all groups. Versus
+  - $H_{0}: \mu_{1}=\mu_{2}=\cdots = \mu_{k}$. The mean outcome is the same across all groups. Versus
   
   - $H_{A}:$ At least one mean is different. 
   
@@ -687,7 +687,7 @@ tidy(lm_fit)
 
 --
 
-- (1) Observations are independent across groups. (2) The data within each group are nearly normal. (3) The variability across each gorup is about equal. 
+- (1) Observations are independent across groups. (2) The data within each group are nearly normal. (3) The variability across each group is about equal. 
 
 ---
 
@@ -713,7 +713,7 @@ chickwts %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
 
 --
 
-- It appeats that the mean weight is not the same for all groups of chickens. The question we would like to have an answer to is, is the observed difference significant? 
+- It appears that the mean weight is not the same for all groups of chickens. The question we would like to have an answer to is, is the observed difference significant? 
 
 ---
 
