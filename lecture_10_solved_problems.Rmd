@@ -465,6 +465,26 @@ summary(aov(gpa~major,data=major_survey))
 
 
 
+### A Relationship Between ANOVA and Linear Regression
+
+Reconsider the data from the last example:
+
+```{r}
+head(major_survey)
+```
+
+This is a data set where each row is a single observation but with two variables, one numeric and one categorical. Further, it makes sense to think of the `major` variable as an explanatory variable and `gpa` as a response variable. What happens if we try to fit a linear model of the form
+
+$$\text{gpa} = \beta_{0} + \beta_{1} \text{ major} + \epsilon$$
+Let's do this in R:
+
+```{r}
+gpa_lm_fit <- lm(gpa~major,data=major_survey)
+summary(gpa_lm_fit)
+```
 
 
+Note that this output reports an $F$ statistic value `0.3579` and a corresponding p-value `0.6996` which is exactly the same as what was reported in the output from our ANOVA. 
+
+This is not a coincidence, ANOVA is the same thing as linear regression with one categorical explanatory variable.  
 
