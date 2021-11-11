@@ -23,7 +23,7 @@ skimr::skim(my_data)
 comb_mpg_mean <- mean(my_data$comb_mpg)
 comb_mpg_sd <- sd(my_data$comb_mpg)
 comb_mpg_var <- var(my_data$comb_mpg)
-comb_mpg_median <- (my_data$comb_mpg)
+comb_mpg_median <- median(my_data$comb_mpg)
 
 # summary plots for one numerical variable
 gf_histogram(~comb_mpg,data=my_data)
