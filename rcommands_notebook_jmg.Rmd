@@ -1,16 +1,24 @@
 ---
-title: "R Commands Notebook"
+title: "R Commands for MATH 204"
 author: "JMG"
-output: html_notebook
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
 ---
+
+```{r,echo=FALSE}
+set.seed(1234)
+```
 
 # Some Useful R Commands
 
-This notebook illustrates the use of R commands that relate directly to the statistical concepts convered in MATH 204 *Introduction to Statistics*.
+This notebook illustrates some R commands that relate directly to the statistical concepts covered in [MATH 204](https://math204fall2021.netlify.app/) *Introduction to Statistics*. The presentation is terse and there is little discussion on how to interpret results as these details are covered in lectures. 
 
 ## Loading Packages
 
-It is necessary to load any package (other than base R) that contains commands that we want to use. Note that these packages have it be installed before they can be loaded. One can install packages using the "Packages" tab and then clicking the "Install" icon.
+It is necessary to load any package (other than base R) that contains commands that we want to use. Note that these packages have to be installed before they can be loaded. One can install packages using the "Packages" tab and then clicking the "Install" icon.
 
 ```{r,warning=FALSE,message=FALSE}
 # load packages
@@ -25,21 +33,21 @@ library(skimr)
 
 Here is a brief overview on each of the packages we have loaded:
 
--   `tidvyverse` contains commands from working with data frames and creating plots with `ggplot`
+-   [`tidvyverse`](https://www.tidyverse.org/) contains commands for working with data frames and creating plots with [`ggplot`](https://ggplot2.tidyverse.org/),
 
-- `openintro` is a R package that is associated with our textbook [OpenIntro Statistics](https://openintro.org/book/os/). Mostly it just contains data sets. 
+- [`openintro`](https://github.com/OpenIntroStat/openintro) is an R package that is associated with our textbook [OpenIntro Statistics](https://openintro.org/book/os/). Mostly it just contains data sets. 
 
-- `ggformula`, `ggmosaic`, and `GGally` each add enhanced plotting capabilities to base R.
+- [`ggformula`](http://www.mosaic-web.org/ggformula/reference/ggformula.html), [`ggmosaic`](https://cran.r-project.org/web/packages/ggmosaic/vignettes/ggmosaic.html), and [`GGally`](https://ggobi.github.io/ggally/) each add enhanced plotting capabilities,
 
-- `broom` has commands that help clean up output from linear models.
+- [`broom`](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) has commands that help clean up output from linear models,
 
-- `skimr` contains a command called `skim` that prints out a nice data summary. 
+- [`skimr`](https://cran.r-project.org/web/packages/skimr/vignettes/skimr.html) contains a command called `skim` that prints out a nice data summary. 
 
 Now that we've loaded our packages, we can import some data. 
 
 ## Load the Data
 
-Here we load our EPA 2021 data.
+Here we load some data, the EPA 2021 vehicle data.
 
 ```{r}
 # load data
@@ -65,19 +73,12 @@ summary(my_data)
 ```
 
 
-One benefit of the summary command is that it helps us to identify the type of each variable. The `gimpse` command from the `pillar` package (which is part of `tidyverse`) is also helpful in this regard. 
+One benefit of the summary command is that it helps us to identify the type of each variable. The `glimpse` command from the `pillar` package (which is installed as part of `tidyverse`) is also helpful in this regard. 
 
 ```{r}
 pillar::glimpse(my_data)
 ```
 
-An even fancier summary of our data is provided by the `skim` function from the `skimr` package. Let's see how it works.
-
-```{r}
-skimr::skim(my_data)
-```
-
-Essentially what this shows is that we have 20 categorical variables and 8 numerical variables. For each of the numerical variables, the `skim` function reports all of the quantitative summary statistic values.  
 
 The next step in a data analysis is to conduct a so-called exploratory data analysis (EDA). This allows us to assess the data for any problems and also helps to suggest what types of statistical or analytical questions can be asked and/or answered. 
 
@@ -114,6 +115,110 @@ A boxplot is another way to visualize numerical data.
 gf_boxplot(~comb_mpg,data=my_data) + coord_flip()
 ```
 
+## Inference for Proportions and Means
+
+The following subsections illustrate the R commands for conducting a statistical hypothesis test for a single proportion, a difference of proportions, a single mean, paired means, and a difference of two means. Only the syntax is illustrated, refer to the lectures for more context.  
+
+### Single Proportion
+
+```{r}
+prop.test(18,45,p=0.32,correct = FALSE)
+```
+
+To conduct the same test "by hand," we use
+
+```{r}
+n <- 45
+p_hat <- 18/n
+p0 <- 0.32
+SE <- sqrt((p0*(1-p0))/n)
+(z_val <- (p_hat-p0)/SE )
+(p_val <- 2*(1-pnorm(z_val))) # since 2-sided and z_val > 0
+```
+
+### Difference of Proportions
+
+```{r}
+prop.test(c(18,15),c(45,27),correct=FALSE)
+```
+
+To conduct the same test "by hand," we use
+
+```{r}
+n1 <- 45
+n2 <- 27
+p_hat1 <- 18/n1
+p_hat2 <- 15/n2
+p_pooled <- (p_hat1*n1 + p_hat2*n2)/(n1+n2)
+SE <- sqrt((p_pooled*(1-p_pooled))/n1 + (p_pooled*(1-p_pooled))/n2)
+(z_val <- (p_hat1-p_hat2)/SE)
+(p_val <- 2*pnorm(z_val)) # since 2-sided and z_val < 0 
+```
+
+### Single Mean
+
+```{r}
+sim_data <- tibble(x=rnorm(18,2,0.75),y=rnorm(18,2.2,0.75))
+
+t.test(sim_data$x,mu=1)
+```
+
+To conduct this test "by hand", use
+
+```{r}
+n <- length(sim_data$x)
+mu_x <- mean(sim_data$x)
+sd_x <- sd(sim_data$x)
+SE <- sd_x/sqrt(n)
+mu0 <- 1
+(t_val <- (mu_x-mu0)/SE)
+(p_val <- 2*(1-pt(t_val,df=n-1))) # since 2-sided and t_val > 0
+```
+
+
+### Paired Samples
+
+```{r}
+t.test(sim_data$x,sim_data$y,paired = TRUE)
+```
+
+To conduct this test "by hand", use
+
+```{r}
+xy_diff <- sim_data$x - sim_data$y
+n <- length(xy_diff)
+mu_diff <- mean(xy_diff)
+sd_diff <- sd(xy_diff)
+SE <- sd_diff/sqrt(n)
+(t_val <- mu_diff/SE)
+(p_val <- 2*pt(t_val,df=n-1)) # since 2-sided and t_val < 0
+```
+
+### Difference of Means
+
+
+```{r}
+z <- rnorm(22,2,0.75)
+
+t.test(sim_data$x,z,paired=FALSE)
+```
+
+To do this test "by hand", use
+
+```{r}
+n1 <- length(sim_data$x)
+n2 <- length(z)
+mu_1 <- mean(sim_data$x)
+sd_1 <- sd(sim_data$x)
+mu_2 <- mean(z)
+sd_2 <- sd(z)
+mu_diff <- mu_1 - mu_2
+SE <- sqrt(sd_1^2/n1 + sd_2^2/n2)
+(t_val <- (mu_diff)/SE)
+(p_val <- 2*(1-pt(t_val,df=min(n1-1,n2-1)))) # since 2-sided and t_val > 0
+```
+
+**Note:** The results are slightly different from what we see with the `t.test` command. This is due to the fact that the `t.test` implementation utilizes a pooled standard deviation which is a special topic that we did not cover in lecture. 
 
 ## Summary Stats for a Categorical Variable
 
@@ -172,8 +277,6 @@ ggplot(data = my_data) +
   geom_mosaic(aes(x = product(drive_desc), fill=drive_desc)) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
-
-## Inference for Proportions and Means
 
 
 
@@ -268,6 +371,8 @@ gf_boxplot(comb_mpg~drive_desc,data=my_data) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
 
+#### Inference with ANOVA
+
 In order to test if the observed difference in means is likely true, or is simply a result of sampling, we use an ANOVA. This is conducted as follows:
 
 ```{r}
@@ -297,6 +402,8 @@ ggplot(data = hsb2) +
   geom_mosaic(aes(x = product(ses, prog), fill=ses)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
+
+#### Inference with chi-square
 
 We can ask if the variables `ses` and   `prog` are independent. A chi-square test helps to answer this. 
 
@@ -357,7 +464,26 @@ qnorm(0.3)
 **Note** Depending on the type of distribution you want to work with, you need to specify appropriate values for an parameters. For example, to work with a t distribution to need to specify the appropriate values for the degrees of freedom `df`. 
 
 
+## Two Bonus Commands
 
+
+### Data Summary with skim
+
+An even fancier summary of our data is provided by the `skim` function from the `skimr` package. Let's see how it works.
+
+```{r}
+skimr::skim(my_data)
+```
+
+Essentially what this shows is that we have 20 categorical variables and 8 numerical variables. For each of the numerical variables, the `skim` function reports all of the quantitative summary statistic values. 
+
+### Mulitple Scatter Plots with ggpairs
+
+We might want to study the associations of multiple numerical variables simultaneously. The `ggpairs` command from the `GGally` package is a way to obtain a lot of information about several numerical varaibles with one plot. For example, 
+
+```{r,message=FALSE,warning=FALSE}
+GGally::ggpairs(my_data[,c(6,7,8,12)])
+```
 
 
 
