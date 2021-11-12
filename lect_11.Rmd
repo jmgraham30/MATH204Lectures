@@ -143,7 +143,7 @@ $$\frac{(26-19.25)^2}{19.25} + \frac{(25-33)^2}{33} + \frac{(205-198)^2}{198} + 
 
 # chi-Square Distributions
 
-- In order to conduct inferences on data corresponding to one-way tables, we need to use a new distribution function called a **chi-square distribution**. Such distributions are characterized by a parameter called degrees of freedom. Below we plot a chi-square distribution function with 3 degrees of freedom:
+- In order to conduct inferences on data corresponding to one-way tables, we need to use a new distribution function called a **chi-square distribution**. Such distributions are characterized by a parameter called degrees of freedom. Below we plot a chi-square density function with 3 degrees of freedom:
 
 ```{r,fig.height=5}
 gf_dist("chisq",df=3)
@@ -179,28 +179,28 @@ ggplot(data.frame(x = c(0, 25)), aes(x)) +
   
 --
 
-  - Sample size / distribution. Each particular scenario must have at least 5 epxected cases. 
+  - Sample size / distribution. Each particular scenario must have at least 5 expected cases. 
 
 
 ---
 
 # chi-Square Test for One-Way Table
 
-Suppose we are to evaluate whether there is convincing evidence that a set of observed counts $O_{1}$, $O_{2}$, $\ldots$, $O_{k}$ in $k$ categories are unusually different from what we might expect under a null hypothesis. Call the *expected counts* that are based on the null hypothesis $E_{1}$, $E_{2}$, $\ldots$, $E_{k}$. If each expected count is at least 5 and the null hypothesis is true, then the test statistic
+Suppose we are to evaluate whether there is convincing evidence that a set of observed counts $O_{1}$, $O_{2}$, $\ldots$, $O_{k}$ in $k$ categories are unusually different from what we might expect under a null hypothesis. Denote the *expected counts* that are based on the null hypothesis by $E_{1}$, $E_{2}$, $\ldots$, $E_{k}$. If each expected count is at least 5 and the null hypothesis is true, then the test statistic
 
 $$X^{2} = \frac{(O_{1}-E_{1})^2}{E_{1}} + \frac{(O_{2}-E_{2})^2}{E_{2}} + \cdots + \frac{(O_{k}-E_{k})^2}{E_{k}}$$
 follows a chi-square distribution with $k-1$ degrees of freedom. Note that this test statistic is always positive. 
 
 --
 
-The p-value for this test statistic is found by looking at the upper tail of htis chi-square distribution. We consider the upper tail becuase larger values of $X^2$ would provide greater evidence against the null hypothesis. 
+The p-value for this test statistic is found by looking at the upper tail of this chi-square distribution. We consider the upper tail because larger values of $X^2$ would provide greater evidence against the null hypothesis. 
 
 
 ---
 
 # Example chi-Square Test
 
-- We expect the statistic for the one-way table for the jury data to follow a chi-square distribution with 3 degrees of freedom (since there are $k=4$) categories. 
+- We expect the statistic for the one-way table for the jury data to follow a chi-square distribution with 3 degrees of freedom since there are $k=4$ categories. 
 
 --
 
@@ -306,7 +306,7 @@ chisq.test(c(71,30,25),p=c(0.6,0.25,0.15))
 
 --
 
-- A two-way table describes counts for combinations of two categorical variables where at least one of the two ha smore than 2 levels.  
+- A two-way table describes counts for combinations of two categorical variables where at least one of the two has more than 2 levels.  
 
 --
 
@@ -420,4 +420,43 @@ $$\text{Expected Count}_{\text{row }i \text{ col }j} = E_{ij} = \frac{\text{row 
 
 - Let's work this out on the board for our example. 
 
+---
 
+# Hypothesis Testing Summary
+
+- To date, we have covered the following tests:
+
+--
+
+  - Single proportion and difference of proportions using a "z-test."
+  
+--
+
+  - Single mean, paired mean, difference of means using a "t-test."
+  
+--
+
+  - Comparing many means with ANOVA.
+  
+--
+
+  - One-way and two-way table tests for categorical variables with chi-square. 
+  
+--
+
+ - Simple linear regression via ordinary least squares for a pair of numeric variable. 
+ 
+--
+
+- We also know how to construct confidence intervals for parameter estimates for proportions, difference of proportions, mean, difference of means, and intercept and slope parameters for a linear model. 
+
+---
+
+# Next Topic
+
+- Our next topic discusses more regarding regression. This video will get you started:
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/sQpAuyfEYZg") %>%
+  vembedr::use_align("center")
+```

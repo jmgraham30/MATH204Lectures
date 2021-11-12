@@ -1,0 +1,268 @@
+---
+title: "R Commands Notebook"
+author: "JMG"
+output: html_notebook
+---
+
+# R Commands Notebook
+
+## Loading Packages
+
+It is necessary to load any package (other than base R) that contains commands that we want to use. Note that these packages have it be installed before they can be loaded. One can install packages using the "Packages" tab and then clicking the "Install" icon.
+
+```{r}
+# load packages
+library(tidyverse)
+library(openintro)
+library(ggformula)
+library(ggmosaic)
+library(broom)
+library(GGally)
+library(skimr)
+```
+
+Here is a brief overview on each of the packages we have loaded:
+
+-   `tidvyverse` contains commands from working with data frames and creating plots with `ggplot`
+
+- `openintro` is a R package that is associated with our textbook [OpenIntro Statistics](https://openintro.org/book/os/). Mostly it just contains data sets. 
+
+- `ggformula`, `ggmosaic`, and `GGally` each add enhanced plotting capabilities to base R.
+
+- `broom` has commands that help clean up output from linear models.
+
+- `skimr` contains a command called `skim` that prints out a nice data summary. 
+
+Now that we've loaded our packages, we can import some data. 
+
+## Load the Data
+
+Here we load our EPA 2021 data.
+
+```{r}
+# load data
+my_data <- read.csv("epa2021data.csv")
+# if you don't have the data file, use:
+#my_data <- epa2021
+```
+
+This data contains vehicle information from the EPA for 2021. The size of this data set is reported by the following command:
+
+
+```{r}
+dim(my_data)
+```
+
+
+We see that there are 1108 observations (rows) and 28 variables (columns). 
+
+It is a good idea to try to learn more about our data set. One helpful command along these lines is the `summary` command that prints out summary statistics for each variable in the data set. 
+
+```{r}
+summary(my_data)
+```
+
+
+One benefit of the summary command is that it helps us to identify the type of each variable. The `gimpse` command from the `pillar` package (which is part of `tidyverse`) is also helpful in this regard. 
+
+```{r}
+pillar::glimpse(my_data)
+```
+
+An even fancier summary of our data is provided by the `skim` function from the `skimr` package. Let's see how it works.
+
+```{r}
+skimr::skim(my_data)
+```
+
+Essentially what this shows is that we have 20 categorical variables and 8 numerical variables. For each of the numerical variables, the `skim` function reports all of the quantitative summary statistic values.  
+
+The next step in a data analysis is to conduct a so-called exploratory data analysis (EDA). This allows us to assess the data for any problems and also helps to suggest what types of statistical or analytical questions can be asked and/or answered. 
+
+The first steps in EDA are to compute summary statistics for variables of interest and to build appropriate summary visualizations.   
+
+## Summary Stats for Numerical Variables
+
+For example, the `comb_mpg` variable (combined mileage) is a continuous numerical variable so it makes sense to compute its mean, median, standard deviation, and variance.  
+
+```{r}
+(comb_mpg_mean <- mean(my_data$comb_mpg))
+(comb_mpg_median <- median(my_data$comb_mpg))
+(comb_mpg_sd <- sd(my_data$comb_mpg))
+(comb_mpg_var <- var(my_data$comb_mpg))
+```
+
+## Visual Summaries for Numerical Variables
+
+Histograms and boxplots are appropriate ways to provide a visual summary for a numerical variable. The following plotting commands illustrate some of the ways in which such plots can be obtained.   
+
+```{r}
+gf_histogram(~comb_mpg,data=my_data)
+```
+
+Let's change the number of bins.
+
+```{r}
+gf_histogram(~comb_mpg,data=my_data,bins=25,color="black")
+```
+
+A boxplot is another way to visualize numerical data.
+
+```{r}
+gf_boxplot(~comb_mpg,data=my_data) + coord_flip()
+```
+
+
+## Summary Stats for Categorical Variables
+
+For a single categorical variable, we one-way table is used to summarize the counts for how many times each level of the variable occurs as an observation in the sample data. For example, 
+
+```{r}
+table(my_data$drive_desc)
+```
+
+The `addmargins` command totals the counts.
+
+```{r}
+addmargins(table(my_data$drive_desc))
+```
+
+
+Instead of counts, we can also compute proportions.
+
+```{r}
+proportions(table(my_data$drive_desc))
+```
+
+or with the total
+
+```{r}
+addmargins(proportions(table(my_data$drive_desc)))
+```
+
+
+## Visual Summaries for a Single Categorical Variable
+
+A visualization of a one-way table is provided by a bar plot.
+
+```{r}
+gf_bar(~drive_desc,data=my_data)
+```
+
+Note that the x-axis labels are difficult to read. This can be addressed as follows.
+
+```{r}
+gf_bar(~drive_desc,data=my_data) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+The proportions version of a bar plot is obtained with a mosaic plot.
+
+```{r}
+ggplot(data = my_data) +
+  geom_mosaic(aes(x = product(drive_desc), fill=drive_desc))
+```
+
+or with easier to read labeling:
+
+```{r}
+ggplot(data = my_data) +
+  geom_mosaic(aes(x = product(drive_desc), fill=drive_desc)) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+## Variable Associations
+
+Sometimes we are interested in the association of two variables. There are three typical situations:
+
+1) Two numerical variables. To study this, we use correlation, scatter plots, and regression.
+
+2) One numerical variable (as response) and one categorical variable (as explanatory). To study this, we use grouped summaries, side-by-side boxplots, and two-sample t-tests (when categorical variable is binary) or ANOVA. 
+
+3) Two categorical variables. Here, we use two-way tables, mosaic plots, and chi-square tests. 
+
+### Two Numeric Variables
+
+Consider for example, the variables `comb_mpg` (combined mileage) and `engine_displacement` (engine displacement). We may want to know if fuel efficiency is realted to engine size. 
+
+The correlation of these two variables is
+
+```{r}
+(R_val <- cor(my_data$engine_displacement,my_data$comb_mpg))
+```
+
+This value squared is $R^2$:
+
+```{r}
+R_val^2
+```
+
+
+Let's examine the scatter plot for these variables:
+
+```{r}
+# scatterplot for two numerical variables
+gf_point(comb_mpg~engine_displacement,data=my_data)
+```
+
+
+If we want to include the regression line, it can be added as follows:
+```{r}
+gf_point(comb_mpg~engine_displacement,data=my_data) %>%
+  gf_lm()
+```
+
+The following code fits a linear model for these variables and returns the inferential statistics:
+
+```{r}
+lm_fit <- lm(comb_mpg~engine_displacement,data=my_data)
+summary(lm_fit)
+```
+
+We can clean this output up using the commands from the broom package. For example
+
+```{r}
+tidy(lm_fit)
+```
+outputs the parameter estimates, standard errors, and p-values for the intercept and slope parameters. The `glance` command provides additional information such as the $R^2$ value and the degrees of freedom `df.residual` (notice that this is $n-2$ where $n$ is the number of observations).  
+
+```{r}
+glance(lm_fit)
+```
+
+### Numerical Response and Categorical Explanatory
+
+```{r}
+gf_boxplot(comb_mpg~drive_desc,data=my_data)
+```
+
+or
+
+```{r}
+gf_boxplot(comb_mpg~drive_desc,data=my_data) + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+
+```{r}
+summary(aov(comb_mpg~drive_desc,data=my_data))
+```
+
+
+
+## Working with Distributions.  
+
+
+
+
+## Inference for Proportions and Means
+
+
+
+
+## Inference for Comparing Means
+
+
+
+
+## Inference for Categorical Variables
