@@ -4,13 +4,15 @@ author: "JMG"
 output: html_notebook
 ---
 
-# R Commands Notebook
+# Some Useful R Commands
+
+This notebook illustrates the use of R commands that relate directly to the statistical concepts convered in MATH 204 *Introduction to Statistics*.
 
 ## Loading Packages
 
 It is necessary to load any package (other than base R) that contains commands that we want to use. Note that these packages have it be installed before they can be loaded. One can install packages using the "Packages" tab and then clicking the "Install" icon.
 
-```{r}
+```{r,warning=FALSE,message=FALSE}
 # load packages
 library(tidyverse)
 library(openintro)
@@ -42,7 +44,7 @@ Here we load our EPA 2021 data.
 ```{r}
 # load data
 my_data <- read.csv("epa2021data.csv")
-# if you don't have the data file, use:
+# if you don't have the data file, uncomment and use:
 #my_data <- epa2021
 ```
 
@@ -81,7 +83,7 @@ The next step in a data analysis is to conduct a so-called exploratory data anal
 
 The first steps in EDA are to compute summary statistics for variables of interest and to build appropriate summary visualizations.   
 
-## Summary Stats for Numerical Variables
+## Summary Stats for a Numerical Variable
 
 For example, the `comb_mpg` variable (combined mileage) is a continuous numerical variable so it makes sense to compute its mean, median, standard deviation, and variance.  
 
@@ -100,7 +102,7 @@ Histograms and boxplots are appropriate ways to provide a visual summary for a n
 gf_histogram(~comb_mpg,data=my_data)
 ```
 
-Let's change the number of bins.
+Let's change the number of bins and also add color to show where the bins are.
 
 ```{r}
 gf_histogram(~comb_mpg,data=my_data,bins=25,color="black")
@@ -113,9 +115,9 @@ gf_boxplot(~comb_mpg,data=my_data) + coord_flip()
 ```
 
 
-## Summary Stats for Categorical Variables
+## Summary Stats for a Categorical Variable
 
-For a single categorical variable, we one-way table is used to summarize the counts for how many times each level of the variable occurs as an observation in the sample data. For example, 
+For a single categorical variable, a one-way table is used to summarize the counts for how many times each level of the variable occurs as an observation in the sample data. For example, 
 
 ```{r}
 table(my_data$drive_desc)
@@ -143,7 +145,7 @@ addmargins(proportions(table(my_data$drive_desc)))
 
 ## Visual Summaries for a Single Categorical Variable
 
-A visualization of a one-way table is provided by a bar plot.
+A visualization that corresponds to a one-way table is provided by a bar plot.
 
 ```{r}
 gf_bar(~drive_desc,data=my_data)
@@ -170,6 +172,10 @@ ggplot(data = my_data) +
   geom_mosaic(aes(x = product(drive_desc), fill=drive_desc)) + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
+
+## Inference for Proportions and Means
+
+
 
 ## Variable Associations
 
@@ -219,7 +225,7 @@ lm_fit <- lm(comb_mpg~engine_displacement,data=my_data)
 summary(lm_fit)
 ```
 
-We can clean this output up using the commands from the broom package. For example
+We can clean this output up using the commands from the `broom` package. For example,
 
 ```{r}
 tidy(lm_fit)
@@ -230,7 +236,26 @@ outputs the parameter estimates, standard errors, and p-values for the intercept
 glance(lm_fit)
 ```
 
+Residual plots are very helpful to assess potential issues with a linear fit. Here is code that produces a residual plot. Note that the first step is to obtain the residuals using the `augment` function.
+
+```{r,message=FALSE,warning=FALSE}
+lm_fit %>% augment() %>%
+  gf_point(.resid~engine_displacement) %>% gf_hline(yintercept = 0,linetype="dashed")
+```
+
+Note that the residuals are not evenly distributed around the 0 line which indicates that a linear model is not appropriate for this data. 
+
 ### Numerical Response and Categorical Explanatory
+
+How does the distribution of a numerical variable depend on the category to which the samples belong? For example, how does the combined gas mileage depend on what kind of drive system a vehicle uses? 
+
+We can compute grouped summary statistics. For example, the mean gas mileage per class of drive system is computed as follows:
+
+```{r}
+my_data %>% group_by(drive_desc) %>% summarise(mean_comb_mpg=mean(comb_mpg))
+```
+
+A side-by-side boxplot allows us to see the distribution of a numerical variable by category. 
 
 ```{r}
 gf_boxplot(comb_mpg~drive_desc,data=my_data)
@@ -243,26 +268,96 @@ gf_boxplot(comb_mpg~drive_desc,data=my_data) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
 ```
 
+In order to test if the observed difference in means is likely true, or is simply a result of sampling, we use an ANOVA. This is conducted as follows:
 
 ```{r}
 summary(aov(comb_mpg~drive_desc,data=my_data))
 ```
 
+### Association for a Pair of Categorical Variables
 
+A two-way or cross table compares combinations of categories for two categorical variables. For example, conside the data set `hsb2` from the `openintro` package which records samples from the High School and Beyond survey, a survey conducted on high school seniors by the National Center of Education Statistics.
+
+```{r}
+table(hsb2$ses,hsb2$prog)
+```
+
+We can also add the margin sum totals
+
+```{r}
+addmargins(table(hsb2$ses,hsb2$prog))
+```
+
+Here `ses` is the socio economic status of student's family  and `prog` is the type of program.  
+
+A mosaic plot can be used to visualize this data.
+
+```{r}
+ggplot(data = hsb2) +
+  geom_mosaic(aes(x = product(ses, prog), fill=ses)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1))
+```
+
+We can ask if the variables `ses` and   `prog` are independent. A chi-square test helps to answer this. 
+
+```{r}
+chisq.test(hsb2$ses,hsb2$prog)
+```
 
 ## Working with Distributions.  
 
+In order to conduct hypothesis test "by hand", it helpful to be able to work with the basic distribution functions in R. For each distribution there are four functions:
+
+1) `r_dist_name` which draws random samples
+
+2) `d_dist_name` which represents the density function or probability mass function
+
+3) `p_dist_name` which represents the cumulative distribution function, this is used to compute left-tail areas
+
+4) `q_dist_name` is the quantile function which is the inverse function of `p_dist_name`
+
+Suppose for example that we want to work with a normal distribution. Then we replace `_dist_name` with `norm`. For example, 
+
+```{r}
+(sim_x <- rnorm(75,10,2.5))
+```
+
+Let's make a histogram of this data:
+
+```{r}
+gf_histogram(~sim_x,binwidth = 1.0,color="black")
+```
+
+Here are illustrations of the uses of the other distribution functions:
+
+
+The value of the standard normal density function at $z=0$ is 
+```{r}
+dnorm(0.0)
+```
+
+
+Let's plot the standard normal density curve:
+```{r}
+gf_dist("norm")
+```
+
+The use of the `p` and `q` functions are illustrated with
+
+```{r}
+pnorm(1.5)
+```
+
+and 
+
+```{r}
+qnorm(0.3)
+```
+
+**Note** Depending on the type of distribution you want to work with, you need to specify appropriate values for an parameters. For example, to work with a t distribution to need to specify the appropriate values for the degrees of freedom `df`. 
 
 
 
-## Inference for Proportions and Means
 
 
 
-
-## Inference for Comparing Means
-
-
-
-
-## Inference for Categorical Variables

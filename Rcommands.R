@@ -102,7 +102,7 @@ ggplot(data = my_data) +
 
 ### working with distributions
 
-sim_x <- rnorm(35.10,2.5)
+sim_x <- rnorm(35,10,2.5)
 dnorm(0)
 gf_dist("norm")
 pnorm(1.5)
