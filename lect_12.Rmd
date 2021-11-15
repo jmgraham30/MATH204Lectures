@@ -1,0 +1,154 @@
+---
+title: "Lecture 12"
+subtitle: " "
+author: "JMG"
+institute: "MATH 204"
+output:
+  xaringan::moon_reader:
+    css: [rladies, rladies-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(openintro)
+library(faraway)
+library(tidyverse)
+library(ggformula)
+library(ggmosaic)
+library(patchwork)
+library(latex2exp)
+library(kableExtra)
+library(broom)
+```
+
+
+# Multiple Regression
+
+- Multiple regression builds on the foundations of simple linear regression to allow for more than one predictor. Watch the following video to get started.
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/sQpAuyfEYZg") %>%
+  vembedr::use_align("center")
+```
+
+---
+
+# Learning Objectives
+
+- After this lecture, you should
+
+--
+
+  - know how to fit a multiple regression model using `lm`,
+  
+--
+
+  - understand and be able to interpret adjusted $R^2$, and 
+  
+--
+
+  - be able to use diagnostic plots to assess the validity of a linear fit. 
+  
+---
+
+# Motivating Data
+
+- Consider the `mariokart` data set which consists of auction data from Ebay for the game Mario Kart for the Nintendo Wii. This data was collected in early October 2009.
+
+--
+
+```{r}
+head(mariokart)
+```
+
+--
+
+- Let's obtain another view of this data.
+
+---
+
+# Glimpse of `mariokart`
+
+```{r}
+glimpse(mariokart)
+```
+
+--
+
+- **Question:** What features affect the final price (`total_pr`) at which a game is sold? 
+
+---
+
+# A First Model
+
+- As a start, we fit a linear model with the game condition (`cond`) as the only predictor:
+
+--
+
+```{r}
+lm_fit <- lm(total_pr~cond,data=mariokart)
+summary(lm_fit)
+```
+
+---
+
+# Results
+
+- Our first fit predicts that a used game will, on average, go for $6.62 less than a new game will. 
+
+--
+
+```{r,echo=FALSE,fig.height=4,warning=FALSE,message=FALSE}
+lm_fit %>% 
+  augment() %>% 
+  ggplot() + 
+  geom_point(aes(x=cond,y=total_pr),alpha=0.5) +
+  geom_abline(slope=-6.623,intercept=53.771,color="blue",linewidth=1) + 
+  ylim(c(25,80))
+```
+
+
+--
+
+- **Question:** Do you think that the condition of the game alone is sufficient to predict the price of the game? Explain why or why not. 
+
+---
+
+# Adding Predictors
+
+- As we will see, in R it is extremely easy to fit a model with many predictors. WHy might we want to do this? 
+
+--
+
+- We would like to fit a model that includes all potentially important variables simultaneously. 
+
+--
+
+
+- Multiple regression can help us evaluate the relationship between a predictor variable and the outcome while controlling for the potential influence of other variables. 
+
+--
+
+- Let's fit a more complicated linear model.
+
+---
+
+# Another Fit
+
+```{r}
+lm_fit2 <- lm(total_pr~cond+stock_photo+duration+wheels,data=mariokart)
+summary(lm_fit2)
+```
+
+
+---
+
+# Results
+
+- Notice that when we have controlled for other features, the condition (new versus used) of the game  has a smaller impact on the price of the game since the slope estimate has gone from -6.6 to -2.6. 
