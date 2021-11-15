@@ -25,7 +25,9 @@ library(patchwork)
 library(latex2exp)
 library(kableExtra)
 library(broom)
+mariokart <- mariokart %>% filter(total_pr <= 85)
 ```
+
 
 
 # Multiple Regression
@@ -100,7 +102,7 @@ summary(lm_fit)
 
 # Results
 
-- Our first fit predicts that a used game will, on average, go for $6.62 less than a new game will. 
+- Our first fit predicts that a used game will, on average, go for $10.90 less than a new game will. 
 
 --
 
@@ -109,8 +111,7 @@ lm_fit %>%
   augment() %>% 
   ggplot() + 
   geom_point(aes(x=cond,y=total_pr),alpha=0.5) +
-  geom_abline(slope=-6.623,intercept=53.771,color="blue",linewidth=1) + 
-  ylim(c(25,80))
+  geom_abline(slope=-6.623,intercept=53.771,color="blue",linewidth=1)
 ```
 
 
@@ -169,7 +170,7 @@ summary(lm_fit2)
 
 # Results
 
-- Notice that when we have controlled for other features, the condition (new versus used) of the game  has a smaller impact on the price of the game since the slope estimate has gone from -6.6 to -2.6. 
+- Notice that when we have controlled for other features, the condition (new versus used) of the game  has a smaller impact on the price of the game since the slope estimate has gone from -10.90 to -5.13. 
 
 --
 
@@ -206,3 +207,171 @@ where $n$ is the number of observations and $k$ is the number of predictor varia
 
 # Model Selection 
 
+- Model selection seeks to indentify variables in the model that may not be helpful. 
+
+--
+
+- The model that includes all available explanatory variables is referred to as the full model. 
+
+--
+
+- There are a variety of model selection strategies that are used in practice. We will discuss to of the most common approaches. 
+
+
+---
+
+# Model Selecion Video
+
+- This video provides further perspective on model selection. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/VB1qSwoF-l0") %>%
+  vembedr::use_align("center")
+```
+
+
+
+---
+
+# Model Selection Strategies
+
+- **Backward Elimination**. In this approach, we would identify the predictor corresponding to the largest $p$-value. If the $p$-value is above the significance level (usually $\alpha=0.05$), then we drop that variable, refit the model, and repeat the process. If the largest $p$-value is less than the significance level, then we would not eliminate any predictors. 
+
+--
+
+- **Forward Selection**. This approach begins with no predictors, then we fit a model with each individual predictor one at a time and keep the predictor that has the smallest $p$-value. Forward selection proceeds by continuing to add at each step a predictor that results in the smallest $p$-value that is less than the significance level. When non of the remaining predictors can be added to the model and have a $p$-value less than the significance level, we stop. 
+
+--
+
+- It is important to note that backward elimination and forward selection may not produce the same final model.
+
+---
+
+# Model Selection Example
+
+- Let's see both backward elimination and forward selection applied to the `mariokart` data. Note that the full model is (in R formula notation) `total_pr ~ cond + stock_photo + duration + wheels`.
+
+
+--
+
+- Let's work out the details together in R. 
+
+--
+
+- Backward elimination and forward selection use $p$-values in deciding which variables will make up the final model. However, there are other measures that are used in other approaches to model selection. For example, on could seek a model that has the largest adjusted $R^2$ value. Information theoretic measures such as [AIC](https://en.wikipedia.org/wiki/Akaike_information_criterion) and [BIC](https://en.wikipedia.org/wiki/Bayesian_information_criterion) are also often used. A discussion on these matters falls outside the scope of this course.  
+
+--
+
+- We note that there are packages associated with statistical software that implement various variable selection algorithms. For example, [`olsrr`](https://olsrr.rsquaredacademy.com/) is an R package that implements a variety of variable selection methods. 
+
+
+---
+
+# Checking Model Conditions
+
+- Multiple regression methods using the model 
+
+$$\hat{y} = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \cdots + \beta_{k}x_{k}$$
+generally depend on the following four conditions:
+
+--
+
+  - the residuals of the model are nearly normal,
+  
+--
+
+  - the variability of the residuals is nearly constant,
+  
+--
+
+  - the residuals are independent, and
+  
+--
+
+  - each variable is linearly related to the response. 
+  
+--
+
+- Diagnostic plots can be used to check each of these conditions. 
+
+---
+
+# Histogram of Residuals
+
+- A histogram of the residuals can be used to check for outliers. For example, the residuals for the final model for the `mariokart` data have the following histogram:
+
+```{r,warning=FALSE,message=FALSE,echo=FALSE,fig.height=5}
+
+lm_fit2 %>% 
+  augment() %>% 
+  ggplot(aes(x=.resid)) + geom_histogram(binwidth=2.5,color="black")
+```
+
+--
+
+- There are no extreme outliers present. 
+
+---
+
+# Absolute Value of Residuals
+
+- A plot of the absolute value of residuals versus fitted values is helpful to check the condition that the variance of residuals is approximately constant. 
+
+--
+
+```{r,echo=FALSE,fig.height=5,warning=FALSE,message=FALSE}
+
+lm_fit2 %>% 
+  augment() %>%
+  ggplot(aes(x=.fitted,y=abs(.resid))) + 
+  geom_point() + geom_smooth(method="lm",se=FALSE,linetype="dashed")
+
+```
+
+--
+
+- There is no evident distinguished pattern. 
+
+---
+
+# Additional Diagnostic Plots
+
+- It can also be useful to examine the following types of plots:
+
+--
+
+  - Residuals in the order of their data collection. Such a plot is helpful in identifying any connection between cases that are close to one another. 
+  
+--
+
+  - Residuals against each predictor. We are looking for any notable change in variability between groups. 
+  
+--
+
+- These plots are shown for model results for the `mariokart` data on pages 369 and 370 of the textbook. Let's look at these together and discuss.  
+
+---
+
+# Diagnostic Plots Video
+
+- Watch the following video for further perspective on assessing multiple regression with plots. 
+
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/3KSUeYMKt5A") %>%
+  vembedr::use_align("center")
+```
+
+
+---
+
+# Further Regression
+
+- When it comes to regression, we have only scratched the surface. There is more we could discuss regarding multiple regression, and there are also other types of regression.  The following video provides an introduction to logistic regression
+```{r,echo=FALSE}
+vembedr::embed_url("https://youtu.be/uYC2eLVSpI8") %>%
+  vembedr::use_align("center")
+```
+
+--
+
+- For even more on regression, we recommend the text [Linear Models with R](https://julianfaraway.github.io/faraway/LMR/) by Faraway. 
