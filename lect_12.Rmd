@@ -139,6 +139,24 @@ lm_fit %>%
 
 ---
 
+# Multiple Regression Model
+
+- A multiple regression model is a linear model with many predictors. In general, we write the model as
+
+$$\hat{y} = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + \cdots + \beta_{k}x_{k}$$
+
+when there are $k$ predictors. We always estimate the $\beta_{i}$ parameters using statistical software. 
+
+--
+
+- For example, we may want to use `cond`, `stock_photo` (whether the auction feature photo was a stock photo or not), `duration` (auction length, in days), and `wheels` (number of Wii wheels included in the auction) all as predictors of price for the `mariokart` data. 
+
+--
+
+- Let's obtain a linear fit with these predictors using `lm`. 
+
+---
+
 # Another Fit
 
 ```{r}
@@ -152,3 +170,33 @@ summary(lm_fit2)
 # Results
 
 - Notice that when we have controlled for other features, the condition (new versus used) of the game  has a smaller impact on the price of the game since the slope estimate has gone from -6.6 to -2.6. 
+
+--
+
+- For simple linear regression, we used $R^2$ to determine the amount of variability in the response that was explained by the model. Recall that
+
+$$R^2 = 1 - \frac{\text{variability in residuals}}{\text{variability in the response}}$$
+
+--
+
+- $R^2$ does not work well for mulitple regression. Instead, we use **adjusted** $R^2$.
+
+---
+
+# Adjusted $R^2$
+
+- The adjusted $R^2$ is computed as
+
+$$R^2_{\text{adj}} = 1 - \frac{s_{\text{residuals}}^{2}}{s_{\text{response}}^{2}}\frac{n-1}{n-k-1}$$
+where $n$ is the number of observations and $k$ is the number of predictor variables. Remember that a categorical predictor with $p$ levels will contribute $p-1$ to the number of variables in the model. 
+
+--
+
+- Notice that the adjusted $R^2$ will by smaller than the unadjusted $R^2$. 
+
+--
+
+- One of the main benefits of using adjusted $R^2$ for multiple regression is that it accounts for **model complexity**. Complex models are more likely to overfit. 
+
+
+
