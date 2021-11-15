@@ -196,7 +196,13 @@ where $n$ is the number of observations and $k$ is the number of predictor varia
 
 --
 
-- One of the main benefits of using adjusted $R^2$ for multiple regression is that it accounts for **model complexity**. Complex models are more likely to overfit. 
+- One of the main benefits of using adjusted $R^2$ for multiple regression is that it accounts for **model complexity**. 
 
+--
 
+- The best model is not always the most complicated one. For one, more complex models are more likely to overfit. 
+
+---
+
+# Model Selection 
 
