@@ -64,7 +64,7 @@ In this lecture, we will examine two new inferential techniques:
   
 --
 
-  - Use the `aov` function in R to conduct hypothesis tests. 
+  - Use the `chisq.test` function in R to conduct hypothesis tests. 
 ---
 
 # Video on Goodness of Fit
