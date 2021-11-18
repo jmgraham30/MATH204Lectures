@@ -123,7 +123,7 @@ lm_fit %>%
 
 # Adding Predictors
 
-- As we will see, in R it is extremely easy to fit a model with many predictors. WHy might we want to do this? 
+- As we will see, in R it is extremely easy to fit a model with many predictors. Why might we want to do this? 
 
 --
 
@@ -193,7 +193,7 @@ where $n$ is the number of observations and $k$ is the number of predictor varia
 
 --
 
-- Notice that the adjusted $R^2$ will by smaller than the unadjusted $R^2$. 
+- Notice that the adjusted $R^2$ will be smaller than the unadjusted $R^2$. 
 
 --
 
@@ -207,7 +207,7 @@ where $n$ is the number of observations and $k$ is the number of predictor varia
 
 # Model Selection 
 
-- Model selection seeks to indentify variables in the model that may not be helpful. 
+- Model selection seeks to identify variables in the model that may not be helpful. 
 
 --
 
@@ -215,7 +215,7 @@ where $n$ is the number of observations and $k$ is the number of predictor varia
 
 --
 
-- There are a variety of model selection strategies that are used in practice. We will discuss to of the most common approaches. 
+- There are a variety of model selection strategies that are used in practice. We will discuss two of the more common approaches. 
 
 
 ---
@@ -239,7 +239,7 @@ vembedr::embed_url("https://youtu.be/VB1qSwoF-l0") %>%
 
 --
 
-- **Forward Selection**. This approach begins with no predictors, then we fit a model with each individual predictor one at a time and keep the predictor that has the smallest $p$-value. Forward selection proceeds by continuing to add at each step a predictor that results in the smallest $p$-value that is less than the significance level. When non of the remaining predictors can be added to the model and have a $p$-value less than the significance level, we stop. 
+- **Forward Selection**. This approach begins with no predictors, then we fit a model with each individual predictor one at a time and keep the predictor that has the smallest $p$-value. Forward selection proceeds by continuing to add at each step a predictor that results in the smallest $p$-value that is less than the significance level. When none of the remaining predictors can be added to the model and have a $p$-value less than the significance level, we stop. 
 
 --
 
@@ -258,7 +258,7 @@ vembedr::embed_url("https://youtu.be/VB1qSwoF-l0") %>%
 
 --
 
-- Backward elimination and forward selection use $p$-values in deciding which variables will make up the final model. However, there are other measures that are used in other approaches to model selection. For example, on could seek a model that has the largest adjusted $R^2$ value. Information theoretic measures such as [AIC](https://en.wikipedia.org/wiki/Akaike_information_criterion) and [BIC](https://en.wikipedia.org/wiki/Bayesian_information_criterion) are also often used. A discussion on these matters falls outside the scope of this course.  
+- Backward elimination and forward selection use $p$-values in deciding which variables will make up the final model. However, there are other measures that are used in other approaches to model selection. For example, one could seek a model that has the largest adjusted $R^2$ value. Information theoretic measures such as [AIC](https://en.wikipedia.org/wiki/Akaike_information_criterion) and [BIC](https://en.wikipedia.org/wiki/Bayesian_information_criterion) are also often used. A discussion on these matters falls outside the scope of this course.  
 
 --
 
