@@ -1,0 +1,265 @@
+---
+title: "Lecture 13"
+subtitle: " "
+author: "JMG"
+institute: "MATH 204"
+output:
+  xaringan::moon_reader:
+    css: [rladies, rladies-fonts]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+library(openintro)
+library(faraway)
+library(tidyverse)
+library(ggformula)
+library(ggmosaic)
+library(patchwork)
+library(latex2exp)
+library(kableExtra)
+library(broom)
+```
+
+
+# Intro to Nonparametric Stats
+
+- All of the inferential methods we have studied so far rely on certain distributional assumptions. For example, in many cases we have either assumed or required
+data to be normally distributed. 
+--
+
+- These distributional assumptions relate to probability distributions, *e.g.*, normal, that depend on parameters, *e.g.*, $\mu$ and $\sigma$ for a normal distribution.
+
+--
+
+- What do we do if the necessary distributional assumptions or requirements can  not be met?
+
+
+--
+
+- In some cases, there is a [**nonparametric**](https://en.wikipedia.org/wiki/Nonparametric_statistics) parallel to the inferential methods we have studied so far that allow us to weaken the conditions say for conducting a hypothesis test. 
+
+--
+
+- We cover some of these nonparametric statistics in this lecture. Note that this material is not covered in out textbook [OpenIntro Statistics](https://openintro.org/book/os/). 
+
+
+---
+
+# Parametric Vs. Nonparametric
+
+- Below we list some inferential methods we have already studies together with their parallel nonparametric test.
+
+--
+
+  - t-test for difference of means; [Wilcoxon rank-sum test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test) (or Mann-Whitney-Wilcoxon test)
+
+--
+
+  - paired t-test; [Wilcoxon signed-rank test](https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test)
+  
+--
+
+ -  ANOVA (F-test); [Kruskal-Wallis test](https://en.wikipedia.org/wiki/Kruskal%E2%80%93Wallis_one-way_analysis_of_variance). 
+ 
+--
+
+ - We also look at a [sign test](https://en.wikipedia.org/wiki/Sign_test) where we are interested in assessing differences between to groups of paired observations but do not taken into account magnitudes of differences. 
+
+
+---
+
+# Learning Objectives
+
+- After this lecture, you should
+
+--
+
+  - have a sense of how the rank-sum, signed-rank, Kruskal-Wallis, and sign tests work, 
+  
+--
+ 
+  - have a sense of when to use the rank-sum, signed-rank, Kruskal-Wallis, and sign tests
+  
+--
+
+  - know how to conduct these tests using R. 
+  
+---
+
+# Why Use Nonparametric Stats?
+
+- In general, conclusions drawn from non-parametric methods are not as powerful as the parametric ones.
+
+--
+
+- However, as nonparametric methods make fewer assumptions, they are more flexible, more robust, and easier to run.
+
+--
+
+- Nonparametric methods are especially useful when sample sizes are small. 
+
+--
+
+- [Nonparametric statistics](https://en.wikipedia.org/wiki/Nonparametric_statistics) is a significant and substantial subfield of statistics. However, it should be noted that it is difficult to give a simple and precise definition of nonparametric statistics. 
+
+--
+
+- What we cover in this lecture does not even begin to touch upon many of the most important parts of nonparametric inference. 
+
+---
+
+# Rank-sum Test
+
+- We begin our introduction to nonparametric methods with a discussion of the Wilcoxon rank-sum test which is also known as the Mann–Whitney U test. 
+
+--
+
+- Suppose we have the following question:
+
+> Do math majors get more A's than non-math majors? 
+
+--
+
+- To answer this question, we collect data. For example:
+```{r,echo=FALSE}
+major <- c(rep("math",10),rep("non",13))
+num_as <- c(10,11,9,10,12,15,16,18,19,20,9,6,9,8,7,10,9,8,7,9,10,12,15)
+df_1 <- tibble(major=major,num_as=num_as)
+df_1 <- df_1[sample(nrow(df_1),replace = FALSE),]
+df_1 %>% head()
+```
+--
+
+- Note that there are 10 math majors and 13 non-math majors:
+```{r,echo=FALSE}
+table(df_1$major)
+```
+
+
+---
+
+# Plot of Data
+
+- Here is a plot of our data:
+
+```{r,echo=FALSE,fig.height=5}
+df_1 %>% ggplot(aes(x=major,y=num_as)) + 
+  geom_point()
+```
+
+---
+
+# Assumptions
+
+- In the previous data set, there is no reason to expect that the number of A's is normally distributed. Furthermore, the sample sizes are small. 
+
+--
+
+- The Wilcoxon rank-sum test only requires us to assume that
+
+--
+
+  - All of the observations are independent and the responses are at least ordinal in that we can at least say whether of any two observations, which is greater. 
+  
+--
+
+-  Rank-sum tests
+
+--
+
+  - $H_{0}:$ The distributions of both populations are equal. 
+  
+--
+
+  - $H_{A}:$ The distributions of the populations are not equal. 
+  
+
+---
+
+# Example Rank-Sum Test
+
+- In R, we conduct a rank-sum test using
+
+```{r,warning=FALSE,message=FALSE}
+wilcox.test(num_as~major,data=df_1,correct=FALSE)
+```
+
+--
+
+- If our significance level is $\alpha=0.05$, then we would reject the null hypothesis that the distribution of the number of A's is the same for the two groups. 
+
+---
+
+# Signed-rank Test
+
+- Now we consider the Wilcoxon signed-rank test. 
+
+--
+
+- Suppose we have the following question:
+
+> Do you work out longer if you listen to music while exercising?
+
+--
+
+- We randomly select 10 students, and record their workout time in minutes for one workout session without music, and for a second workout session with music. The data might look like follows:
+
+```{r}
+(no_music <- c(30,25,20,22,36,40,35,27,30,35))
+(with_music <- c(32,27,20,25,30,39,30,30,28,32))
+```
+
+--
+
+- It is not reasonable to assume that this data is normally distributed. 
+
+---
+
+# Signed-Rank Test
+
+- We want to test the hypothesis:
+
+--
+
+  - $H_{0}:$ There is no difference in the length of workout sessions.
+  
+--
+
+  - $H_{A}:$ There is a difference in the length of workout session. 
+  
+--
+
+ - The signed-rank test can be used for this test. 
+ 
+---
+
+# Example Signed-Rank Test
+
+- In R, we conduct a signed-rank test using
+
+```{r,warning=FALSE,message=FALSE}
+wilcox.test(no_music,with_music,paired=TRUE,correct=FALSE)
+```
+
+--
+
+- We fail to reject the null hypothesis at the $\alpha=0.05$ significance level. 
+
+---
+
+# Kruskal-Wallis
+
+
+
+
+---
+
+# Sign Test
+
+
