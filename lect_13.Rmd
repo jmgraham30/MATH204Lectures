@@ -42,18 +42,18 @@ data to be normally distributed.
 
 --
 
-- In some cases, there is a [**nonparametric**](https://en.wikipedia.org/wiki/Nonparametric_statistics) parallel to the inferential methods we have studied so far that allow us to weaken the conditions say for conducting a hypothesis test. 
+- In some cases, there is a [**nonparametric**](https://en.wikipedia.org/wiki/Nonparametric_statistics) parallel to the inferential methods we have studied so far that allow us to weaken the conditions, say for example to conduct a hypothesis test. 
 
 --
 
-- We cover some of these nonparametric statistics in this lecture. Note that this material is not covered in out textbook [OpenIntro Statistics](https://openintro.org/book/os/). 
+- We cover some of these nonparametric statistics in this lecture. Note that this material is not covered in our textbook [OpenIntro Statistics](https://openintro.org/book/os/). 
 
 
 ---
 
 # Parametric Vs. Nonparametric
 
-- Below we list some inferential methods we have already studies together with their parallel nonparametric test.
+- Below we list some inferential methods we have already studied together with their parallel nonparametric test.
 
 --
 
@@ -231,7 +231,7 @@ wilcox.test(num_as~major,data=df_1,correct=FALSE)
   
 --
 
-  - $H_{A}:$ There is a difference in the length of workout session. 
+  - $H_{A}:$ There is a difference in the length of workout sessions. 
   
 --
 
@@ -255,8 +255,78 @@ wilcox.test(no_music,with_music,paired=TRUE,correct=FALSE)
 
 # Kruskal-Wallis
 
+- The Kruskal-Wallis test parallels our ANOVA test for comparing many means. 
+
+--
+
+- The null and alternative hypotheses for the Kruskal-Wallis test are
+
+--
+
+  - $H_{0}:$ There is no difference in the distribution of the populations. 
+  
+--
+
+  - $H_{A}:$ There is a difference in the distributions of the populations.
+  
+--
+
+- Two conditions for using the Kruskal-Wallis test are 
+
+--
+
+  - each sample must be randomly selected, and 
+  
+--
+
+  - the size of each sample must be at least 5. 
+
+---
+
+# Example
+
+- Consider again out data for the weights of chicken fed with different types of feed:
+
+```{r,echo=FALSE,message=FALSE,warning=FALSE,fig.height=5}
+chickwts %>% ggplot(aes(x=feed,y=weight)) + geom_boxplot()
+```
+
+---
+
+# Kruskal-Wallis Test
+
+- Let's run a Kruskal-Wallis test on the chicken weights data:
+
+```{r}
+kruskal.test(weight~feed,data=chickwts)
+```
+
+--
+
+- If our significance level is $\alpha=0.05$, then we will decide to reject the null hypothesis that the distribution of weights is the same across all groups. 
+
+--
+
+- Let's compare the results from Kruskal-Wallis with results from an ANOVA test. 
+
+---
+
+# Comparing Tests
+
+- ANOVA
+
+```{r}
+summary(aov(weight~feed,data=chickwts))
+```
 
 
+--
+
+- Kruskal-Wallis
+
+```{r}
+kruskal.test(weight~feed,data=chickwts)
+```
 
 ---
 
