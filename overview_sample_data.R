@@ -2,7 +2,6 @@ library(tidyverse)
 library(patchwork)
 library(ggmosaic)
 
-set.seed(1587)
 
 get_rs <- function(i){
   rn <- paste0("R",as.character(sample(0:9,1)),
@@ -17,12 +16,18 @@ get_rs <- function(i){
 }
 
 r_num <- map_chr(1:127,get_rs)
-amount_coffee <- round(rnorm(127,3,0.2),1)
-amount_caffeine <- round(rnorm(127,60,4.5),1)
-amount_sleep <- 10 - 0.03*amount_coffee - 0.07*amount_caffeine + rnorm(127,0.2)
+amount_coffee <- round(rnorm(127,3,0.25),1)
+amount_caffeine <- round(rnorm(127,100,5.0),1)
 roast <- sample(c("light","medium","dark"),127,replace=TRUE)
 num_roommates <- sample(c(1,2,3,4),127,replace = TRUE,prob=c(0.6,0.2,0.1,0.1))
 morning <- sample(c("no","yes"),127,replace = TRUE,prob = c(0.7,0.3))
+amount_sleep <- 7.5 - 
+  0.2*amount_coffee - 
+  0.01*amount_caffeine -
+  0.1*num_roommates + 
+  1*ifelse(morning == "yes",1,0) + 
+  rnorm(127,0.1)
+
 
 coffeesleep_df <- tibble(
   r_num=r_num,
