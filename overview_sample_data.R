@@ -151,7 +151,7 @@ prop.test(37,127,p=0.2,correct = FALSE)
 
 table(coffeesleep_df$roast)
 
-prop.test(c(45,44),c(127,127),correct = FALSE)
+prop.test(c(45,38),c(127,127),correct = FALSE)
 
 t.test(coffeesleep_df$amount_sleep,mu=8.0)
 
